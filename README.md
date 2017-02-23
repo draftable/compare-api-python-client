@@ -2,6 +2,7 @@
 
 This is a thin Python 2/3 client for Draftable's document comparison API.
 It wraps the available endpoints, and handles authentication and signing for you.
+The library is [available on PyPI](https://pypi.python.org/pypi/draftable-compare-api) as `draftable-compare-api`.
 
 See the [full API documentation](https://api.draftable.com) for an introduction to the API, usage notes, and other references.
 

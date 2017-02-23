@@ -1,8 +1,9 @@
 from setuptools import setup
 
 setup(name='draftable_compare_api',
-      version='1.0.0b1',
+      version='1.0.3b1',
       description='Draftable Compare API - Python Client Library',
+      long_description=open('README.rst').read(),
       keywords='compare documents draftable api pdf word powerpoint',
       url='https://github.com/draftable/compare-api-python-client',
       author='Draftable',
