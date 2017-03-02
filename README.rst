@@ -30,8 +30,8 @@ Getting started
    ::
 
        comparison = comparisons.create(
-           left = comparisons.side_from_url('https://api.draftable.com/static/api_test_files/grub097.pdf', file_type='pdf'),
-           right = comparisons.side_from_url('https://api.draftable.com/static/api_test_files/grub200.pdf', file_type='pdf'),
+           left = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/left.pdf', file_type='pdf'),
+           right = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/right.rtf', file_type='rtf'),
        )
 
        print("Comparison created:", comparison)
