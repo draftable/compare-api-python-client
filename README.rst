@@ -1,8 +1,9 @@
 Draftable Compare API - Python Client Library
 =============================================
 
-This is a thin Python 2/3 client for Draftable's document comparison
-API. It wraps the available endpoints, and handles authentication and
+This is a thin Python 2/3 client for Draftable's `document comparison
+API <https://draftable.com/comparison-api>`__.
+It wraps the available endpoints, and handles authentication and
 signing for you. The source code is available on
 `Github <https://github.com/draftable/compare-api-client-python>`__.
 
@@ -83,7 +84,7 @@ So, we'll assume you set things up as follows:
 Getting comparisons
 -------------------
 
-``ComparisonsEndpoint`` provides ``getAll()`` and
+``ComparisonsEndpoint`` provides ``all()`` and
 ``get(identifier: str)``. - ``all()`` returns a ``list`` of *all your
 comparisons*, ordered from newest to oldest. This is a potentially
 expensive operation. - ``get(identifier: str)`` returns a single
