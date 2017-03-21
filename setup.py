@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='draftable_compare_api',
       version='1.0.4b1',
@@ -9,7 +9,7 @@ setup(name='draftable_compare_api',
       author='Draftable',
       author_email='hello@draftable.com',
       license='MIT',
-      packages=['draftable'],
+      packages=find_packages(include=('draftable*',)),
       install_requires=['requests'],
       classifiers=[
           "Development Status :: 4 - Beta",
