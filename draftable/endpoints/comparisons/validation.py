@@ -68,6 +68,8 @@ def validate_url(url):
         raise InvalidArgument('url', '`url` cannot be empty.')
     if not isinstance(url, str):
         raise InvalidArgument('url', '`url` must be a string (of type `str`).')
+    if len(url) > 2048:
+        raise InvalidArgument('url', "`url` must be no longer than 2048 characters.")
     try:
         scheme, netloc, path, params, query, fragment = requests.utils.urlparse(url)
     except Exception as ex:

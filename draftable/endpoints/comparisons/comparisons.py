@@ -7,11 +7,17 @@ except ImportError:
     pass
 
 from datetime import datetime, timedelta
+import random
 import requests.exceptions
 from . import exceptions, validation, signing, urls
 from .comparison import Comparison, comparison_from_response
 from ...transport import RESTClient
 from ...utilities import aware_datetime_to_timestamp
+
+
+# Constants for generating random unique (with high probability) identifiers:
+_randomIdentifierLength = 12
+_randomIdentifierCharset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 
 class Side(object):
@@ -155,3 +161,8 @@ class ComparisonsEndpoint(object):
             signature=signature,
             wait='&wait' if wait else '',
         )
+
+    @staticmethod
+    def generate_identifier():
+        # type: () -> str
+        return ''.join(random.choice(_randomIdentifierCharset) for _ in range(_randomIdentifierLength))
