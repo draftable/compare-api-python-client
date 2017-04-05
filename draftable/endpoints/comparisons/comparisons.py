@@ -76,7 +76,6 @@ class ComparisonsEndpoint(object):
     InvalidArgument = exceptions.InvalidArgument
     BadRequest = exceptions.BadRequest
     NotFound = exceptions.NotFound
-    IdentifierNotUnique = exceptions.IdentifierNotUnique
 
     @staticmethod
     def side_from_url(url, file_type, display_name=None):

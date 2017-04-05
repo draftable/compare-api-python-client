@@ -39,7 +39,7 @@ The only dependency is the pypi `requests` package.
 ### Design notes
 
 - This library should be compatible with Python 2 and Python 3. Submit a Github issue if it doesn't work with your interpreter.
-- This Python library always returns "aware" `datetime` objects, and assumes that any naive `datetime` object give it is in *UTC* time.
+- This Python library always returns "aware" `datetime` objects, and assumes that any naive `datetime` objects given to it are in *UTC* time.
 - The API is designed such that _requests should always succeed_, and _comparisons should always succeed_ in production.
     - Errors in making requests will only occur upon network failure, or when you provide invalid credentials or data.
     - Comparisons will only fail when the files are unreadable, or exceed your account's size limits.
@@ -84,10 +84,10 @@ If a `Comparison` is `ready` (i.e. it has been processed and is ready for displa
 
 ###### Example usage
 
-    identifier = '.....' 
+    identifier = '<identifier>' 
     
     try:
-        comparison = comparisons.get('<identifier>')
+        comparison = comparisons.get(identifier)
         
         print("Comparison '{identifier}' ({publicOrPrivate}) is {readyOrNot}.".format(
             identifier = identifier,
@@ -100,10 +100,10 @@ If a `Comparison` is `ready` (i.e. it has been processed and is ready for displa
             print("The comparison took {} seconds.".format(elapsed.total_seconds()))
             
             if comparison.failed:
-                print("The comparison failed. Error message:", comparison.error_message)
+                print("The comparison failed. Error message:\n" + comparison.error_message)
             
     except comparisons.NotFound:
-        print("Comparison '{}' doesn't exist.")
+        print("Comparison '{identifier}' doesn't exist.".format(identifier=identifier)
 
 
 ### Deleting comparisons
@@ -124,7 +124,7 @@ It has no return value, and raises `comparisons.NotFound` if there isn't a compa
 
 ### Creating comparisons
 
-`ComparisonsEndpoint` provides `create(...)`, which returns a `Comparison` object representing the newly created comparison.
+`ComparisonsEndpoint` provides `create(left, right, [identifier], [public], [expires])`, which returns a `Comparison` object representing the newly created comparison.
 
 ###### Creation options
 
@@ -148,7 +148,7 @@ The function `comparisons.side_from_url` accepts the following arguments:
 - `display_name` _(optional)_: a name for the file, to be shown in the comparison.
 
 The function `comparisons.side_from_file` accepts the following arguments:
-- `file`: a file object to be read and uploaded. Please ensure binary mode is used.
+- `file`: a file object to be read and uploaded. Ensure the file is opened for reading in _binary mode_.
 - `file_type`: as before.
 - `display_name` _(optional)_: as before.
 
@@ -166,10 +166,9 @@ If you provide `comparisons.side_from_file` with an invalid `file_type`, or a `f
 If you provide `comparisons.side_from_url` with an invalid `file_type` or a badly formatted `url`, it will raise `comparisons.InvalidArgument`.
 
 Exceptions are raised by `create` in the following cases:
-- If a parameter is invalid (e.g. `expires` is set to a time in the past), it will raise `comparisons.InvalidArgument`. 
-- If `identifier` is already in use by another comparison, `comparisons.IdentifierNotUnique` is raised.
+- If a parameter is invalid (e.g. `expires` is set to a time in the past), it will raise `comparisons.InvalidArgument`.
+- If `identifier` is already in use by another comparison, `comparisons.BadRequest` is raised.
 - If the API endpoint finds your request invalid for another reason, raises `comparisons.BadRequest`.
-    - Please see the [full API documentation](https://api.draftable.com) for the other constraints on the data.
 
 
 ###### Example usage

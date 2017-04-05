@@ -5,12 +5,6 @@ import requests
 from ..exceptions import EndpointException, InvalidArgument, BadRequest
 
 
-class IdentifierNotUnique(EndpointException):
-    def __init__(self, identifier):
-        # type: (str) -> None
-        super(IdentifierNotUnique, self).__init__("Identifier '{}' is in use by an existing comparison.".format(identifier))
-
-
 class NotFound(BadRequest):
     pass
 
