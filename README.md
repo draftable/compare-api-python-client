@@ -10,7 +10,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
 
 - Sign up for free at [api.draftable.com](https://api.draftable.com) to get your credentials.
 
-- `pip install draftable_compare_api`
+- `pip install draftable-compare-api`
 
 - Instantiate the client:
     ```
@@ -46,7 +46,7 @@ The only dependency is the pypi `requests` package.
 
 ### Initializing the client
 
-The package `draftable_compare_api` installs a single module, `draftable`, which exports a single class, `draftable.Client`.
+The package `draftable-compare-api` installs a single module, `draftable`, which exports a single class, `draftable.Client`.
 
 `Client(account_id: str, auth_token: str)` will construct an API client.
 At present, `Client` has a single property, `comparisons`, that yields a `ComparisonsEndpoint` that manages the comparisons for your API account.
@@ -200,7 +200,7 @@ Exceptions are raised by `create` in the following cases:
 
 ### Displaying comparisons
 
-Comparisons are displayed using a _viewer URL_. See the section on displaying comparisons in the [full API documentation](https://api.draftable.com) for details.
+Comparisons are displayed using a _viewer URL_. See the section on displaying comparisons in the [API documentation](https://api.draftable.com) for details.
 
 Viewer URLs are generated with the following methods:
 
@@ -264,4 +264,6 @@ This package officially supports the latest releases of Python 2 and 3.
 
 At the time of writing, `Python 2.7.13`, `Python 3.5.3`, and `Python 3.6.0` are known to be supported.
 
-Please report issues you encounter, and we'll work quickly to resolve them. Contact us at [support@draftable.com](mailto://support@draftable.com) if you need assistance.
+-----
+
+That's it! Please report issues you encounter, and we'll work quickly to resolve them. Contact us at [support@draftable.com](mailto://support@draftable.com) if you need assistance.

@@ -5,7 +5,7 @@ This is a thin Python 2/3 client for Draftable's `document comparison
 API <https://draftable.com/comparison-api>`__.
 It wraps the available endpoints, and handles authentication and
 signing for you. The source code is available on
-`Github <https://github.com/draftable/compare-api-client-python>`__.
+`Github <https://github.com/draftable/compare-api-python-client>`__.
 
 See the `full API documentation <https://api.draftable.com>`__ for an
 introduction to the API, usage notes, and other references.
@@ -16,7 +16,7 @@ Getting started
 -  Sign up for free at `api.draftable.com <https://api.draftable.com>`__
    to get your credentials.
 
--  ``pip install draftable_compare_api``
+-  ``pip install draftable-compare-api``
 
 -  Instantiate the client:
 
@@ -53,7 +53,7 @@ Design notes
 -  This library should be compatible with Python 2 and Python 3. Submit
    a Github issue if it doesn't work with your interpreter.
 -  This Python library always returns "aware" ``datetime`` objects, and
-   assumes that any naive ``datetime`` object give it is in *UTC* time.
+   assumes that any naive ``datetime`` objects given to it are in *UTC* time.
 -  The API is designed such that *requests should always succeed*, and
    *comparisons should always succeed* in production.
 
@@ -65,7 +65,7 @@ Design notes
 Initializing the client
 -----------------------
 
-The package ``draftable_compare_api`` installs a single module,
+The package ``draftable-compare-api`` installs a single module,
 ``draftable``, which exports a single class, ``draftable.Client``.
 
 ``Client(account_id: str, auth_token: str)`` will construct an API
@@ -85,35 +85,37 @@ Getting comparisons
 -------------------
 
 ``ComparisonsEndpoint`` provides ``all()`` and
-``get(identifier: str)``. - ``all()`` returns a ``list`` of *all your
-comparisons*, ordered from newest to oldest. This is a potentially
-expensive operation. - ``get(identifier: str)`` returns a single
-``Comparison`` object, or raises ``comparisons.NotFound`` if there isn't
-a comparison with that identifier.
+``get(identifier: str)``.
+
+- ``all()`` returns a ``list`` of *all your
+  comparisons*, ordered from newest to oldest. This is a potentially
+  expensive operation.
+- ``get(identifier: str)`` returns a single
+  ``Comparison`` object, or raises ``comparisons.NotFound`` if there isn't
+  a comparison with that identifier.
 
 Comparison objects
 ~~~~~~~~~~~~~~~~~~
 
-``Comparison`` objects have the following properties: - ``identifier``:
-a ``string`` giving the identifier. - ``left``, ``right``: objects
-giving information about each side, with properties: - ``file_type``:
-the file extension. - ``source_url`` *(optional)*: if the file was
-specified as a URL, this will be a string with the URL. Otherwise,
-``None``. - ``display_name`` *(optional)*: the display name, if one was
-given. Otherwise, ``None``. - ``public``: a ``bool`` giving whether the
-comparison is public, or requires authentication to view. -
-``creation_time``: a UTC ``datetime`` giving when the comparison was
-created. - ``expiry_time`` *(optional)*: if the comparison will expire,
-a UTC ``datetime`` giving the expiry time. Otherwise, ``None``. -
-``ready``: ``bool`` indicating whether the comparison is ready for
-display.
+``Comparison`` objects have the following properties:
 
-If a ``Comparison`` is ``ready`` (i.e. it has been processed and is
-ready for display), it will have the following additional properties: -
-``ready_time``: UTC ``datetime`` giving the time the comparison became
-ready. - ``failed``: ``bool`` indicating whether the comparison
-succeeded or failed. - ``error_message`` *(only present if ``failed``)*:
-a string providing the developer with the reason the comparison failed.
+- ``identifier``: a ``string`` giving the identifier.
+- ``left``, ``right``: objects giving information about each side, with properties:
+
+  - ``file_type``: the file extension.
+  - ``source_url`` *(optional)*: if the file was specified as a URL, this will be a string with the URL. Otherwise, ``None``.
+  - ``display_name`` *(optional)*: the display name, if one was given. Otherwise, ``None``.
+
+- ``public``: a ``bool`` giving whether the comparison is public, or requires authentication to view.
+- ``creation_time``: a UTC ``datetime`` giving when the comparison was created.
+- ``expiry_time`` *(optional)*: if the comparison will expire, a UTC ``datetime`` giving the expiry time. Otherwise, ``None``.
+- ``ready``: ``bool`` indicating whether the comparison is ready for display.
+
+If a ``Comparison`` is ``ready`` (i.e. it has been processed and is ready for display), it will have the following additional properties:
+
+- ``ready_time``: UTC ``datetime`` giving the time the comparison became ready.
+- ``failed``: ``bool`` indicating whether the comparison succeeded or failed.
+- ``error_message`` *(only present if ``failed``)*: a string providing the developer with the reason the comparison failed.
 
 Example usage
 ~~~~~~~~~~~~~
@@ -144,11 +146,9 @@ Example usage
 Deleting comparisons
 --------------------
 
-``ComparisonsEndpoint`` provides ``delete(identifier)``, which attempts
-to delete the comparison with that identifier.
+``ComparisonsEndpoint`` provides ``delete(identifier)``, which attempts to delete the comparison with that identifier.
 
-It has no return value, and raises ``comparisons.NotFound`` if there
-isn't a comparison with that identifier.
+It has no return value, and raises ``comparisons.NotFound`` if there isn't a comparison with that identifier.
 
 Example usage
 ~~~~~~~~~~~~~
@@ -166,77 +166,67 @@ Example usage
 Creating comparisons
 --------------------
 
-``ComparisonsEndpoint`` provides ``create(...)``, which returns a
-``Comparison`` object representing the newly created comparison.
+``ComparisonsEndpoint`` provides ``create(...)``, which returns a ``Comparison`` object representing the newly created comparison.
 
 Creation options
 ~~~~~~~~~~~~~~~~
 
 ``create`` accepts the following arguments:
 
--  ``left``, ``right``: objects describing the left and right files,
-   created using either ``comparisons.side_from_file`` or
-   ``comparisons.side_from_url`` (see below)
--  ``identifier`` *(optional)*: the identifier to use for the
-   comparison.
+-  ``left``, ``right``: objects describing the left and right files, created using either ``comparisons.side_from_file`` or ``comparisons.side_from_url`` (see below)
+-  ``identifier`` *(optional)*: the identifier to use for the comparison.
 
    -  If specified, the identifier can't clash with an existing
       comparison.
    -  If left unspecified, the API will automatically generate one for
       you.
 
--  ``public`` *(optional)*: whether the comparison is publicly
-   accessible.
+-  ``public`` *(optional)*: whether the comparison is publicly accessible.
 
-   -  Defaults to ``false``. If ``true``, then the comparison viewer can
-      be accessed by anyone, without authentication.
+   -  Defaults to ``false``. If ``true``, then the comparison viewer can be accessed by anyone, without authentication.
    -  See the full API documentation for details.
 
--  ``expires`` *(optional)*: a ``timedelta`` or a UTC ``datetime``,
-   specifying when the comparison will be automatically deleted.
+-  ``expires`` *(optional)*: a ``timedelta`` or a UTC ``datetime``, specifying when the comparison will be automatically deleted.
 
-   -  If given, must be a positive ``timedelta``, or a UTC ``datetime``
-      in the future.
+   -  If given, must be a positive ``timedelta``, or a UTC ``datetime`` in the future.
    -  Defaults to ``None``, meaning the comparison will never expire.
 
-The function ``comparisons.side_from_url`` accepts the following
-arguments: - ``url``: a fully qualified URL from which Draftable will
-download the file. - ``file_type``: the type of the file, specified by
-the file extension. - If you provide the incorrect file type, the
-comparison will fail. - ``display_name`` *(optional)*: a name for the
-file, to be shown in the comparison.
+The function ``comparisons.side_from_url`` accepts the following arguments:
 
-The function ``comparisons.side_from_file`` accepts the following
-arguments: - ``file``: a file object to be read and uploaded. Please
-ensure binary mode is used. - ``file_type``: as before. -
-``display_name`` *(optional)*: as before.
+- ``url``: a fully qualified URL from which Draftable will download the file.
+- ``file_type``: the type of the file, specified by the file extension.
+
+  - If you provide the incorrect file type, the comparison will fail.
+
+- ``display_name`` *(optional)*: a name for the file, to be shown in the comparison.
+
+The function ``comparisons.side_from_file`` accepts the following arguments:
+
+- ``file``: a file object to be read and uploaded. Ensure the file is opened for reading in *binary mode*.
+- ``file_type``: as before.
+- ``display_name`` *(optional)*: as before.
 
 Supported file types
 ~~~~~~~~~~~~~~~~~~~~
 
-The following file types are supported: - PDF: ``pdf`` - Word: ``docx``,
-``docm``, ``doc``, ``rtf`` - PowerPoint: ``pptx``, ``pptm``, ``ppt``
+The following file types are supported:
+
+- PDF: ``pdf``
+- Word: ``docx``, ``docm``, ``doc``, ``rtf``
+- PowerPoint: ``pptx``, ``pptm``, ``ppt``
 
 Exceptions
 ~~~~~~~~~~
 
-If you provide ``comparisons.side_from_file`` with an invalid
-``file_type``, or a ``file`` that isn't opened in *binary mode*, it will
-raise ``comparisons.InvalidArgument``.
+If you provide ``comparisons.side_from_file`` with an invalid ``file_type``, or a ``file`` that isn't opened in *binary mode*, it will raise ``comparisons.InvalidArgument``.
 
-If you provide ``comparisons.side_from_url`` with an invalid
-``file_type`` or a badly formatted ``url``, it will raise
-``comparisons.InvalidArgument``.
+If you provide ``comparisons.side_from_url`` with an invalid ``file_type`` or a badly formatted ``url``, it will raise ``comparisons.InvalidArgument``.
 
-Exceptions are raised by ``create`` in the following cases: - If a
-parameter is invalid (e.g. ``expires`` is set to a time in the past), it
-will raise ``comparisons.InvalidArgument``. - If ``identifier`` is
-already in use by another comparison,
-``comparisons.IdentifierNotUnique`` is raised. - If the API endpoint
-finds your request invalid for another reason, raises
-``comparisons.BadRequest``. - Please see the `full API
-documentation <https://api.draftable.com>`__ for the other constraints
-on the data.
+Exceptions are raised by ``create`` in the following cases:
+
+- If a parameter is invalid (e.g. ``expires`` is set to a time in the past), it will raise ``comparisons.InvalidArgument``.
+- If ``identifier`` is already in use by another comparison, ``comparisons.BadRequest`` is raised.
+- If the API endpoint finds your request invalid for another reason, raises ``comparisons.BadRequest``.
 
 Example usage
 ~~~~~~~~~~~~~
@@ -269,9 +259,7 @@ Example usage
 Displaying comparisons
 ----------------------
 
-Comparisons are displayed using a *viewer URL*. See the section on
-displaying comparisons in the `full API
-documentation <https://api.draftable.com>`__ for details.
+Comparisons are displayed using a *viewer URL*. See the section on displaying comparisons in the `API documentation <https://api.draftable.com>`__ for details.
 
 Viewer URLs are generated with the following methods:
 
@@ -356,7 +344,9 @@ This package officially supports the latest releases of Python 2 and 3.
 At the time of writing, ``Python 2.7.13``, ``Python 3.5.3``, and
 ``Python 3.6.0`` are known to be supported.
 
-Please report issues you encounter, and we'll work quickly to resolve
+-----
+
+That's it! Please report issues you encounter, and we'll work quickly to resolve
 them. Contact us at
 `support@draftable.com <mailto://support@draftable.com>`__ if you need
 assistance.
