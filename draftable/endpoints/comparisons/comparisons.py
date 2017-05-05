@@ -104,7 +104,7 @@ class ComparisonsEndpoint(object):
         # type: () -> List[Comparison]
         try:
             return list(map(comparison_from_response, self.__client.get(urls.comparisons_url)['results']))
-        except requests.exceptions.HTTPError as ex:
+        except requests.exceptions.RequestException as ex:
             exceptions.raise_for(ex)
 
     def get(self, identifier):
@@ -112,7 +112,7 @@ class ComparisonsEndpoint(object):
         identifier = validation.validate_identifier(identifier)
         try:
             return comparison_from_response(self.__client.get(urls.comparison_url_for(identifier)))
-        except requests.exceptions.HTTPError as ex:
+        except requests.exceptions.RequestException as ex:
             exceptions.raise_for(ex)
 
     def create(self, left, right, identifier=None, public=False, expires=None):
@@ -133,7 +133,7 @@ class ComparisonsEndpoint(object):
 
         try:
             return comparison_from_response(self.__client.post(urls.comparisons_url, data))
-        except requests.exceptions.HTTPError as ex:
+        except requests.exceptions.RequestException as ex:
             exceptions.raise_for(ex)
 
     def delete(self, identifier):
@@ -141,7 +141,7 @@ class ComparisonsEndpoint(object):
         identifier = validation.validate_identifier(identifier)
         try:
             self.__client.delete(urls.comparison_url_for(identifier))
-        except requests.exceptions.HTTPError as ex:
+        except requests.exceptions.RequestException as ex:
             exceptions.raise_for(ex)
 
     def public_viewer_url(self, identifier, wait=False):
