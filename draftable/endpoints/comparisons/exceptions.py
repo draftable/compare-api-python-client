@@ -22,7 +22,7 @@ def raise_for(ex):
             wrapper = BadRequest(ex.response.status_code, ex.response)
     else:
         # An error in communication has occurred.
-        wrapper = EndpointException("Unable to connect to the API.")
+        wrapper = EndpointException("Unable to connect to the API. This can occur when you attempt to upload files, but have invalid credentials - please check your credentials.")
 
     wrapper.__cause__ = ex
     raise wrapper

@@ -77,7 +77,12 @@ class RESTClient(object):
             response = requests.post(url, auth=self.__auth, json=data)
         else:
             data, files = _flatten_form_data(data)
-            response = requests.post(url, auth=self.__auth, data=data, files=files)
+            # Obscure issue:
+            # When the request is bad (e.g. invalid authentication), requests throws a weird ConnectionError rather than a HTTPError. Only in this multipart case!
+            # (It seems that when the request is bad, our API (via Django Rest Framework) may not wait for the full upload?)
+            # Asking for JSON seems to help? But it fails with frequency ~30% when you give invalid credentials.
+            # I don't have a good fix for this (yet!), so there's a note in the exception thrown in the weird case. ~ James (April 2017)
+            response = requests.post(url, auth=self.__auth, data=data, files=files, headers={'Accept': 'application/json'})
 
         response.raise_for_status()
         return response.json()
