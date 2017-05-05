@@ -53,9 +53,9 @@ def validate_file(file):
     # type: (Any) -> Any
     if not file:
         raise InvalidArgument('file', '`file` must be specified.')
-    if any(not hasattr(file, attr) for attr in ('readable', 'mode', 'read')):
+    if any(not hasattr(file, attr) for attr in ('mode', 'read')):
         raise InvalidArgument('file', "the given object doesn't appear to be a file - it's missing properties a file object should have.")
-    if not file.readable():
+    if hasattr(file, 'readable') and not file.readable():
         raise InvalidArgument('file', '`file.readable()` is False.')
     if 'b' not in file.mode:
         raise InvalidArgument('file', "the given file doesn't appear to be open in binary mode. It's mode is '{}'.".format(file.mode))
