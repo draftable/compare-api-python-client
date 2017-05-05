@@ -22,8 +22,8 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
 - Start creating comparisons:
     ```
     comparison = comparisons.create(
-        left = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/left.pdf', file_type='pdf'),
-        right = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/right.rtf', file_type='rtf'),
+        left = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf', file_type='rtf'),
+        right = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf', file_type='pdf'),
     )
     
     print("Comparison created:", comparison)
