@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='draftable_compare_api',
-      version='1.0.8',
+      version='1.0.9',
       description='Draftable Compare API - Python Client Library',
       long_description=open('README.rst').read(),
       keywords='compare documents draftable api pdf word powerpoint',
@@ -12,7 +12,7 @@ setup(name='draftable_compare_api',
       packages=find_packages(include=('draftable*',)),
       install_requires=['requests'],
       classifiers=[
-          "Development Status :: 4 - Beta",
+          "Development Status :: 5 - Production/Stable",
           "Intended Audience :: Developers",
           "License :: OSI Approved :: MIT License",
           "Programming Language :: Python :: 2",
