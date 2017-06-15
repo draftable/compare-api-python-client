@@ -147,7 +147,11 @@ class Comparison(object):
 
 def _parse_datetime(iso_format_string):
     # type: (str) -> datetime
-    return datetime.strptime(iso_format_string, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+    try:
+        return datetime.strptime(iso_format_string, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        # Sometimes the datetime can be missing the milliseconds, in which case the strptime call fails.
+        return datetime.strptime(iso_format_string, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
 
 
 def _comparison_side_from_response(side_data):
