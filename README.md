@@ -25,9 +25,11 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
         left = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf', file_type='rtf'),
         right = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf', file_type='pdf'),
     )
+
+    viewer_url = comparisons.signed_viewer_url(comparison.identifier, valid_until=timedelta(minutes=30))
     
     print("Comparison created:", comparison)
-    print("Viewer URL (expires in 30 min):", comparisons.signed_viewer_url(comparison.identifier)) 
+    print("Viewer URL (expires in 30 min):", viewer_url)
     ```
 -----
 
