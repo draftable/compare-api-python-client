@@ -18,6 +18,14 @@ Getting started
 
 -  ``pip install draftable-compare-api``
 
+- Use the commandline client:
+
+    ::
+
+        draftable --help
+
+  or alternatively use the python API (below)
+
 -  Instantiate the client:
 
    ::
@@ -152,6 +160,8 @@ Deleting comparisons
 
 It has no return value, and raises ``comparisons.NotFound`` if there isn't a comparison with that identifier.
 
+.. _example-usage-1:
+
 Example usage
 ~~~~~~~~~~~~~
 
@@ -230,6 +240,8 @@ Exceptions are raised by ``create`` in the following cases:
 - If ``identifier`` is already in use by another comparison, ``comparisons.BadRequest`` is raised.
 - If the API endpoint finds your request invalid for another reason, raises ``comparisons.BadRequest``.
 
+.. _example-usage-2:
+
 Example usage
 ~~~~~~~~~~~~~
 
@@ -287,6 +299,8 @@ Viewer URLs are generated with the following methods:
 
    -  Again, if ``wait`` is ``true``, the viewer will wait for a
       comparison with the given ``identifier`` to exist.
+
+.. _example-usage-3:
 
 Example usage
 ~~~~~~~~~~~~~

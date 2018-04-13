@@ -12,6 +12,12 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
 
 - `pip install draftable-compare-api`
 
+- Use the commandline client:
+    ```
+    draftable --help
+    ```
+  or alternatively use the python API (below)
+
 - Instantiate the client:
     ```
     import draftable
