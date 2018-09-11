@@ -62,6 +62,7 @@ class RESTClient(object):
         # type: (str, str) -> None
         self.__account_id = account_id
         self.__auth_token = auth_token
+        self.verify_ssl = True
 
     @property
     def account_id(self):
@@ -77,16 +78,16 @@ class RESTClient(object):
         r.headers['Authorization'] = 'Token {}'.format(self.__auth_token)
         return r
 
-    def get(self, url, parameters = None):
+    def get(self, url, parameters=None):
         # type: (Union[str, Url], Optional[dict]) -> Union[dict, list]
-        response = requests.get(url, auth=self.__auth, params=parameters)
+        response = requests.get(url, auth=self.__auth, params=parameters, verify=self.verify_ssl)
         response.raise_for_status()
         return response.json()
 
     def post(self, url, data):
         # type: (str, dict) -> Union[dict, list]
         if not _data_contains_file(data):
-            response = requests.post(url, auth=self.__auth, json=data)
+            response = requests.post(url, auth=self.__auth, json=data, verify=self.verify_ssl)
         else:
             data, files = _flatten_form_data(data)
             # Obscure issue:
@@ -94,12 +95,12 @@ class RESTClient(object):
             # (It seems that when the request is bad, our API (via Django Rest Framework) may not wait for the full upload?)
             # Asking for JSON seems to help? But it fails with frequency ~30% when you give invalid credentials.
             # I don't have a good fix for this (yet!), so there's a note in the exception thrown in the weird case. ~ James (April 2017)
-            response = requests.post(url, auth=self.__auth, data=data, files=files, headers={'Accept': 'application/json'})
+            response = requests.post(url, auth=self.__auth, data=data, files=files, headers={'Accept': 'application/json'}, verify=self.verify_ssl)
 
         response.raise_for_status()
         return response.json()
 
     def delete(self, url):
         # type: (str) -> None
-        response = requests.delete(url, auth=self.__auth)
+        response = requests.delete(url, auth=self.__auth, verify=self.verify_ssl)
         response.raise_for_status()

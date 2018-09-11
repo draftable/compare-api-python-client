@@ -138,7 +138,11 @@ def create_client(args):
     # Some sanity checks
     if not account or not token:
         raise SetupError("Both account and token must be set.")
-    return DraftableClient(account, token, base_url)
+
+    client = DraftableClient(account, token, base_url)
+    if args.unverified_ssl:
+        client.verify_ssl = False
+    return client
 
 
 def with_std_options(arg_parser):
@@ -148,6 +152,7 @@ def with_std_options(arg_parser):
     arg_parser.add_argument('-b', '--base-url', metavar='<BASE-URL>', action='store', help="Only for Enterprise self-hosted")
     arg_parser.add_argument('-e', '--env-name', metavar='<ENV-NAME>', action='store', help="Name from file $HOME/.draftable")
     arg_parser.add_argument('-t', '--token', metavar='<TOKEN>', action='store', help="For cloud, see https://api.draftable.com/account/credentials")
+    arg_parser.add_argument('-S', '--unverified-ssl', action='store_true', help="Don't verify SSL validity; useful for self-hosted self-signed SSL")
     return arg_parser
 
 

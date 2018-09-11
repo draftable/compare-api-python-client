@@ -35,6 +35,16 @@ class Client(object):
         # type: () -> str
         return str(self.__base_url)
 
+    @property
+    def verify_ssl(self):
+        # type: () -> bool
+        return str(self.__client.verify_ssl)
+
+    @verify_ssl.setter
+    def verify_ssl(self, v):
+        # type: (v) -> None
+        self.__client.verify_ssl = v
+
     def __repr__(self):
         # type: () -> str
         return 'Client(account_id={}, auth_token={}, base_url={})'.format(repr(self.account_id), repr(self.auth_token), repr(self.base_url))
