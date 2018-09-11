@@ -1,0 +1,4 @@
+# Exclude all test files from the distribution
+global-exclude test_*.py
+
+# recursive-exclude tests *

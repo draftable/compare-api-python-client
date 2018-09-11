@@ -1,16 +1,27 @@
 from setuptools import setup, find_packages
+import os
+import re
+
+base_path = os.path.dirname(__file__)
+
+# Get the version (borrowed from SQLAlchemy)
+with open(os.path.join(base_path, 'draftable', '__init__.py')) as fp:
+    version = re.compile(r".*__version__ = '(.*?)'",
+                         re.S).match(fp.read()).group(1)
 
 setup(name='draftable_compare_api',
-      version='1.0.9',
+      version=version,
       description='Draftable Compare API - Python Client Library',
-      long_description=open('README.rst').read(),
+      long_description=open('README.md').read(),
+      long_description_content_type='text/markdown',  # This is important. Ignore warning from distutils.
       keywords='compare documents draftable api pdf word powerpoint',
       url='https://github.com/draftable/compare-api-python-client',
       author='Draftable',
       author_email='hello@draftable.com',
       license='MIT',
-      packages=find_packages(include=('draftable*',)),
-      install_requires=['requests'],
+      packages=find_packages(include=['draftable*'], exclude=['test*py']),
+      install_requires=['requests', 'six'],
+      scripts=['scripts/dr-compare'],
       classifiers=[
           "Development Status :: 5 - Production/Stable",
           "Intended Audience :: Developers",

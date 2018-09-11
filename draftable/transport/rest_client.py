@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from ..utilities import Url
+
 try:
     # noinspection PyUnresolvedReferences
     from typing import Any, Union, Tuple, Optional
@@ -61,12 +63,22 @@ class RESTClient(object):
         self.__account_id = account_id
         self.__auth_token = auth_token
 
+    @property
+    def account_id(self):
+        # type: () -> str
+        return self.__account_id
+
+    @property
+    def auth_token(self):
+        # type: () -> str
+        return self.__auth_token
+
     def __auth(self, r):
         r.headers['Authorization'] = 'Token {}'.format(self.__auth_token)
         return r
 
     def get(self, url, parameters = None):
-        # type: (str, Optional[dict]) -> Union[dict, list]
+        # type: (Union[str, Url], Optional[dict]) -> Union[dict, list]
         response = requests.get(url, auth=self.__auth, params=parameters)
         response.raise_for_status()
         return response.json()

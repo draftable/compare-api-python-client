@@ -12,18 +12,19 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
 
 - `pip install draftable-compare-api`
 
-- Instantiate the client:
+- Instantiate a client:
     ```
     import draftable
-    client = draftable.Client(<your account ID>, <your auth token>)
-    comparisons = client.comparisons
+    account_id = "your-account-id"  # Replace with your actual credentials from:
+    auth_token = "your-auth-token"  # https://api.draftable.com/account/credentials
+    client = draftable.Client(account_id, auth_token)
     ```
 
-- Start creating comparisons:
+- Create a comparison:
     ```
     comparison = comparisons.create(
-        left = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf', file_type='rtf'),
-        right = comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf', file_type='pdf'),
+        'https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
+        'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
     )
 
     viewer_url = comparisons.signed_viewer_url(comparison.identifier, valid_until=timedelta(minutes=30))
@@ -31,12 +32,21 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
     print("Comparison created:", comparison)
     print("Viewer URL (expires in 30 min):", viewer_url)
     ```
+
+- The same, but with more control:
+
+    ```
+    comparison = comparisons.create(
+        draftable.make_side('https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf', file_type='rtf'),
+        draftable.make_side('https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf', file_type='pdf'),
+    )
+    ```
 -----
 
 # Client API
 
 ### Dependencies
-The only dependency is the pypi `requests` package.
+The API requires the pypi ``requests`` and ``six`` packages.
 
 ### Design notes
 
@@ -53,10 +63,17 @@ The package `draftable-compare-api` installs a single module, `draftable`, which
 `Client(account_id: str, auth_token: str)` will construct an API client.
 At present, `Client` has a single property, `comparisons`, that yields a `ComparisonsEndpoint` that manages the comparisons for your API account.
 
-So, we'll assume you set things up as follows:
+A client is set up as follows:
 
     import draftable
-    client = draftable.Client(<your account ID>, <your auth token>)
+    account_id = "your-account-id"  # Replace with your actual credentials from:
+    auth_token = "your-auth-token"  # https://api.draftable.com/account/credentials
+    client = draftable.Client(account_id, auth_token)
+
+To connect to a self-hosted Draftable installation, provide the base URL as the third parameter:
+
+    base_url = "https://draftable.example.com/api/v1"  # replace this with the correct URL
+    client = draftable.Client(account_id, auth_token, base_url)
     comparisons = client.comparisons
 
 
@@ -175,7 +192,8 @@ Exceptions are raised by `create` in the following cases:
 
 ###### Example usage
 
-    identifier = comparisons.generate_identifier(); # Generates a unique identifier.
+    import draftable
+    identifier = draftable.generate_identifier()  # Generates a unique identifier.
 
     with open('path/to/right/file.docx', 'rb) as right_file:
 
@@ -238,7 +256,7 @@ Then, in `compare.py`:
 
     from .tasks import upload_comparison_in_background
     
-    identifier = comparisons.generate_identifier()
+    identifier = draftable.generate_identifier()
     
     # Upload our request in the background with our Celery task.
     upload_comparison_in_background.delay(identifier, ...)
@@ -254,7 +272,7 @@ The comparison viewer will display a loading animation, waiting for the comparis
 
 ### Utility methods
 
-- `comparisons.generate_identifier()` generates a random unique identifier for you to use.
+- `draftable.generate_identifier()` generates a random unique identifier for you to use.
 
 -----
 

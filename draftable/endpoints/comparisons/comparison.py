@@ -7,7 +7,8 @@ except ImportError:
     pass
 
 from datetime import datetime
-from ...utilities import timezone
+
+from ...utilities.timestamp import parse_datetime
 
 
 class ComparisonSide(object):
@@ -145,15 +146,6 @@ class Comparison(object):
         )
 
 
-def _parse_datetime(iso_format_string):
-    # type: (str) -> datetime
-    try:
-        return datetime.strptime(iso_format_string, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
-    except ValueError:
-        # Sometimes the datetime can be missing the milliseconds, in which case the strptime call fails.
-        return datetime.strptime(iso_format_string, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-
-
 def _comparison_side_from_response(side_data):
     # type: (dict) -> ComparisonSide
     return ComparisonSide(file_type=str(side_data['file_type']), source_url=side_data.get('source_url'), display_name=side_data.get('display_name'))
@@ -162,13 +154,13 @@ def _comparison_side_from_response(side_data):
 def comparison_from_response(data):
     # type: (dict) -> Comparison
     return Comparison(
-        identifier = str(data['identifier']),
-        left = _comparison_side_from_response(data['left']),
-        right = _comparison_side_from_response(data['right']),
-        public = data.get('public', False),
-        creation_time = _parse_datetime(data['creation_time']),
-        expiry_time = _parse_datetime(data['expiry_time']) if 'expiry_time' in data else None,
-        ready = data.get('ready'),
-        failed = data.get('failed'),
-        error_message = data.get('error_message'),
+        identifier=str(data['identifier']),
+        left=_comparison_side_from_response(data['left']),
+        right=_comparison_side_from_response(data['right']),
+        public=data.get('public', False),
+        creation_time=parse_datetime(data['creation_time']),
+        expiry_time=parse_datetime(data['expiry_time']) if 'expiry_time' in data else None,
+        ready=data.get('ready'),
+        failed=data.get('failed'),
+        error_message=data.get('error_message'),
     )

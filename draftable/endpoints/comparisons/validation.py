@@ -6,10 +6,12 @@ try:
 except ImportError:
     pass
 
-from datetime import datetime, timedelta
-from ...utilities import timezone
 import requests
-from .exceptions import InvalidArgument
+
+from datetime import datetime, timedelta
+
+from ..exceptions import InvalidArgument
+from ...utilities import timezone
 
 
 _valid_identifier_characters = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._')
