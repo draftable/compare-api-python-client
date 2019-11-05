@@ -102,7 +102,9 @@ If a `Comparison` is `ready` (i.e. it has been processed and is ready for displa
 - `error_message` _(only present if `failed`)_: a string providing the developer with the reason the comparison failed.
 
 ###### Example usage
-
+    
+    from draftable.endpoints import exceptions
+    
     identifier = '<identifier>' 
     
     try:
@@ -121,8 +123,8 @@ If a `Comparison` is `ready` (i.e. it has been processed and is ready for displa
             if comparison.failed:
                 print("The comparison failed. Error message:\n" + comparison.error_message)
             
-    except comparisons.NotFound:
-        print("Comparison '{identifier}' doesn't exist.".format(identifier=identifier)
+    except exceptions.NotFound:
+        print("Comparison '{identifier}' doesn't exist.".format(identifier=identifier))
 
 
 ### Deleting comparisons
@@ -139,7 +141,7 @@ It has no return value, and raises `comparisons.NotFound` if there isn't a compa
     
     for comparison in oldest_comparisons:
         comparisons.delete(comparison.identifier)
-        print("Deleted comparison '{}'.".format(comparison.identifier)
+        print("Deleted comparison '{}'.".format(comparison.identifier))
 
 ### Creating comparisons
 
@@ -195,21 +197,19 @@ Exceptions are raised by `create` in the following cases:
     import draftable
     identifier = draftable.generate_identifier()  # Generates a unique identifier.
 
-    with open('path/to/right/file.docx', 'rb) as right_file:
-
-        comparison = comparisons.create(
+    comparison = comparisons.create(
+    
+        identifier = identifier,
         
-            identifier = identifier,
-            
-            left = comparisons.side_from_url('https://domain.com/left.pdf', file_type='pdf', display_name='document.pdf'),
-            right = comparisons.side_from_file(right_file, file_type='docx', display_name='document (revised).docx'),
-            
-            # 'public' is omitted, because we only want to let authenticated users view the comparison.
+        left = draftable.make_side('https://domain.com/left.pdf', file_type='pdf', display_name='document.pdf'),
+        right = draftable.make_side('path/to/right/file.docx', file_type='docx', display_name='document (revised).docx'),
+        
+        # 'public' is omitted, because we only want to let authenticated users view the comparison.
 
-            # Comparison expires 30 minutes into the future.
-            expires: timedelta(minutes=30),
+        # Comparison expires 30 minutes into the future.
+        expires = timedelta(minutes=30)
 
-        )
+    )
 
     print("Created comparison:", comparison);
 
@@ -229,7 +229,7 @@ Viewer URLs are generated with the following methods:
     - `wait` is `false` by default, meaning the viewer will show an error if no such comparison exists.
     - If `wait` is `true`, the viewer will wait for a comparison with the given `identifier` to exist (potentially displaying a loading animation forever).
 
-- `comparisons.signed_vewer_url(identifier: str, valid_until: datetime | timedelta = None, wait: bool = False)`
+- `comparisons.signed_viewer_url(identifier: str, valid_until: datetime | timedelta = None, wait: bool = False)`
     - Gets a signed viewer URL for a comparison with the given `identifier`. (The signature is an HMAC based on your credentials.)
     - `valid_until` gives when the URL will expire. It's specified as a UTC `datetime`, or a `timedelta`.
         - If `valid_until` is `None`, the URL defaults to expiring 30 minutes in the future (more than enough time to load the page). 
@@ -245,12 +245,11 @@ Somewhere in `tasks.py`:
     
     @app.task
     def upload_comparison_in_background(identifier, left_file_path, right_url):
-        with open(left_file_path, 'rb') as left_file:
-            comparisons.create(
-                identifier = identifier,
-                left = comparisons.side_from_file(left_file, ...),
-                right = comparisons.side_from_url(right_url, ...),
-            )
+        comparisons.create(
+            identifier = identifier,
+            left = draftable.make_side(left_file_path, ...),
+            right = draftable.make_side(right_url, ...),
+        )
 
 Then, in `compare.py`:
 
