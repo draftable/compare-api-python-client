@@ -18,10 +18,13 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
     account_id = "your-account-id"  # Replace with your actual credentials from:
     auth_token = "your-auth-token"  # https://api.draftable.com/account/credentials
     client = draftable.Client(account_id, auth_token)
+    comparisons = client.comparisons
     ```
 
 - Create a comparison:
     ```
+    from datetime import timedelta
+  
     comparison = comparisons.create(
         'https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
         'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
