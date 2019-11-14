@@ -52,15 +52,16 @@ class ComparisonSide(object):
 
 class Comparison(object):
     def __init__(self,
-                 identifier,     # type: str
-                 left,           # type: ComparisonSide
-                 right,          # type: ComparisonSide
-                 public,         # type: bool
+                 identifier,  # type: str
+                 left,  # type: ComparisonSide
+                 right,  # type: ComparisonSide
+                 public,  # type: bool
                  creation_time,  # type: datetime
-                 expiry_time,    # type: Optional[datetime]
-                 ready,          # type: bool
-                 failed,         # type: Optional[bool]
-                 error_message   # type: Optional[str]
+                 expiry_time,  # type: Optional[datetime]
+                 ready,  # type: bool
+                 ready_time,  # type: Optional[datetime]
+                 failed,  # type: Optional[bool]
+                 error_message  # type: Optional[str]
                  ):
         self.__identifier = identifier
         self.__left = left
@@ -69,6 +70,7 @@ class Comparison(object):
         self.__public = public
         self.__expiry_time = expiry_time
         self.__ready = ready
+        self.__ready_time = ready_time
         self.__failed = failed
         self.__error_message = error_message
 
@@ -108,6 +110,11 @@ class Comparison(object):
         return self.__ready
 
     @property
+    def ready_time(self):
+        # type: () -> Optional[datetime]
+        return self.__ready_time
+
+    @property
     def failed(self):
         # type: () -> Optional[bool]
         return self.__failed
@@ -119,7 +126,7 @@ class Comparison(object):
 
     def __str__(self):
         # type: () -> str
-        return 'Comparison(identifier={}, left={}, right={}, public={}, creation_time={}, expiry_time={}, ready={}, failed={}, error_message={})'.format(
+        return 'Comparison(identifier={}, left={}, right={}, public={}, creation_time={}, expiry_time={}, ready={}, ready_time={}, failed={}, error_message={})'.format(
             repr(self.identifier),
             str(self.left),
             str(self.right),
@@ -127,13 +134,14 @@ class Comparison(object):
             self.creation_time.strftime('%Y-%m-%dT%H:%M:%SZ'),
             self.expiry_time.strftime('%Y-%m-%dT%H:%M:%SZ') if self.expiry_time else None,
             str(self.ready),
+            self.ready_time.strftime('%Y-%m-%dT%H:%M:%SZ') if self.ready_time else None,
             str(self.failed),
             '<{} chars>'.format(len(self.error_message)) if self.error_message is not None else None,
         )
 
     def __repr__(self):
         # type: () -> str
-        return 'Comparison(identifier={}, left={}, right={}, public={}, creation_time={}, expiry_time={}, ready={}, failed={}, error_message={})'.format(
+        return 'Comparison(identifier={}, left={}, right={}, public={}, creation_time={}, expiry_time={}, ready={}, ready_time={}, failed={}, error_message={})'.format(
             repr(self.identifier),
             repr(self.left),
             repr(self.right),
@@ -141,6 +149,7 @@ class Comparison(object):
             repr(self.creation_time),
             repr(self.expiry_time),
             repr(self.ready),
+            repr(self.ready_time),
             repr(self.failed),
             repr(self.error_message),
         )
@@ -148,7 +157,8 @@ class Comparison(object):
 
 def _comparison_side_from_response(side_data):
     # type: (dict) -> ComparisonSide
-    return ComparisonSide(file_type=str(side_data['file_type']), source_url=side_data.get('source_url'), display_name=side_data.get('display_name'))
+    return ComparisonSide(file_type=str(side_data['file_type']), source_url=side_data.get('source_url'),
+                          display_name=side_data.get('display_name'))
 
 
 def comparison_from_response(data):
@@ -161,6 +171,7 @@ def comparison_from_response(data):
         creation_time=parse_datetime(data['creation_time']),
         expiry_time=parse_datetime(data['expiry_time']) if 'expiry_time' in data else None,
         ready=data.get('ready'),
+        ready_time=parse_datetime(data['ready_time']) if 'ready_time' in data else None,
         failed=data.get('failed'),
         error_message=data.get('error_message'),
     )
