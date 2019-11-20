@@ -1,17 +1,17 @@
 from __future__ import absolute_import
 
+from datetime import datetime, timedelta
+
+import requests
+
+from ...utilities import timezone
+from ..exceptions import InvalidArgument
+
 try:
     # noinspection PyUnresolvedReferences
     from typing import Union, Any
 except ImportError:
     pass
-
-import requests
-
-from datetime import datetime, timedelta
-
-from ..exceptions import InvalidArgument
-from ...utilities import timezone
 
 
 _valid_identifier_characters = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._')

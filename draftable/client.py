@@ -1,13 +1,13 @@
 from __future__ import absolute_import
 
+from .endpoints import ComparisonsEndpoint
+from .transport import RESTClient
+from .utilities.urls import Url
+
 try:
     from typing import Optional
 except ImportError:
     pass
-
-from .endpoints import ComparisonsEndpoint
-from .utilities.urls import Url
-from .transport import RESTClient
 
 
 PRODUCTION_CLOUD_BASE_URL = 'https://api.draftable.com/v1'

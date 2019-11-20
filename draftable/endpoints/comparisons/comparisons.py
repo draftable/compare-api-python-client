@@ -1,21 +1,21 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
+
+from datetime import datetime, timedelta
+
+from ...transport import RESTClient
+from ...utilities import Url, aware_datetime_to_timestamp
+from ..exceptions import handle_request_exception
+from . import signing
+from .comparison import Comparison, comparison_from_response
+from .sides import FileSide, URLSide, data_from_side
+from .validation import (validate_expires, validate_identifier,
+                         validate_valid_until)
 
 try:
     # noinspection PyUnresolvedReferences
     from typing import List, Union, Optional, Any
 except ImportError:
     pass
-
-from datetime import datetime, timedelta
-
-from . import signing
-from .validation import validate_identifier, validate_expires, validate_valid_until
-from .comparison import Comparison, comparison_from_response
-from .sides import URLSide, FileSide, data_from_side
-from ..exceptions import handle_request_exception
-from ...transport import RESTClient
-from ...utilities import aware_datetime_to_timestamp, Url
 
 
 class ComparisonsEndpoint(object):

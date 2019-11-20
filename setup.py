@@ -1,6 +1,7 @@
-from setuptools import setup, find_packages
 import os
 import re
+
+from setuptools import find_packages, setup
 
 base_path = os.path.dirname(__file__)
 
@@ -34,4 +35,3 @@ setup(name='draftable_compare_api',
           "Programming Language :: Python :: 3.5",
           "Programming Language :: Python :: 3.6",
       ])
-

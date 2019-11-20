@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from draftable import Client, PRODUCTION_CLOUD_BASE_URL
+from draftable import PRODUCTION_CLOUD_BASE_URL, Client
 from draftable.endpoints.comparisons import signing
 from draftable.endpoints.comparisons.validation import validate_valid_until
 from draftable.utilities import aware_datetime_to_timestamp
@@ -53,4 +53,3 @@ def test_comparison_viewer_url():
 
     assert c.comparisons.signed_viewer_url(identifier, when) == expected
     assert c.comparisons.signed_viewer_url(identifier, when, wait=True) == expected + '&wait'
-

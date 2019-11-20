@@ -1,5 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 from .urls import Url
 
@@ -40,4 +39,3 @@ def test_plus_equals():
 
     u = Url(base) / 'foo' / 'bar' + '?blob'
     assert str(u) == base + '/foo/bar?blob'
-

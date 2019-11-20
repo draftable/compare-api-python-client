@@ -1,20 +1,19 @@
 from __future__ import absolute_import
+
+from os.path import basename, isfile, splitext
+
 from six import string_types
-
-from os.path import splitext, basename, isfile
-
 # Note: `urllib3` is a required dependency of `requests`
 from urllib3.util import parse_url
 
+from ..exceptions import InvalidArgument, InvalidPath
+from . import validation
 
 try:
     # noinspection PyUnresolvedReferences
     from typing import List, Union, Optional, Any
 except ImportError:
     pass
-
-from . import validation
-from ..exceptions import InvalidArgument, InvalidPath
 
 
 class Side(object):

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from __future__ import print_function
 
 import argparse
@@ -6,14 +7,16 @@ import datetime
 import os
 import sys
 
+from draftable import Client as DraftableClient
+from draftable.endpoints.comparisons.sides import make_side
+from draftable.endpoints.exceptions import (InvalidArgument, InvalidPath,
+                                            NotFound)
+
 try:
     import configparser  # Python 3
 except ImportError:
     import ConfigParser as configparser  # Python 2
 
-from draftable import Client as DraftableClient
-from draftable.endpoints.exceptions import NotFound, InvalidPath, InvalidArgument
-from draftable.endpoints.comparisons.sides import make_side
 
 description = 'Create and manage Draftable.com comparisons on the command line'
 
@@ -26,64 +29,64 @@ COMMANDS:
 CONFIGURATION:
 
   Both account_id and auth_token must be set. They can be provided several ways:
-  
+
   1. Environment variables (DR_ACCOUNT, DR_TOKEN)
   2. A named configuration group in file `~/.draftable`, for example:
-  
+
       [cloud-testing]  # replace the following with your own credentials
       account: F91n2k-test
       token: d9c3b60dcb83a7bb87efc5c8e72a0599
-  
-     To use the above, either specify `-e cloud-testing` as flags to this script, 
+
+     To use the above, either specify `-e cloud-testing` as flags to this script,
      or `DR_ENV=cloud-testing` as an environment variable.
-  
+
   3. As command-line flags, for example:
-  
+
        "-a <account> -t <token>"
      or
        "--account <account> --token <token>".
-  
+
   The `base_url` is needed only for self-hosted or development purposes. It can be
   set from environment variable (DR_BASE_URL), preset in the configuration file,
   or a command-line flag (`-b <url>`).
-  
+
   The `base_url` must always end with '/api' with no trailing slash.
-  
+
 EXAMPLES:
 
   The following assume credentials are in the environment.
-  
+
   Create a comparison:
-  
+
     $ dr-compare create ./left.pdf ./right.pdf
 
   Create a public comparison that expires in 15 minutes:
-  
+
     $ dr-compare create -p -m 15 ./left.pdf ./right.pdf
 
   Provide the file types when not clear from the file extension:
-  
+
     $ dr-compare create --left-type=pdf --right-type=rtf ./left-file ./right-file
 
   List all comparisons:
-  
+
     $ dr-compare list
     $ dr-compare all
 
   Get a specific comparison:
-  
+
     $ dr-compare get PCiIEXzW
 
   Get public URL:
-  
+
     $ dr-compare url PCiIEXzW
-    
+
   Get signed URL with 30 minute expiry:
-  
+
     $ dr-compare signed PCiIEXzW
-    
+
   Get signed URL with 75 minute expiry:
-  
+
     $ dr-compare signed PCiIEXzW -m 75
     $ dr-compare signed PCiIEXzW --expiry-mins 75
 """

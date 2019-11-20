@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import requests
+
 from ..utilities import Url
 
 try:
@@ -7,8 +9,6 @@ try:
     from typing import Any, Union, Tuple, Optional
 except ImportError:
     pass
-
-import requests
 
 
 def _is_file(obj):

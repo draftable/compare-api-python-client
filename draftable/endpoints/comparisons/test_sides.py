@@ -1,10 +1,12 @@
 import os
-from os.path import join, dirname, isfile, relpath
+from os.path import dirname, isfile, join, relpath
 
 import pytest
 
 from draftable.endpoints.exceptions import InvalidPath
-from .sides import data_from_side, make_side, Side, FileSide, URLSide, guess_file_type_from_path
+
+from .sides import (FileSide, Side, URLSide, data_from_side,
+                    guess_file_type_from_path, make_side)
 
 root_dir = dirname(dirname(dirname(dirname(__file__))))  # better with pathlib in Python 3.4+
 

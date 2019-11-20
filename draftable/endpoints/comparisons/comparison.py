@@ -1,14 +1,14 @@
 from __future__ import absolute_import
 
+from datetime import datetime
+
+from ...utilities.timestamp import parse_datetime
+
 try:
     # noinspection PyUnresolvedReferences
     from typing import Optional
 except ImportError:
     pass
-
-from datetime import datetime
-
-from ...utilities.timestamp import parse_datetime
 
 
 class ComparisonSide(object):
