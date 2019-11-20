@@ -3,6 +3,6 @@
         "DavidAnson.vscode-markdownlint",
         "dotjoshjohnson.xml",
         "EditorConfig.editorconfig",
-        "ms-python.python"
+        "timonwong.shellcheck"
     ]
 }
