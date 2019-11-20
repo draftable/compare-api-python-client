@@ -1,7 +1,28 @@
 {
+    // File paths to language mappings
+    "files.associations": {
+        // Python linting configs
+        ".flake8": "ini",
+        ".isort.cfg": "ini",
+        ".pylintrc": "ini"
+    },
+
     // Important to disable for EditorConfig to apply correctly
     // See: https://github.com/editorconfig/editorconfig-vscode/issues/153
     "files.trimTrailingWhitespace": false,
+
+    // Enable Python linters
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": true,
+
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            // Organise imports with isort
+            "source.organizeImports": true
+        },
+
+        "editor.rulers": [119]
+    },
 
     "[shellscript]": {
         "editor.rulers": [79]
