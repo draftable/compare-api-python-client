@@ -1,0 +1,2 @@
+# Bash script files should always be LF terminated
+*.sh                            text        eol=lf
