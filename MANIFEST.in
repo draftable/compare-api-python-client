@@ -1,4 +1,9 @@
-# Exclude all test files from the distribution
-global-exclude test_*.py
+# Explicitly include some important non-package files
+include LICENSE
+include pyproject.toml
+include README.md
 
-# recursive-exclude tests *
+# Exclude all test files from the source distribution
+#
+# Unfortunately, this doesn't work for the wheel distribution.
+global-exclude test_*.py
