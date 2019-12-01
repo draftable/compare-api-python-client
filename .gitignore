@@ -23,7 +23,7 @@ temp/
 *.log
 logs/
 
-# Packaging
+# Build
 *.egg
 *.egg-info/
 build/
