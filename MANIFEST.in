@@ -1,9 +1,19 @@
-# Explicitly include some important non-package files
-include LICENSE
-include pyproject.toml
-include README.md
+# Including files in source distributions with MANIFEST.in
+# https://packaging.python.org/guides/using-manifest-in/
+
+# Exclude development files
+exclude .* tox.ini
+recursive-exclude .idea *
+recursive-exclude .vscode *
 
 # Exclude all test files from the source distribution
 #
 # Unfortunately, this doesn't work for the wheel distribution.
 global-exclude test_*.py
+prune example
+prune test-files
+
+# Explicitly include some important non-Python files
+include LICENSE
+include pyproject.toml
+include README.md
