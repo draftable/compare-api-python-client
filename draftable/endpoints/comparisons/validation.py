@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from datetime import datetime, timedelta
+from six import string_types
 
 import requests
 
@@ -32,7 +33,7 @@ def validate_identifier(identifier):
     # type: (str) -> str
     if not identifier:
         raise InvalidArgument('identifier', '`identifier` cannot be empty.')
-    if not isinstance(identifier, str):
+    if not isinstance(identifier, string_types):
         raise InvalidArgument('identifier', '`identifier` must be a string (of type `str`).')
     if not _min_identifier_length <= len(identifier) <= _max_identifier_length:
         raise InvalidArgument('identifier', '`identifier` must be between {min} and {max} characters long.'.format(min=_min_identifier_length, max=_max_identifier_length))
@@ -68,7 +69,7 @@ def validate_url(url):
     # type: (str) -> str
     if not url:
         raise InvalidArgument('url', '`url` cannot be empty.')
-    if not isinstance(url, str):
+    if not isinstance(url, string_types):
         raise InvalidArgument('url', '`url` must be a string (of type `str`).')
     if len(url) > 2048:
         raise InvalidArgument('url', "`url` must be no longer than 2048 characters.")
