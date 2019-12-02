@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from os.path import basename, isfile, splitext
+from os.path import basename, isfile, join, splitext
 
 from six import string_types
 # Note: `urllib3` is a required dependency of `requests`
@@ -84,7 +84,7 @@ def data_from_side(side_name, side):
         data['source_url'] = side.url
     else:
         assert isinstance(side, FileSide)
-        data['file'] = ("{}.{}".format(side_name, side.file_type), side.file, 'application/octet-stream')
+        data['file'] = ("{}.{}".format(side_name, side.file_type), side.file, join('application', 'octet-stream'))
     return data
 
 
@@ -129,7 +129,7 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
         display_name = display_name or basename(url.path)
         return URLSide(url.url, file_type, display_name)
 
-    elif url_or_file_path.startswith("file:/"):
+    elif url_or_file_path.startswith("file:"):
         url = parse_url(url_or_file_path)
         if url.host:
             raise InvalidPath("File url '{}' must be local only, and not contain host name ('{}')".format(

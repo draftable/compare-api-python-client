@@ -35,15 +35,14 @@ def test_file_code_guess():
     assert guess_file_type_from_path('foo.PPT') == 'ppt'
 
     # stuff in the path
-    assert guess_file_type_from_path('foo/bar.pdf') == 'pdf'
-    assert guess_file_type_from_path('./foo/bar.pdf') == 'pdf'
-    assert guess_file_type_from_path('../foo/bar.pdf') == 'pdf'
-    assert guess_file_type_from_path('/foo/bar.pdf') == 'pdf'
+    assert guess_file_type_from_path(join('foo', 'bar.pdf')) == 'pdf'
+    assert guess_file_type_from_path(join('.', 'foo', 'bar.pdf')) == 'pdf'
+    assert guess_file_type_from_path(join('..', 'foo', 'bar.pdf')) == 'pdf'
 
 
 def test_side_file_path():
     p = _get_test_file_path("hello.pdf")
-    assert p == "test-files/hello.pdf"
+    assert p == join("test-files", "hello.pdf")
     assert os.path.isfile(p)
 
     r = make_side(p)
@@ -59,8 +58,8 @@ def test_side_file_path():
 
 
 def test_side_bad_file_url():
-    p = "file://server-name/" + _get_test_file_path("hello.pdf")
-    assert p == "file://server-name/test-files/hello.pdf"
+    p = join("file:", "server-name", _get_test_file_path("hello.pdf"))
+    assert p == join("file:", "server-name", "test-files", "hello.pdf")
 
     with pytest.raises(InvalidPath):
         make_side(p)
@@ -68,7 +67,7 @@ def test_side_bad_file_url():
 
 def test_side_file_url():
     file_path = _get_test_file_path("hello.pdf")
-    p = "file://" + root_dir + '/' + file_path
+    p = join("file:", root_dir, file_path)
 
     r = make_side(p)
     assert isinstance(r, Side)
@@ -83,7 +82,7 @@ def test_side_file_url():
     a, b, c = r['file']
     assert a == "left.pdf"
     assert b is not None  # an open File object
-    assert c == 'application/octet-stream'
+    assert c == join('application', 'octet-stream')
 
 
 def test_side_http_url():
