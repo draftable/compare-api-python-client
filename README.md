@@ -75,7 +75,8 @@ auth_token = "your-auth-token"  # https://api.draftable.com/account/credentials
 client = draftable.Client(account_id, auth_token)
 ```
 
-To connect to a self-hosted Draftable installation, provide the base URL as the third parameter:
+To connect to a self-hosted Draftable installation or a regional Draftable Online endpoint, 
+provide the base URL as the third parameter:
 
 ```python
 base_url = "https://draftable.example.com/api/v1"  # replace this with the correct URL
