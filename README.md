@@ -300,4 +300,10 @@ This package officially supports the latest releases of Python 2 and 3.
 
 At the time of writing, `Python 2.7.13`, `Python 3.5.3`, and `Python 3.6.0` are known to be supported.
 
+### Certificate validation
+
+If you are using a self-hosted Draftable installation you may encounter problems with using this library if your 
+server is running with a self-signed certificate. For development purposes, we recommend you disable certificate validation
+by setting the environment variable `CURL_CA_BUNDLE = ''`.  
+
 That's it! Please report issues you encounter, and we'll work quickly to resolve them. Contact us at [support@draftable.com](mailto://support@draftable.com) if you need assistance.
