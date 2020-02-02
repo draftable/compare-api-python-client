@@ -75,8 +75,7 @@ auth_token = "your-auth-token"  # https://api.draftable.com/account/credentials
 client = draftable.Client(account_id, auth_token)
 ```
 
-To connect to a self-hosted Draftable installation or a regional Draftable Online endpoint, 
-provide the base URL as the third parameter:
+To connect to a self-hosted Draftable installation or a regional Draftable Online endpoint, provide the base URL as the third parameter:
 
 ```python
 base_url = "https://draftable.example.com/api/v1"  # replace this with the correct URL
@@ -302,8 +301,6 @@ At the time of writing, `Python 2.7.13`, `Python 3.5.3`, and `Python 3.6.0` are 
 
 ### Certificate validation
 
-If you are using a self-hosted Draftable installation you may encounter problems with using this library if your 
-server is running with a self-signed certificate. For development purposes, we recommend you disable certificate validation
-by setting the environment variable `CURL_CA_BUNDLE = ''`.  
+If you are using a self-hosted Draftable installation you may encounter problems with using this library if your server is running with a self-signed certificate. For development purposes, we recommend you disable certificate validation by setting the environment variable `CURL_CA_BUNDLE = ''`.
 
 That's it! Please report issues you encounter, and we'll work quickly to resolve them. Contact us at [support@draftable.com](mailto://support@draftable.com) if you need assistance.
