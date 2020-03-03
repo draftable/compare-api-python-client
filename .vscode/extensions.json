@@ -3,6 +3,7 @@
         "davidanson.vscode-markdownlint",
         "editorconfig.editorconfig",
         "ms-python.python",
-        "timonwong.shellcheck"
+        "timonwong.shellcheck",
+        "yzhang.markdown-all-in-one"
     ]
 }

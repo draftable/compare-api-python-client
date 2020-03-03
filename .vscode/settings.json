@@ -11,6 +11,10 @@
     // See: https://github.com/editorconfig/editorconfig-vscode/issues/153
     "files.trimTrailingWhitespace": false,
 
+    // Markdown table of contents generation
+    "markdown.extension.toc.levels": "2..3",
+    "markdown.extension.toc.githubCompatibility": true,
+
     // Enable Python linters
     "python.linting.pylintEnabled": true,
     "python.linting.flake8Enabled": true,
