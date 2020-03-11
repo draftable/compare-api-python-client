@@ -1,5 +1,4 @@
-import os
-from os.path import dirname, isfile, join, relpath
+from os.path import dirname, isfile, join
 
 import pytest
 
@@ -43,7 +42,7 @@ def test_file_code_guess():
 def test_side_file_path():
     p = _get_test_file_path("hello.pdf")
     assert p == join("test-files", "hello.pdf")
-    assert os.path.isfile(p)
+    assert isfile(p)
 
     r = make_side(p)
     assert isinstance(r, Side)

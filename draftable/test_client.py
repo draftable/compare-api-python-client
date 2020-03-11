@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from draftable import PRODUCTION_CLOUD_BASE_URL, Client
 from draftable.endpoints.comparisons import signing

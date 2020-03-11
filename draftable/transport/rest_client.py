@@ -26,10 +26,11 @@ def _data_contains_file(data):
     # type: (Any) -> bool
     if isinstance(data, (list, tuple)):
         return any(map(_data_contains_file, data))
-    elif isinstance(data, dict):
+
+    if isinstance(data, dict):
         return any(map(_data_contains_file, data.values()))
-    else:
-        return _is_file(data)
+
+    return _is_file(data)
 
 
 # Flattens our nested form data, e.g. "right: {file_type: ...}" becomes "right.file_type = ...".

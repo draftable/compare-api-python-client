@@ -6,7 +6,7 @@ from six import string_types
 # Note: `urllib3` is a required dependency of `requests`
 from urllib3.util import parse_url
 
-from ..exceptions import InvalidArgument, InvalidPath
+from ..exceptions import InvalidPath
 from . import validation
 
 try:
@@ -17,7 +17,7 @@ except ImportError:
 
 
 class Side(object):
-    def __init__(self, file_type, display_name = None):
+    def __init__(self, file_type, display_name=None):
         # type: (str, Optional[str]) -> None
         self.__file_type = validation.validate_file_type(file_type)
         self.__display_name = None if display_name is None else str(display_name)
@@ -35,7 +35,7 @@ class Side(object):
 
 class FileSide(Side):
     # noinspection PyShadowingBuiltins
-    def __init__(self, file, file_type, display_name = None):
+    def __init__(self, file, file_type, display_name=None):
         # type: (Any, str, Optional[str]) -> None
         self.__file = validation.validate_file(file)
         super(FileSide, self).__init__(file_type=file_type, display_name=display_name)
@@ -50,7 +50,7 @@ class FileSide(Side):
 
 
 class URLSide(Side):
-    def __init__(self, url, file_type, display_name = None):
+    def __init__(self, url, file_type, display_name=None):
         # type: (str, str, Optional[str]) -> None
         self.__url = validation.validate_url(url)
         super(URLSide, self).__init__(file_type=file_type, display_name=display_name)

@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 
 from datetime import datetime, timedelta
-from six import string_types
 
 import requests
+from six import string_types
 
 from ...utilities import timezone
 from ..exceptions import InvalidArgument
@@ -74,7 +74,7 @@ def validate_url(url):
     if len(url) > 2048:
         raise InvalidArgument('url', "`url` must be no longer than 2048 characters.")
     try:
-        scheme, netloc, path, params, query, fragment = requests.utils.urlparse(url)
+        scheme, netloc, _, _, _, _ = requests.utils.urlparse(url)
     except Exception as ex:
         wrapper = InvalidArgument('url', 'the value could not be parsed as a URL.')
         wrapper.__cause__ = ex
@@ -92,19 +92,19 @@ def _validate_datetime_or_timedelta(parameter_name, value):
         if value.total_seconds() <= 0:
             raise InvalidArgument(parameter_name, 'if a timedelta, `{parameter}` must be positive, but it was zero or negative.'.format(parameter=parameter_name))
         return datetime.now(tz=timezone.utc) + value
-    else:
-        if not isinstance(value, datetime):
-            raise InvalidArgument(parameter_name, '`{parameter}` must be a datetime or a timedelta.'.format(parameter=parameter_name))
-        # Make the datetime aware, with UTC as its timezone. If it was naive, we assume it was in UTC time.
-        if value.utcoffset() is None:
-            value = value.replace(tzinfo=timezone.utc)
-        else:
-            value = value.astimezone(timezone.utc)
-        # Now we can safely check if it's in the future.
-        if value < datetime.now(tz=timezone.utc):
-            raise InvalidArgument(parameter_name, '`{parameter}` must be in the future.'.format(parameter=parameter_name))
 
-        return value
+    if not isinstance(value, datetime):
+        raise InvalidArgument(parameter_name, '`{parameter}` must be a datetime or a timedelta.'.format(parameter=parameter_name))
+    # Make the datetime aware, with UTC as its timezone. If it was naive, we assume it was in UTC time.
+    if value.utcoffset() is None:
+        value = value.replace(tzinfo=timezone.utc)
+    else:
+        value = value.astimezone(timezone.utc)
+    # Now we can safely check if it's in the future.
+    if value < datetime.now(tz=timezone.utc):
+        raise InvalidArgument(parameter_name, '`{parameter}` must be in the future.'.format(parameter=parameter_name))
+
+    return value
 
 
 def validate_expires(expires):
