@@ -17,3 +17,4 @@ prune test-files
 include LICENSE
 include pyproject.toml
 include README.md
+include VERSION
