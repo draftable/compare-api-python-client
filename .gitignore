@@ -48,8 +48,10 @@ venv/
 .ropeproject/
 
 # Testing
+.coverage
 .pytest_cache/
 .tox/
+htmlcov/
 
 # Vim
 .netrwhist

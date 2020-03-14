@@ -1,0 +1,14 @@
+[run]
+# Packages or directories to measure
+source = draftable
+
+# Exclude test files
+omit =
+   */test_*.py
+
+# Measure branch coverage
+branch = True
+
+[report]
+# Show line numbers of statements missing coverage
+show_missing = True
