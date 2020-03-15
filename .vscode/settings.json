@@ -33,9 +33,5 @@
         },
 
         "editor.rulers": [119]
-    },
-
-    "[shellscript]": {
-        "editor.rulers": [79]
     }
 }
