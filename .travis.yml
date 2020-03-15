@@ -4,11 +4,7 @@ os: linux
 dist: xenial
 arch: amd64
 
-notifications:
-  email: false
-
-cache:
-  pip: true
+cache: pip
 
 env:
   global:
@@ -37,3 +33,6 @@ install:
 
 script:
   - tox
+
+notifications:
+  email: false
