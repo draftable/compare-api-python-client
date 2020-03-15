@@ -357,7 +357,9 @@ def make_usage(template, command_map, alias_map):
     return template.format(commands='\n'.join(command_info_parts))
 
 
-def dr_compare_main(system_args):
+def dr_compare_main(system_args=None):
+    if system_args is None:
+        system_args = sys.argv
 
     arg_parser = argparse.ArgumentParser(description=description, usage=make_usage(usage_template, commands, aliases))
     arg_parser.add_argument('command', help='Command to run')
