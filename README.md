@@ -73,7 +73,7 @@ API reference
 
 ### Initializing the client
 
-The package provides a module, `draftable`, which exports a class to create a `Client` for your API account: `Client(account_id: str, auth_token: str)`
+The package provides a module, `draftable`, which exports a class to create a `Client` for your API account.
 
 `Client` provides a `comparisons` property which yields a `ComparisonsEndpoint` to manage the comparisons for your API account.
 
@@ -114,7 +114,7 @@ For API Self-hosted you may need to [suppress TLS certificate validation](#self-
   - `file_type: str`  
     The file extension
   - `source_url: str` _(optional)_  
-    The URL for the file if the original request specified by URL, otherwise `None`
+    The URL for the file if the original request was specified by URL, otherwise `None`
   - `display_name: str` _(optional)_  
     The display name for the file if given in the original request, otherwise `None`
 - `public: bool`  
