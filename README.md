@@ -1,9 +1,10 @@
 Draftable Compare API - Python Client Library
 =============================================
 
-[![pypi ver](https://img.shields.io/pypi/pyversions/draftable-compare-api)](https://pypi.org/project/draftable-compare-api/)
-[![pypi dlm](https://img.shields.io/pypi/dm/draftable-compare-api)](https://pypi.org/project/draftable-compare-api/)
-[![Build Status](https://travis-ci.com/draftable/compare-api-python-client.svg?branch=stable)](https://travis-ci.com/draftable/compare-api-python-client)
+[![pypi pyver](https://img.shields.io/pypi/pyversions/draftable-compare-api)](https://pypi.org/project/draftable-compare-api/)
+[![pypi ver](https://img.shields.io/pypi/v/draftable-compare-api)](https://pypi.org/project/draftable-compare-api/)
+[![pypi dl](https://img.shields.io/pypi/dm/draftable-compare-api)](https://pypi.org/project/draftable-compare-api/)
+[![travis](https://travis-ci.com/draftable/compare-api-python-client.svg?branch=stable)](https://travis-ci.com/draftable/compare-api-python-client)
 [![codecov](https://codecov.io/gh/draftable/compare-api-python-client/branch/stable/graph/badge.svg)](https://codecov.io/gh/draftable/compare-api-python-client)
 [![license](https://img.shields.io/github/license/draftable/compare-api-python-client)](https://choosealicense.com/licenses/mit/)
 
