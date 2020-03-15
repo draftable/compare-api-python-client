@@ -4,6 +4,9 @@ os: linux
 dist: xenial
 arch: amd64
 
+notifications:
+  email: false
+
 cache:
   pip: true
 
