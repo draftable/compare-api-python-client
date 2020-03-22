@@ -311,9 +311,11 @@ Other information
 
 ### Self-signed certificates
 
-If connecting to an API Self-hosted endpoint which is using a self-signed certificate (the default) you will need to suppress certificate validation. This can be done by setting the `CURL_CA_BUNDLE` environment variable to an empty string.
+If connecting to an API Self-hosted endpoint which is using a self-signed certificate (the default) you will need to suppress certificate validation. This can be done by setting the `CURL_CA_BUNDLE` environment variable to an empty string. On Windows, this must be done from within the Python interpreter due to platform limitations.
 
-See the below examples for different operating systems and shell environments. Note that all examples only set the variable for the running shell and it will not persist. To persist the setting consult the documentation for your shell environment. This should be done with caution as this setting suppresses certificate validation for **all** connections made by the Python runtime!
+See the below examples for different operating systems and shell environments. Note that all examples only set the variable for the running shell or Python interpreter and it will not persist. To persist the setting consult the documentation for your shell environment. This should be done with caution as this setting suppresses certificate validation for **all** connections made by the Python runtime!
+
+#### Non-Windows environments (inc. WSL)
 
 (ba)sh (Linux, macOS, WSL)
 
@@ -327,10 +329,18 @@ PowerShell:
 $env:CURL_CA_BUNDLE=0
 ```
 
-Command Prompt (Windows):
+#### Windows environments
 
-```cmd
-SET CURL_CA_BUNDLE=0
+Setting an environment variable to the empty string is not valid in Windows and is treated as equivalent to removing any existing environment variable of the same name. As such, suppressing certificate validation requires an alternate approach. The most straightforward is to set the environment variable from within Python, instead of before launch.
+
+```python
+import os
+
+os.environ['CURL_CA_BUNDLE'] = ''
 ```
 
-Setting this environment variable in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible.
+If your code spawns Python subprocesses they must separately modify their environment as the change will not be inherited as you'd normally expect.
+
+#### All environments
+
+Disabling certificate validation in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible.
