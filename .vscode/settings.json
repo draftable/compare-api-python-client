@@ -22,6 +22,9 @@
     "markdown.extension.toc.levels": "2..3",
     "markdown.extension.toc.githubCompatibility": true,
 
+    // Default venv path
+    "python.pythonPath": "${workspaceFolder}/venv",
+
     // Enable Python linters
     "python.linting.pylintEnabled": true,
     "python.linting.flake8Enabled": true,
