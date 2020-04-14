@@ -20,7 +20,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - [Deleting comparisons](#deleting-comparisons)
   - [Creating comparisons](#creating-comparisons)
   - [Displaying comparisons](#displaying-comparisons)
-  - [Utility methods](#utility-methods)
+  - [Utility functions](#utility-functions)
 - [Other information](#other-information)
   - [Self-signed certificates](#self-signed-certificates)
 
@@ -54,7 +54,7 @@ comparisons = client.comparisons
 ```python
 comparison = comparisons.create(
     'https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
-    'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
+    'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf'
 )
 print("Comparison created: {}".format(comparison))
 
@@ -148,7 +148,7 @@ try:
     print("Comparison '{identifier}' ({visibility}) is {status}.".format(
         identifier = identifier,
         visibility = 'public' if comparison.public else 'private',
-        status = 'ready' if comparison.ready else 'not ready',
+        status = 'ready' if comparison.ready else 'not ready'
     ))
 
     if comparison.ready:
@@ -227,7 +227,7 @@ These methods accept the following arguments:
   - PDF: `pdf`
   - Word: `docx`, `docm`, `doc`, `rtf`
   - PowerPoint: `pptx`, `pptm`, `ppt`
-- `displayName` _(optional)_  
+- `display_name` _(optional)_  
   The name of the file shown in the comparison viewer
 
 The following exceptions may be raised:
@@ -270,7 +270,7 @@ print("Created comparison: {}".format(comparison))
 - `signed_viewer_url(identifier: str, valid_until: datetime | timedelta = None, wait: bool = False)`  
   Generates a signed viewer URL for the specified comparison
 
-Both functions use the following common parameters:
+Both methods use the following common parameters:
 
 - `identifier`  
   Identifier of the comparison for which to generate a _viewer URL_
@@ -280,7 +280,7 @@ Both functions use the following common parameters:
   - If `True`, the viewer will wait for a comparison with the provided `identifier` to exist  
     Note this will result in a perpetual loading animation if the `identifier` is never created
 
-The `signedViewerURL` also supports the following parameters:
+The `signed_viewer_url` method also supports the following parameters:
 
 - `valid_until` _(optional)_  
   Time at which the URL will expire (no longer load)
@@ -297,11 +297,11 @@ identifier = '<identifier>'
 
 # Retrieve a signed viewer URL which is valid for 1 hour. The viewer will wait
 # for the comparison to exist in the event processing has not yet completed.
-viewer_url = comparisons.signed_viewer_url(identifier, timedelta(hours=1), True)
+viewer_url = comparisons.signed_viewer_url(identifier, timedelta(hours=1), wait=True)
 print("Viewer URL (expires in 1 hour): {}".format(viewer_url))
 ```
 
-### Utility methods
+### Utility functions
 
 - `generate_identifier()`  
   Generates a random unique comparison identifier
