@@ -45,7 +45,7 @@ def raise_for(ex):
                 wrapper = NotFound(404, ex.response.json())
             else:
                 wrapper = BadRequest(ex.response.status_code, ex.response.json())
-        except:
+        except Exception:
             # No JSON body? This shouldn't happen, but we'll rethrow anyway.
             wrapper = BadRequest(ex.response.status_code, ex.response)
     else:
