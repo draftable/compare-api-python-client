@@ -6,6 +6,7 @@ Draftable Compare API - Python Client Library
 [![pypi dlm](https://img.shields.io/pypi/dm/draftable-compare-api)](https://pypi.org/project/draftable-compare-api/)
 [![travis](https://travis-ci.com/draftable/compare-api-python-client.svg?branch=stable)](https://travis-ci.com/draftable/compare-api-python-client)
 [![codecov](https://codecov.io/gh/draftable/compare-api-python-client/branch/stable/graph/badge.svg)](https://codecov.io/gh/draftable/compare-api-python-client)
+[![codestyle](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license](https://img.shields.io/github/license/draftable/compare-api-python-client)](https://choosealicense.com/licenses/mit/)
 
 A thin Python 2/3 client for the [Draftable API](https://draftable.com/rest-api) which wraps all available endpoints and handles authentication and signing.
