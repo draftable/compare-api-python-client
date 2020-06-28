@@ -8,4 +8,6 @@ _randomIdentifierCharset = string.ascii_letters
 
 def generate_identifier():
     # type: () -> str
-    return ''.join(random.choice(_randomIdentifierCharset) for _ in range(_randomIdentifierLength))
+    return "".join(
+        random.choice(_randomIdentifierCharset) for _ in range(_randomIdentifierLength)
+    )

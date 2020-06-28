@@ -22,7 +22,11 @@ class InvalidPath(Exception):
 class InvalidArgument(EndpointException):
     def __init__(self, argument_name, message):
         # type: (str, str) -> None
-        super(InvalidArgument, self).__init__("An invalid value was received for `{argument}`: {message}".format(argument=argument_name, message=message))
+        super(InvalidArgument, self).__init__(
+            "An invalid value was received for `{argument}`: {message}".format(
+                argument=argument_name, message=message
+            )
+        )
 
 
 class BadRequest(EndpointException):
@@ -30,7 +34,11 @@ class BadRequest(EndpointException):
         # type: (int, Union[dict, list]) -> None
         self.status_code = status_code
         self.response = response
-        super(BadRequest, self).__init__('Bad request: status={status}, response={response}'.format(status=status_code, response=response))
+        super(BadRequest, self).__init__(
+            "Bad request: status={status}, response={response}".format(
+                status=status_code, response=response
+            )
+        )
 
 
 class NotFound(BadRequest):
@@ -50,8 +58,10 @@ def raise_for(ex):
             wrapper = BadRequest(ex.response.status_code, ex.response)
     else:
         # An error in communication has occurred.
-        wrapper = EndpointException("Unable to connect to the API. This can occur when you attempt to upload files, "
-                                    "but have invalid credentials - please check your credentials.")
+        wrapper = EndpointException(
+            "Unable to connect to the API. This can occur when you attempt to upload files, "
+            "but have invalid credentials - please check your credentials."
+        )
 
     wrapper.__cause__ = ex
     raise wrapper

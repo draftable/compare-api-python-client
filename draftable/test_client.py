@@ -7,17 +7,17 @@ from draftable.utilities import aware_datetime_to_timestamp
 
 
 def test_basic_client_with_default_base_url():
-    c = Client('a', 'b')
-    assert c.account_id == 'a'
-    assert c.auth_token == 'b'
+    c = Client("a", "b")
+    assert c.account_id == "a"
+    assert c.auth_token == "b"
     assert c.base_url == PRODUCTION_CLOUD_BASE_URL
 
 
 def test_basic_client_with_onprem_base_url():
-    c = Client('aa', 'bb', 'https://draftable.corp.co/api/api/v1')
-    assert c.account_id == 'aa'
-    assert c.auth_token == 'bb'
-    assert c.base_url == 'https://draftable.corp.co/api/api/v1'
+    c = Client("aa", "bb", "https://draftable.corp.co/api/api/v1")
+    assert c.account_id == "aa"
+    assert c.auth_token == "bb"
+    assert c.base_url == "https://draftable.corp.co/api/api/v1"
 
 
 def test_comparison_viewer_url():
@@ -36,20 +36,34 @@ def test_comparison_viewer_url():
         <base_url>comparisons/viewer/<account>/<identifier>?valid_until=<unix-epoch-time>&signature=<signature>
 
     """
-    base_url = 'https://dr.corp.co/api/v1'
-    account_id = 'aa'
-    auth_token = 'bb'
-    identifier = 'abc'
+    base_url = "https://dr.corp.co/api/v1"
+    account_id = "aa"
+    auth_token = "bb"
+    identifier = "abc"
 
     c = Client(account_id, auth_token, base_url)
 
-    assert c.comparisons.public_viewer_url(identifier) == base_url + '/comparisons/viewer/%s/%s' % (account_id, identifier)
-    assert c.comparisons.public_viewer_url(identifier, wait=True) == base_url + '/comparisons/viewer/%s/%s?wait' % (account_id, identifier)
+    assert c.comparisons.public_viewer_url(
+        identifier
+    ) == base_url + "/comparisons/viewer/%s/%s" % (account_id, identifier)
+    assert c.comparisons.public_viewer_url(
+        identifier, wait=True
+    ) == base_url + "/comparisons/viewer/%s/%s?wait" % (account_id, identifier)
 
     when = validate_valid_until(timedelta(minutes=5))
     expires = aware_datetime_to_timestamp(when)
-    signature = signing.get_viewer_url_signature(account_id, auth_token, identifier, expires)
-    expected = base_url + '/comparisons/viewer/%s/%s?valid_until=%s&signature=%s' % (account_id, identifier, expires, signature)
+    signature = signing.get_viewer_url_signature(
+        account_id, auth_token, identifier, expires
+    )
+    expected = base_url + "/comparisons/viewer/%s/%s?valid_until=%s&signature=%s" % (
+        account_id,
+        identifier,
+        expires,
+        signature,
+    )
 
     assert c.comparisons.signed_viewer_url(identifier, when) == expected
-    assert c.comparisons.signed_viewer_url(identifier, when, wait=True) == expected + '&wait'
+    assert (
+        c.comparisons.signed_viewer_url(identifier, when, wait=True)
+        == expected + "&wait"
+    )

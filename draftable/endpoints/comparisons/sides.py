@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from os.path import basename, isfile, join, splitext
 
 from six import string_types
+
 # Note: `urllib3` is a required dependency of `requests`
 from urllib3.util import parse_url
 
@@ -46,7 +47,9 @@ class FileSide(Side):
         return self.__file
 
     def __str__(self):
-        return "File side: {} ({}, '{}')".format(self.__file, self.file_type, self.display_name)
+        return "File side: {} ({}, '{}')".format(
+            self.__file, self.file_type, self.display_name
+        )
 
 
 class URLSide(Side):
@@ -61,7 +64,9 @@ class URLSide(Side):
         return self.__url
 
     def __str__(self):
-        return "URL side: {} ({}, '{}')".format(self.__url, self.file_type, self.display_name)
+        return "URL side: {} ({}, '{}')".format(
+            self.__url, self.file_type, self.display_name
+        )
 
 
 def data_from_side(side_name, side):
@@ -75,16 +80,20 @@ def data_from_side(side_name, side):
         side = make_side(side)
 
     data = {
-        'file_type': side.file_type,
+        "file_type": side.file_type,
     }
 
     if side.display_name:
-        data['display_name'] = side.display_name
+        data["display_name"] = side.display_name
     if isinstance(side, URLSide):
-        data['source_url'] = side.url
+        data["source_url"] = side.url
     else:
         assert isinstance(side, FileSide)
-        data['file'] = ("{}.{}".format(side_name, side.file_type), side.file, join('application', 'octet-stream'))
+        data["file"] = (
+            "{}.{}".format(side_name, side.file_type),
+            side.file,
+            join("application", "octet-stream"),
+        )
     return data
 
 
@@ -99,13 +108,13 @@ def side_from_file(file_obj, file_type, display_name=None):
 
 
 def side_from_file_path(file_path, file_type=None, display_name=None):
-    should_guess = file_type is None or file_type == 'guess'
+    should_guess = file_type is None or file_type == "guess"
     if should_guess:
         file_type = guess_file_type_from_path(file_path)
     display_name = display_name or basename(file_path)
 
     # TODO: make sure this closes the file handle
-    return FileSide(open(file_path, 'rb'), file_type, display_name)
+    return FileSide(open(file_path, "rb"), file_type, display_name)
 
 
 def make_side(url_or_file_path, file_type=None, display_name=None):
@@ -120,10 +129,12 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
     :return: a Side object
     """
     # type: (str, Optional[str])
-    guess_type = file_type is None or file_type == 'guess'
+    guess_type = file_type is None or file_type == "guess"
 
     if url_or_file_path.startswith("http"):
-        url = parse_url(url_or_file_path)  # parse to get the path component on its own, without query string
+        url = parse_url(
+            url_or_file_path
+        )  # parse to get the path component on its own, without query string
         if guess_type:
             file_type = guess_file_type_from_path(url.path)
         display_name = display_name or basename(url.path)
@@ -132,12 +143,18 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
     elif url_or_file_path.startswith("file:"):
         url = parse_url(url_or_file_path)
         if url.host:
-            raise InvalidPath("File url '{}' must be local only, and not contain host name ('{}')".format(
-                url_or_file_path, url.host))
+            raise InvalidPath(
+                "File url '{}' must be local only, and not contain host name ('{}')".format(
+                    url_or_file_path, url.host
+                )
+            )
 
         if not isfile(url.path):
-            raise InvalidPath("File url '{}' refers to file '{}' but no such file exists".format(
-                url_or_file_path, url.path))
+            raise InvalidPath(
+                "File url '{}' refers to file '{}' but no such file exists".format(
+                    url_or_file_path, url.path
+                )
+            )
 
         return side_from_file_path(url.path, file_type, display_name)
 
@@ -145,15 +162,19 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
         return side_from_file_path(url_or_file_path, file_type, display_name)
 
     else:
-        raise ValueError("Path is not a URL and not a file that exists: {}".format(url_or_file_path))
+        raise ValueError(
+            "Path is not a URL and not a file that exists: {}".format(url_or_file_path)
+        )
 
 
 def guess_file_type_from_path(path):
     _, file_type = splitext(path)
-    return file_type.strip('.').lower()
+    return file_type.strip(".").lower()
 
 
 def guess_file_type_from_url(url):
-    url = parse_url(url)  # parse to get the path component on its own, without query string
+    url = parse_url(
+        url
+    )  # parse to get the path component on its own, without query string
     file_type = guess_file_type_from_path(url.path)
     return file_type

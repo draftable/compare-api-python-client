@@ -10,4 +10,4 @@ try:
 except ImportError:
     from importlib_metadata import version
 
-__version__ = version('draftable-compare-api')
+__version__ = version("draftable-compare-api")

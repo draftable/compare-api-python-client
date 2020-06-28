@@ -4,39 +4,47 @@ import pytest
 
 from draftable.endpoints.exceptions import InvalidPath
 
-from .sides import (FileSide, Side, URLSide, data_from_side,
-                    guess_file_type_from_path, make_side)
+from .sides import (
+    FileSide,
+    Side,
+    URLSide,
+    data_from_side,
+    guess_file_type_from_path,
+    make_side,
+)
 
-root_dir = dirname(dirname(dirname(dirname(__file__))))  # better with pathlib in Python 3.4+
+root_dir = dirname(
+    dirname(dirname(dirname(__file__)))
+)  # better with pathlib in Python 3.4+
 
 
 def _get_test_file_path(p):
     # This would be easier with pathlib
     # return relpath(os.getcwd(), join('test-files', p))
-    return join('test-files', p)
+    return join("test-files", p)
 
 
 def test_file_code_guess():
     # main types
-    assert guess_file_type_from_path('foo.pdf') == 'pdf'
-    assert guess_file_type_from_path('foo.docx') == 'docx'
-    assert guess_file_type_from_path('foo.doc') == 'doc'
-    assert guess_file_type_from_path('foo.rtf') == 'rtf'
-    assert guess_file_type_from_path('foo.pptx') == 'pptx'
-    assert guess_file_type_from_path('foo.ppt') == 'ppt'
+    assert guess_file_type_from_path("foo.pdf") == "pdf"
+    assert guess_file_type_from_path("foo.docx") == "docx"
+    assert guess_file_type_from_path("foo.doc") == "doc"
+    assert guess_file_type_from_path("foo.rtf") == "rtf"
+    assert guess_file_type_from_path("foo.pptx") == "pptx"
+    assert guess_file_type_from_path("foo.ppt") == "ppt"
 
     # uppercase
-    assert guess_file_type_from_path('foo.PDF') == 'pdf'
-    assert guess_file_type_from_path('foo.DOCX') == 'docx'
-    assert guess_file_type_from_path('foo.DOC') == 'doc'
-    assert guess_file_type_from_path('foo.RTF') == 'rtf'
-    assert guess_file_type_from_path('foo.PPTX') == 'pptx'
-    assert guess_file_type_from_path('foo.PPT') == 'ppt'
+    assert guess_file_type_from_path("foo.PDF") == "pdf"
+    assert guess_file_type_from_path("foo.DOCX") == "docx"
+    assert guess_file_type_from_path("foo.DOC") == "doc"
+    assert guess_file_type_from_path("foo.RTF") == "rtf"
+    assert guess_file_type_from_path("foo.PPTX") == "pptx"
+    assert guess_file_type_from_path("foo.PPT") == "ppt"
 
     # stuff in the path
-    assert guess_file_type_from_path(join('foo', 'bar.pdf')) == 'pdf'
-    assert guess_file_type_from_path(join('.', 'foo', 'bar.pdf')) == 'pdf'
-    assert guess_file_type_from_path(join('..', 'foo', 'bar.pdf')) == 'pdf'
+    assert guess_file_type_from_path(join("foo", "bar.pdf")) == "pdf"
+    assert guess_file_type_from_path(join(".", "foo", "bar.pdf")) == "pdf"
+    assert guess_file_type_from_path(join("..", "foo", "bar.pdf")) == "pdf"
 
 
 def test_side_file_path():
@@ -49,11 +57,11 @@ def test_side_file_path():
     assert isinstance(r, FileSide)
     assert r.file_type == "pdf"
     assert r.display_name == "hello.pdf"
-    assert r.file.read() == open(p, 'rb').read()
+    assert r.file.read() == open(p, "rb").read()
 
-    r = data_from_side('left', p)
-    assert r['file_type'] == "pdf"
-    assert r['display_name'] == "hello.pdf"
+    r = data_from_side("left", p)
+    assert r["file_type"] == "pdf"
+    assert r["display_name"] == "hello.pdf"
 
 
 def test_side_bad_file_url():
@@ -73,15 +81,15 @@ def test_side_file_url():
     assert isinstance(r, FileSide)
     assert r.file_type == "pdf"
     assert r.display_name == "hello.pdf"
-    assert r.file.read() == open(file_path, 'rb').read()
+    assert r.file.read() == open(file_path, "rb").read()
 
-    r = data_from_side('left', p)
-    assert r['file_type'] == "pdf"
-    assert r['display_name'] == "hello.pdf"
-    a, b, c = r['file']
+    r = data_from_side("left", p)
+    assert r["file_type"] == "pdf"
+    assert r["display_name"] == "hello.pdf"
+    a, b, c = r["file"]
     assert a == "left.pdf"
     assert b is not None  # an open File object
-    assert c == join('application', 'octet-stream')
+    assert c == join("application", "octet-stream")
 
 
 def test_side_http_url():
@@ -93,10 +101,10 @@ def test_side_http_url():
     assert r.display_name == "left.rtf"
     assert r.url == p
 
-    r = data_from_side('left', p)
-    assert r['file_type'] == "rtf"
-    assert r['display_name'] == "left.rtf"
-    assert r['source_url'] == p
+    r = data_from_side("left", p)
+    assert r["file_type"] == "rtf"
+    assert r["display_name"] == "left.rtf"
+    assert r["source_url"] == p
 
 
 def test_side_https_url():
@@ -109,10 +117,10 @@ def test_side_https_url():
     assert r.display_name == "foo.docx"
     assert r.url == p
 
-    r = data_from_side('right', p)
-    assert r['file_type'] == "docx"
-    assert r['display_name'] == "foo.docx"
-    assert r['source_url'] == p
+    r = data_from_side("right", p)
+    assert r["file_type"] == "docx"
+    assert r["display_name"] == "foo.docx"
+    assert r["source_url"] == p
 
 
 def test_side_https_url_pdf_upper():

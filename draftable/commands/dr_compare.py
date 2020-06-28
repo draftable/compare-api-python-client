@@ -9,8 +9,7 @@ import sys
 
 from draftable import Client as DraftableClient
 from draftable.endpoints.comparisons.sides import make_side
-from draftable.endpoints.exceptions import (InvalidArgument, InvalidPath,
-                                            NotFound)
+from draftable.endpoints.exceptions import InvalidArgument, InvalidPath, NotFound
 
 try:
     import configparser  # Python 3
@@ -18,7 +17,7 @@ except ImportError:
     import ConfigParser as configparser  # Python 2
 
 
-DESCRIPTION = 'Create and manage Draftable.com comparisons on the command line'
+DESCRIPTION = "Create and manage Draftable.com comparisons on the command line"
 
 USAGE_TEMPLATE = """%(prog)s <command> [<command-args>]
 
@@ -99,36 +98,45 @@ class SetupError(Exception):
 def get_connection_args(name):
     ini_path = os.path.join(os.path.expanduser("~"), ".draftable")
     if not os.path.isfile(ini_path):
-        raise SetupError("Requested environment '%s' but missing config file: %s" % (name, ini_path))
+        raise SetupError(
+            "Requested environment '%s' but missing config file: %s" % (name, ini_path)
+        )
 
     config = configparser.ConfigParser()
     config.read(ini_path)
 
     # Only Python 3 supports "if name in config"
     if not config.has_section(name):
-        raise SetupError("Requested environment '%s' but config file (%s) does not define that name." % (name, ini_path))
+        raise SetupError(
+            "Requested environment '%s' but config file (%s) does not define that name."
+            % (name, ini_path)
+        )
 
     try:
-        base_url = config.get(name, 'base_url')  # Python 3 allows `fallback=None`, but not python 2
+        base_url = config.get(
+            name, "base_url"
+        )  # Python 3 allows `fallback=None`, but not python 2
     except configparser.NoOptionError:
         # no base_url, that's fine
         base_url = None
 
     return (
-        config.get(name, 'account'),
-        config.get(name, 'token'),
+        config.get(name, "account"),
+        config.get(name, "token"),
         base_url,
     )
 
 
 def create_client(args):
     # First, use any environment variables
-    account = os.getenv('DR_ACCOUNT')
-    token = os.getenv('DR_TOKEN')
-    base_url = os.getenv('DR_BASE_URL')
+    account = os.getenv("DR_ACCOUNT")
+    token = os.getenv("DR_TOKEN")
+    base_url = os.getenv("DR_BASE_URL")
 
     # Secondly, if provided, look up this name in the ~/.draftable file (if it exists)
-    env_name = getattr(args, 'env_name') or os.getenv('DR_ENV')  # getattr default value doesn't work with args object
+    env_name = getattr(args, "env_name") or os.getenv(
+        "DR_ENV"
+    )  # getattr default value doesn't work with args object
 
     if env_name:
         account, token, base_url = get_connection_args(env_name)
@@ -151,11 +159,40 @@ def create_client(args):
 def with_std_options(arg_parser):
     """Embellish the provided `arg_parser` with standard options.
     """
-    arg_parser.add_argument('-a', '--account', metavar='<ACCOUNT-ID>', action='store', help="For cloud, see https://api.draftable.com/account/credentials")
-    arg_parser.add_argument('-b', '--base-url', metavar='<BASE-URL>', action='store', help="Only for Enterprise self-hosted")
-    arg_parser.add_argument('-e', '--env-name', metavar='<ENV-NAME>', action='store', help="Name from file $HOME/.draftable")
-    arg_parser.add_argument('-t', '--token', metavar='<TOKEN>', action='store', help="For cloud, see https://api.draftable.com/account/credentials")
-    arg_parser.add_argument('-S', '--unverified-ssl', action='store_true', help="Don't verify SSL validity; useful for self-hosted self-signed SSL")
+    arg_parser.add_argument(
+        "-a",
+        "--account",
+        metavar="<ACCOUNT-ID>",
+        action="store",
+        help="For cloud, see https://api.draftable.com/account/credentials",
+    )
+    arg_parser.add_argument(
+        "-b",
+        "--base-url",
+        metavar="<BASE-URL>",
+        action="store",
+        help="Only for Enterprise self-hosted",
+    )
+    arg_parser.add_argument(
+        "-e",
+        "--env-name",
+        metavar="<ENV-NAME>",
+        action="store",
+        help="Name from file $HOME/.draftable",
+    )
+    arg_parser.add_argument(
+        "-t",
+        "--token",
+        metavar="<TOKEN>",
+        action="store",
+        help="For cloud, see https://api.draftable.com/account/credentials",
+    )
+    arg_parser.add_argument(
+        "-S",
+        "--unverified-ssl",
+        action="store_true",
+        help="Don't verify SSL validity; useful for self-hosted self-signed SSL",
+    )
     return arg_parser
 
 
@@ -178,16 +215,41 @@ def default_comparison_display(comp, out=sys.stdout, position=None):
 
 def create_comparison(system_args, prog, cmd_name):
     """Create a new comparison."""
-    arg_parser = with_std_options(argparse.ArgumentParser(description=create_comparison.__doc__))
+    arg_parser = with_std_options(
+        argparse.ArgumentParser(description=create_comparison.__doc__)
+    )
 
-    arg_parser.add_argument('-p', '--public', action='store_true', default=False, help="Marks this comparison public")
-    arg_parser.add_argument('-i', '--identifier', default=None, help="Provide your own comparison ID")
-    arg_parser.add_argument('-m', '--expiry-mins', metavar='<MINS>', type=int, default=None, help='number of minutes this URL should be valid')
+    arg_parser.add_argument(
+        "-p",
+        "--public",
+        action="store_true",
+        default=False,
+        help="Marks this comparison public",
+    )
+    arg_parser.add_argument(
+        "-i", "--identifier", default=None, help="Provide your own comparison ID"
+    )
+    arg_parser.add_argument(
+        "-m",
+        "--expiry-mins",
+        metavar="<MINS>",
+        type=int,
+        default=None,
+        help="number of minutes this URL should be valid",
+    )
 
-    arg_parser.add_argument('--left-type', default='guess', metavar='<EXT>', action='store', help="e.g. 'pdf', 'doc', 'docx', 'ppt', 'pptx'.")
-    arg_parser.add_argument('--right-type', default='guess', metavar='<EXT>', action='store')
-    arg_parser.add_argument('left', metavar='left-file-path-or-url')
-    arg_parser.add_argument('right', metavar='right-file-path-or-url')
+    arg_parser.add_argument(
+        "--left-type",
+        default="guess",
+        metavar="<EXT>",
+        action="store",
+        help="e.g. 'pdf', 'doc', 'docx', 'ppt', 'pptx'.",
+    )
+    arg_parser.add_argument(
+        "--right-type", default="guess", metavar="<EXT>", action="store"
+    )
+    arg_parser.add_argument("left", metavar="left-file-path-or-url")
+    arg_parser.add_argument("right", metavar="right-file-path-or-url")
 
     # arg_parser.add_argument('--amend', action='store_true')
 
@@ -201,7 +263,11 @@ def create_comparison(system_args, prog, cmd_name):
         left = make_side(args.left, args.left_type)
         right = make_side(args.right, args.right_type)
     except InvalidArgument as ex:
-        raise SetupError("{}. You may need to specify file type with --left-type or --right-type".format(ex))
+        raise SetupError(
+            "{}. You may need to specify file type with --left-type or --right-type".format(
+                ex
+            )
+        )
     except InvalidPath as ex:
         raise SetupError(str(ex))
 
@@ -227,14 +293,19 @@ def print_basic_urls(client, comp):
     url_expiry = datetime.timedelta(minutes=30)
     print("\nURLs:")
     print("  public URL:  %s" % client.comparisons.public_viewer_url(comp.identifier))
-    print("  signed URL:  %s" % client.comparisons.signed_viewer_url(comp.identifier, url_expiry))
+    print(
+        "  signed URL:  %s"
+        % client.comparisons.signed_viewer_url(comp.identifier, url_expiry)
+    )
     print("     expires:  %s" % url_expiry)
 
 
 def list_all_comparisons(system_args):
     """Retrieve and display all comparisons."""
 
-    arg_parser = with_std_options(argparse.ArgumentParser(description=list_all_comparisons.__doc__))
+    arg_parser = with_std_options(
+        argparse.ArgumentParser(description=list_all_comparisons.__doc__)
+    )
 
     args = arg_parser.parse_args(system_args)
     # print('Running list, args:', args)
@@ -251,10 +322,16 @@ def list_all_comparisons(system_args):
 
 def list_one_comparison(system_args, prog, cmd_name):
     """Retrieve and display specific comparison or comparisons."""
-    arg_parser = with_std_options(argparse.ArgumentParser(
-        prog='%s %s' % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
-        description=list_one_comparison.__doc__))
-    arg_parser.add_argument('identifiers', metavar='<ID>', nargs='+', help='a comparison identifier')
+    arg_parser = with_std_options(
+        argparse.ArgumentParser(
+            prog="%s %s"
+            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            description=list_one_comparison.__doc__,
+        )
+    )
+    arg_parser.add_argument(
+        "identifiers", metavar="<ID>", nargs="+", help="a comparison identifier"
+    )
 
     args = arg_parser.parse_args(system_args)
     client = create_client(args)
@@ -272,10 +349,16 @@ def list_one_comparison(system_args, prog, cmd_name):
 
 def delete_comparison(system_args, prog, cmd_name):
     """Delete a specific comparison."""
-    arg_parser = with_std_options(argparse.ArgumentParser(
-        prog='%s %s' % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
-        description=list_one_comparison.__doc__))
-    arg_parser.add_argument('identifier', metavar='<ID>', help='a comparison identifier')
+    arg_parser = with_std_options(
+        argparse.ArgumentParser(
+            prog="%s %s"
+            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            description=list_one_comparison.__doc__,
+        )
+    )
+    arg_parser.add_argument(
+        "identifier", metavar="<ID>", help="a comparison identifier"
+    )
 
     args = arg_parser.parse_args(system_args)
     client = create_client(args)
@@ -289,10 +372,16 @@ def delete_comparison(system_args, prog, cmd_name):
 
 def show_public_url(system_args, prog, cmd_name):
     """Generate a public (unsigned) URL to view a specific comparison."""
-    arg_parser = with_std_options(argparse.ArgumentParser(
-        prog='%s %s' % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
-        description=list_one_comparison.__doc__))
-    arg_parser.add_argument('identifiers', metavar='<ID>', nargs='+', help='a comparison identifier')
+    arg_parser = with_std_options(
+        argparse.ArgumentParser(
+            prog="%s %s"
+            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            description=list_one_comparison.__doc__,
+        )
+    )
+    arg_parser.add_argument(
+        "identifiers", metavar="<ID>", nargs="+", help="a comparison identifier"
+    )
 
     args = arg_parser.parse_args(system_args)
     client = create_client(args)
@@ -303,11 +392,24 @@ def show_public_url(system_args, prog, cmd_name):
 
 def show_signed_url(system_args, prog, cmd_name):
     """Generate a signed URL to view a specific comparison."""
-    arg_parser = with_std_options(argparse.ArgumentParser(
-        prog='%s %s' % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
-        description=list_one_comparison.__doc__))
-    arg_parser.add_argument('-m', '--expiry-mins', metavar='<MINS>', type=int, default=30, help='number of minutes this URL should be valid')
-    arg_parser.add_argument('identifiers', metavar='<ID>', nargs='+', help='a comparison identifier')
+    arg_parser = with_std_options(
+        argparse.ArgumentParser(
+            prog="%s %s"
+            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            description=list_one_comparison.__doc__,
+        )
+    )
+    arg_parser.add_argument(
+        "-m",
+        "--expiry-mins",
+        metavar="<MINS>",
+        type=int,
+        default=30,
+        help="number of minutes this URL should be valid",
+    )
+    arg_parser.add_argument(
+        "identifiers", metavar="<ID>", nargs="+", help="a comparison identifier"
+    )
 
     args = arg_parser.parse_args(system_args)
     client = create_client(args)
@@ -327,45 +429,52 @@ COMMANDS = dict(
 )
 
 ALIASES = {
-    'new': 'create',
-    'post': 'create',
-    'add': 'create',
-    'list': 'all',
-    'getall': 'all',
-    'del': 'delete',
-    'rm': 'delete',
-    'public': 'url',
-    'public-url': 'url',
-    'public_url': 'url',
-    'signed-url': 'signed',
-    'signed_url': 'signed',
+    "new": "create",
+    "post": "create",
+    "add": "create",
+    "list": "all",
+    "getall": "all",
+    "del": "delete",
+    "rm": "delete",
+    "public": "url",
+    "public-url": "url",
+    "public_url": "url",
+    "signed-url": "signed",
+    "signed_url": "signed",
 }
 
 
 def make_usage(template, command_map, alias_map):
     """Generate the usage doc based on configured commands and aliases
     """
+
     def format_command_info(command_name):
         func = command_map[command_name]
 
         # Some commands (but not all) have aliases
         aliases = [k for k in alias_map.keys() if alias_map[k] == command_name]
-        aliases = '\n           Aliases: %s' % ' '.join(sorted(aliases)) if aliases else ''
+        aliases = (
+            "\n           Aliases: %s" % " ".join(sorted(aliases)) if aliases else ""
+        )
         return "  {:8s} {}{}\n".format(command_name, func.__doc__, aliases)
 
-    command_info_parts = map(format_command_info, (name for name in sorted(command_map.keys())))
-    return template.format(COMMANDS='\n'.join(command_info_parts))
+    command_info_parts = map(
+        format_command_info, (name for name in sorted(command_map.keys()))
+    )
+    return template.format(COMMANDS="\n".join(command_info_parts))
 
 
 def dr_compare_main(system_args=None):
     if system_args is None:
         system_args = sys.argv
 
-    arg_parser = argparse.ArgumentParser(description=DESCRIPTION, usage=make_usage(USAGE_TEMPLATE, COMMANDS, ALIASES))
-    arg_parser.add_argument('command', help='Command to run')
+    arg_parser = argparse.ArgumentParser(
+        description=DESCRIPTION, usage=make_usage(USAGE_TEMPLATE, COMMANDS, ALIASES)
+    )
+    arg_parser.add_argument("command", help="Command to run")
     args = arg_parser.parse_args(system_args[1:2])  # just to select the command
 
-    if args.command == 'help':
+    if args.command == "help":
         arg_parser.print_usage()
         sys.exit(0)
 
@@ -373,13 +482,16 @@ def dr_compare_main(system_args=None):
     command = COMMANDS.get(command_name)
 
     if not command:
-        err = "Invalid command '%s'. For list of commands: %s -h\n" % (command_name, arg_parser.prog)
+        err = "Invalid command '%s'. For list of commands: %s -h\n" % (
+            command_name,
+            arg_parser.prog,
+        )
         arg_parser.error(err)
 
     command(system_args[2:], arg_parser.prog, command_name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         dr_compare_main(sys.argv)
     except SetupError as ex:

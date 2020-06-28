@@ -10,7 +10,7 @@ except ImportError:
     pass
 
 
-PRODUCTION_CLOUD_BASE_URL = 'https://api.draftable.com/v1'
+PRODUCTION_CLOUD_BASE_URL = "https://api.draftable.com/v1"
 
 
 class Client(object):
@@ -47,7 +47,9 @@ class Client(object):
 
     def __repr__(self):
         # type: () -> str
-        return 'Client(account_id={}, auth_token={}, base_url={})'.format(repr(self.account_id), repr(self.auth_token), repr(self.base_url))
+        return "Client(account_id={}, auth_token={}, base_url={})".format(
+            repr(self.account_id), repr(self.auth_token), repr(self.base_url)
+        )
 
 
 Client.__str__ = Client.__repr__

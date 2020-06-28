@@ -14,7 +14,7 @@ except ImportError:
 def _is_file(obj):
     # type: (Any) -> bool
     # This is how the requests library checks.
-    return hasattr(obj, '__iter__') and not isinstance(obj, (str, list, tuple, dict))
+    return hasattr(obj, "__iter__") and not isinstance(obj, (str, list, tuple, dict))
 
 
 def _is_file_tuple(obj):
@@ -46,9 +46,9 @@ def _flatten_form_data(initial_data):
         if isinstance(value, dict):
             flattened_data, flattened_files = _flatten_form_data(value)
             for sub_key, sub_value in flattened_data.items():
-                data['{}.{}'.format(key, sub_key)] = sub_value
+                data["{}.{}".format(key, sub_key)] = sub_value
             for sub_key, sub_file in flattened_files.items():
-                files['{}.{}'.format(key, sub_key)] = sub_file
+                files["{}.{}".format(key, sub_key)] = sub_file
         else:
             if _is_file(value) or _is_file_tuple(value):
                 files[key] = value
@@ -76,19 +76,23 @@ class RESTClient(object):
         return self.__auth_token
 
     def __auth(self, r):
-        r.headers['Authorization'] = 'Token {}'.format(self.__auth_token)
+        r.headers["Authorization"] = "Token {}".format(self.__auth_token)
         return r
 
     def get(self, url, parameters=None):
         # type: (Union[str, Url], Optional[dict]) -> Union[dict, list]
-        response = requests.get(url, auth=self.__auth, params=parameters, verify=self.verify_ssl)
+        response = requests.get(
+            url, auth=self.__auth, params=parameters, verify=self.verify_ssl
+        )
         response.raise_for_status()
         return response.json()
 
     def post(self, url, data):
         # type: (str, dict) -> Union[dict, list]
         if not _data_contains_file(data):
-            response = requests.post(url, auth=self.__auth, json=data, verify=self.verify_ssl)
+            response = requests.post(
+                url, auth=self.__auth, json=data, verify=self.verify_ssl
+            )
         else:
             data, files = _flatten_form_data(data)
             # Obscure issue:
@@ -96,7 +100,14 @@ class RESTClient(object):
             # (It seems that when the request is bad, our API (via Django Rest Framework) may not wait for the full upload?)
             # Asking for JSON seems to help? But it fails with frequency ~30% when you give invalid credentials.
             # I don't have a good fix for this (yet!), so there's a note in the exception thrown in the weird case. ~ James (April 2017)
-            response = requests.post(url, auth=self.__auth, data=data, files=files, headers={'Accept': 'application/json'}, verify=self.verify_ssl)
+            response = requests.post(
+                url,
+                auth=self.__auth,
+                data=data,
+                files=files,
+                headers={"Accept": "application/json"},
+                verify=self.verify_ssl,
+            )
 
         response.raise_for_status()
         return response.json()

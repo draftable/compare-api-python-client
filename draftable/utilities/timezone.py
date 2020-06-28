@@ -3,6 +3,7 @@ from __future__ import absolute_import
 try:
     # noinspection PyUnresolvedReferences
     from datetime import timezone
+
     utc = timezone.utc
 
 except ImportError:

@@ -23,9 +23,12 @@ class Url(object):
         >>> u / "bar" / "baz.pdf" + "?t=1234"
         Url('http://example.com/foo/bar/baz.pdf?t=1234')
     """
+
     def __init__(self, base_url, *parts):
         # type: (Union[str, Url]) -> None
-        self.__url = str(base_url) + self.to_append(*parts)  # the str(base_url) handles the case that `base_url` is already a Url
+        self.__url = str(base_url) + self.to_append(
+            *parts
+        )  # the str(base_url) handles the case that `base_url` is already a Url
 
     def __str__(self):
         """Return this URL as a string."""
@@ -51,7 +54,7 @@ class Url(object):
 
         The returned string is suitable for appending to a base URL.
         """
-        return ('/' + '/'.join(parts)) if parts else ''
+        return ("/" + "/".join(parts)) if parts else ""
 
     @property
     def full(self):
