@@ -35,6 +35,6 @@
             "source.organizeImports": true
         },
 
-        "editor.rulers": [119]
+        "editor.rulers": [88]
     }
 }

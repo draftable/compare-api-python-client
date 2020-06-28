@@ -10,12 +10,15 @@ exclude =
 
 # Checks to ignore
 ignore =
+    # Whitespace before ':'
+    # Black compatibility
+    E203
     # Line break occurred before a binary operator
-    # Superseded by and mutually exclusive with W504
+    # Black compatibility
     W503
 
 # Maximum McCabe complexity
 max-complexity = 25
 
 # Maximum line length
-max-line-length = 119
+max-line-length = 88

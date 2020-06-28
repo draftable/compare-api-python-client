@@ -61,6 +61,10 @@ confidence =
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
 disable =
+    # Black compatibility
+    bad-continuation,
+    # Black compatibility
+    bad-whitespace,
     missing-docstring,
     useless-object-inheritance
 
@@ -200,7 +204,7 @@ indent-after-paren = 4
 indent-string = '    '
 
 # Maximum number of characters on a single line.
-max-line-length = 119
+max-line-length = 88
 
 # Maximum number of lines in a module.
 max-module-lines = 1000
