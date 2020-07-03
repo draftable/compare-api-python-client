@@ -18,6 +18,7 @@ trim_trailing_whitespace = false
 
 # PyCharm configuration
 [.idea/**/*.xml]
+indent_size = 2
 insert_final_newline = false
 
 # Python
