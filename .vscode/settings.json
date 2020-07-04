@@ -5,7 +5,10 @@
         ".coveragerc": "ini",
         ".flake8": "ini",
         ".isort.cfg": "ini",
-        ".pylintrc": "ini"
+        ".pylintrc": "ini",
+        // Python packaging configs
+        "MANIFEST.in": "properties",
+        "setup.cfg": "ini"
     },
 
     // Files to hide in Explorer tree
