@@ -93,7 +93,7 @@ def test_side_file_url():
 
 
 def test_side_http_url():
-    p = "http://api.draftable.com/static/test-documents/code-of-conduct/left.rtf"
+    p = "https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf"
     r = make_side(p)
     assert isinstance(r, Side)
     assert isinstance(r, URLSide)

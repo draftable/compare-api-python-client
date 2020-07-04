@@ -18,8 +18,8 @@ except ImportError:
 _valid_identifier_characters = set(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._"
 )
-_min_identifier_length = 1
-_max_identifier_length = 1024
+_MIN_ID_LENGTH = 1
+_MAX_ID_LENGTH = 1024
 
 _allowed_file_types = {
     # PDFs
@@ -44,11 +44,11 @@ def validate_identifier(identifier):
         raise InvalidArgument(
             "identifier", "`identifier` must be a string (of type `str`)."
         )
-    if not _min_identifier_length <= len(identifier) <= _max_identifier_length:
+    if not _MIN_ID_LENGTH <= len(identifier) <= _MAX_ID_LENGTH:
         raise InvalidArgument(
             "identifier",
             "`identifier` must be between {min} and {max} characters long.".format(
-                min=_min_identifier_length, max=_max_identifier_length
+                min=_MIN_ID_LENGTH, max=_MAX_ID_LENGTH
             ),
         )
     if not all(c in _valid_identifier_characters for c in identifier):
