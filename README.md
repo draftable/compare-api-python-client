@@ -29,7 +29,7 @@ Requirements
 ------------
 
 - Operating system: Any maintained Linux, macOS, or Windows release
-- Python runtime: 2.7 or any [maintained version](https://devguide.python.org/#status-of-python-branches) (currently 3.5, 3.6, 3.7, or 3.8)
+- Python runtime: 2.7 or any [maintained version](https://devguide.python.org/#status-of-python-branches) (currently 3.5, 3.6, 3.7, 3.8, or 3.9)
 
 Getting started
 ---------------
