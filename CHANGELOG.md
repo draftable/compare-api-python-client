@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.1.2
+------
+
+- Add Python 3.9 support
+- Use Black for code formatting
+- Miscellaneous developer tooling updates
+
 v1.1.1
 ------
 
