@@ -57,7 +57,8 @@ def test_side_file_path():
     assert isinstance(r, FileSide)
     assert r.file_type == "pdf"
     assert r.display_name == "hello.pdf"
-    assert r.file.read() == open(p, "rb").read()
+    with open(p, "rb") as f:
+        assert r.file.read() == f.read()
 
     r = data_from_side("left", p)
     assert r["file_type"] == "pdf"
@@ -81,7 +82,8 @@ def test_side_file_url():
     assert isinstance(r, FileSide)
     assert r.file_type == "pdf"
     assert r.display_name == "hello.pdf"
-    assert r.file.read() == open(file_path, "rb").read()
+    with open(file_path, "rb") as f:
+        assert r.file.read() == f.read()
 
     r = data_from_side("left", p)
     assert r["file_type"] == "pdf"
