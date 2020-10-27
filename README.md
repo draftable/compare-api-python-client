@@ -15,6 +15,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
 
 - [Requirements](#requirements)
 - [Getting started](#getting-started)
+- [CLI usage](#cli-usage)
 - [API reference](#api-reference)
   - [Initializing the client](#initializing-the-client)
   - [Retrieving comparisons](#retrieving-comparisons)
@@ -64,6 +65,13 @@ print("Comparison created: {}".format(comparison))
 viewer_url = comparisons.signed_viewer_url(comparison.identifier)
 print("Viewer URL (expires in 30 mins): {}".format(viewer_url))
 ```
+
+CLI usage
+---------
+
+A helper utility, `dr-compare`, is included for interacting with the API from the command-line. After installing the library run `dr-compare` to view the built-in help.
+
+The CLI tool will only be available in the environment under which the library is installed (e.g. a given *virtualenv*). To ensure it's accessible outside of any given environment install the library user or system-wide (e.g. `sudo pip install draftable-compare-api`).
 
 API reference
 -------------
