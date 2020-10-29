@@ -28,8 +28,7 @@ jobs:
       python: '3.8'
       env: TOXENV=py38,coverage,codecov
     - name: Python 3.9
-      # Drop the -dev once Travis publishes a release build
-      python: '3.9-dev'
+      python: '3.9'
       env: TOXENV=py39,coverage,codecov
 
 install:
