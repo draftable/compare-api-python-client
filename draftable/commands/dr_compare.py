@@ -300,7 +300,7 @@ def print_basic_urls(client, comp):
     print("     expires:  %s" % url_expiry)
 
 
-def list_all_comparisons(system_args):
+def list_all_comparisons(system_args, prog, cmd_name):
     """Retrieve and display all comparisons."""
 
     arg_parser = with_std_options(
