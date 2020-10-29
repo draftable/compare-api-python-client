@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.1.3
+------
+
+- Improve exception output on failing to infer file type
+- `dr-compare`: Fix bug in calling `list|all` command
+
 v1.1.2
 ------
 
