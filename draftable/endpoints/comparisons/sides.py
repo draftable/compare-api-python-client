@@ -137,6 +137,9 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
         )  # parse to get the path component on its own, without query string
         if guess_type:
             file_type = guess_file_type_from_path(url.path)
+            if not file_type:
+                raise InvalidArgument("file_type", "Unable to infer file type from URL. `file_type` must be specified. This may require "
+                                                   "passing a URLSide to comparisons.create rather than a string.")
         display_name = display_name or basename(url.path)
         return URLSide(url.url, file_type, display_name)
 
