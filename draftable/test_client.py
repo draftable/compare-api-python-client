@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from draftable import PRODUCTION_CLOUD_BASE_URL, Client
 from draftable.endpoints.comparisons import signing
-from draftable.endpoints.comparisons.validation import validate_valid_until
+from draftable.endpoints.validation import validate_valid_until
 from draftable.utilities import aware_datetime_to_timestamp
 
 

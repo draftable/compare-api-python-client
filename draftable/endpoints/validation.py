@@ -5,15 +5,14 @@ from datetime import datetime, timedelta
 import requests
 from six import string_types
 
-from ...utilities import timezone
-from ..exceptions import InvalidArgument
+from draftable.endpoints.exceptions import InvalidArgument
+from draftable.utilities import timezone
 
 try:
     # noinspection PyUnresolvedReferences
     from typing import Union, Any
 except ImportError:
     pass
-
 
 _valid_identifier_characters = set(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._"
@@ -34,6 +33,13 @@ _allowed_file_types = {
     "pptm",
     "ppt",
 }
+
+_allowed_kinds = (
+    'single_page',
+    'combined',
+    'left'
+    'right'
+)
 
 
 def validate_identifier(identifier):
@@ -155,3 +161,15 @@ def validate_expires(expires):
 def validate_valid_until(valid_until):
     # type: (Union[datetime, timedelta]) -> datetime
     return _validate_datetime_or_timedelta("valid_until", valid_until)
+
+
+def validate_export_kind(kind):
+    # type: (str) -> str
+    if not kind:
+        raise InvalidArgument("kind", "`kind` cannot be empty.")
+    munged_kind = str(kind).lower()
+    if munged_kind not in _allowed_kinds:
+        raise InvalidArgument(
+            "kind", '"{}" is not a valid file type'.format(kind)
+        )
+    return munged_kind

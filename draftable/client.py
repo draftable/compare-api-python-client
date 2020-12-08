@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from .endpoints import ComparisonsEndpoint
+from .endpoints import ComparisonsEndpoint, ExportsEndpoint
 from .transport import RESTClient
 from .utilities.urls import Url
 
@@ -19,6 +19,7 @@ class Client(object):
         self.__client = RESTClient(account_id, auth_token)
         self.__base_url = Url(base_url or PRODUCTION_CLOUD_BASE_URL)
         self.comparisons = ComparisonsEndpoint(self.__client, self.__base_url)
+        self.exports = ExportsEndpoint(self.__client, self.__base_url)
 
     @property
     def account_id(self):

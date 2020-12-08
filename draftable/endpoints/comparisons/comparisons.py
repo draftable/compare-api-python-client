@@ -8,7 +8,7 @@ from ..exceptions import handle_request_exception
 from . import signing
 from .comparison import Comparison, comparison_from_response
 from .sides import FileSide, URLSide, data_from_side
-from .validation import validate_expires, validate_identifier, validate_valid_until
+from draftable.endpoints.validation import validate_expires, validate_identifier, validate_valid_until
 
 try:
     # noinspection PyUnresolvedReferences

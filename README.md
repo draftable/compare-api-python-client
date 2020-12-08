@@ -23,6 +23,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - [Creating comparisons](#creating-comparisons)
   - [Displaying comparisons](#displaying-comparisons)
   - [Utility functions](#utility-functions)
+  - [Exporting comparisons](#exporting-comparisons)
 - [Other information](#other-information)
   - [Self-signed certificates](#self-signed-certificates)
 
@@ -314,6 +315,45 @@ print("Viewer URL (expires in 1 hour): {}".format(viewer_url))
 
 - `generate_identifier()`  
   Generates a random unique comparison identifier
+
+### Exporting comparisons
+If you need to download the result of a comparison as a PDF file, you need to use a the `exports` endpoint.
+
+Four kinds of exports are supported:
+
+- single_page: Displays the right side document only with highlights and deletion markers showing the diff
+- combined: Displays both right and left sides
+- left: Displays left side only
+- right: Displays right side only
+
+To create an export, call the `create(comparison: Union[Comparison, str], kind: str ='single_page')` on the exports endpoint.  
+This returns an Export object representing the newly created export.
+```python
+exports = client.exports
+
+export = exports.create(comparison, kind='single_page')
+```
+Similarly, an export can be retrieved with `get(identifier: str)`.
+```python
+export = exports.get('<identifier>')
+```
+Note that when you first create an export, it will not immediately be ready for download. 
+The export may take a second or two to complete, depending on the size of the documents.
+You need to poll using the above request until the `ready` property of the export is `True`.
+
+Once the export is ready, you can access a signed link to download the document from the `url`
+property of export.
+```python
+import time
+
+export = client.exports.create(comparison.identifier)
+
+while not export.ready:
+    export = client.exports.get(export.identifier)
+    if export.ready:
+        print(export.url)
+    time.sleep(1)
+```
 
 Other information
 -----------------

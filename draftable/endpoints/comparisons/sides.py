@@ -8,7 +8,7 @@ from six import string_types
 from urllib3.util import parse_url
 
 from ..exceptions import InvalidPath
-from . import validation
+from .. import validation
 
 try:
     # noinspection PyUnresolvedReferences
