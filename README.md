@@ -333,7 +333,8 @@ exports = client.exports
 
 export = exports.create(comparison, kind='single_page')
 ```
-Similarly, an export can be retrieved with `get(identifier: str)`.
+Similarly, an export can be retrieved with `get(identifier: str)`.  Note that this represents the identifier of the 
+export, not of the comparison.
 ```python
 export = exports.get('<identifier>')
 ```
