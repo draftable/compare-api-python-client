@@ -122,7 +122,7 @@ def test_create_from_files(comparisons, exports):
     comparison = comparisons.create(
         left='test-files/hello.pdf',
         right='test-files/hello.pdf',
-        expires=datetime.datetime.now()
+        expires=datetime.datetime.now() + datetime.timedelta(days=1)
     )
     assert not comparison.failed
 
