@@ -336,43 +336,69 @@ print("Viewer URL (expires in 1 hour): {}".format(viewer_url))
 ```
 
 ### Exporting comparisons
-If you need to download the result of a comparison as a PDF file, you need to use a the `exports` endpoint.
 
-Four kinds of exports are supported:
+To perform comparison exports retrieve an `ExportsEndpoint` instance via the `exports` property of your `Client` instance:
 
-- single_page: Displays the right side document only with highlights and deletion markers showing the diff
-- combined: Displays both right and left sides
-- left: Displays left side only
-- right: Displays right side only
+```python
+exports = client.exports
+```
 
-To create an export, call the `create(comparison: Union[Comparison, str], kind: str ='single_page')` on the exports endpoint.  
-This returns an Export object representing the newly created export.
+#### Creating comparison exports
+
+Instances of the `ExportsEndpoint` class provide the following methods for exporting comparisons:
+
+- `create(comparison: Union[Comparison, str], kind: str = 'single_page')`  
+  Returns a `Export` representing the newly created export.
+
+`create` accepts the following arguments:
+
+- `comparison`  
+  The comparison to export provided as a `Comparison` instance or a comparison identifier
+- `kind`  
+  The type of export to perfom (see below)
+
+The follow export kinds are supported for the `kind` parameter:
+
+- `single_page`  
+  Exports only the right-side of the comparison with highlights and deletion markers
+- `combined`  
+  Exports both the left and right sides
+- `left`  
+  Export the left side only
+- `right`  
+  Exports the right side only
+
+##### Example usage
+
 ```python
 exports = client.exports
 
 export = exports.create(comparison, kind='single_page')
 ```
-Similarly, an export can be retrieved with `get(identifier: str)`.  Note that this represents the identifier of the 
-export, not of the comparison.
-```python
-export = exports.get('<identifier>')
-```
-Note that when you first create an export, it will not immediately be ready for download. 
-The export may take a second or two to complete, depending on the size of the documents.
-You need to poll using the above request until the `ready` property of the export is `True`.
 
-Once the export is ready, you can access a signed link to download the document from the `url`
-property of export.
+#### Retrieving comparison exports
+
+Instances of the `ExportsEndpoint` class provide the following methods for retrieving exports:
+
+- `get(identifier: str)`  
+  Returns the specified `Export` or raises a `NotFound` exception if the specified export identifier does not exist.
+
+`Export` objects have the same properties as `Comparison` objects.
+
+As with comparison requests, export requests need to be processed. Typically processing only takes a few seconds, but this can vary based on numerous factors (e.g. size of the documents being exported, number of changes in the comparison, etc ...). To determine if an export has been processed the `ready` property of the `Export` instance should be inspected and polling can be utilised to wait until the export has been completed.
+
+##### Example usage
+
 ```python
 import time
 
 export = client.exports.create(comparison.identifier)
 
 while not export.ready:
+    time.sleep(1)
     export = client.exports.get(export.identifier)
     if export.ready:
         print(export.url)
-    time.sleep(1)
 ```
 
 ### Utility functions
