@@ -22,8 +22,8 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - [Deleting comparisons](#deleting-comparisons)
   - [Creating comparisons](#creating-comparisons)
   - [Displaying comparisons](#displaying-comparisons)
-  - [Utility functions](#utility-functions)
   - [Exporting comparisons](#exporting-comparisons)
+  - [Utility functions](#utility-functions)
 - [Other information](#other-information)
   - [Self-signed certificates](#self-signed-certificates)
 
@@ -110,6 +110,8 @@ For API Self-hosted you may need to [suppress TLS certificate validation](#self-
 
 ### Retrieving comparisons
 
+Instances of the `ComparisonsEndpoint` class provide the following methods for retrieving comparisons:
+
 - `all()`  
   Returns a `list` of all your comparisons, ordered from newest to oldest. This is potentially an expensive operation.
 - `get(identifier: str)`  
@@ -174,6 +176,8 @@ except exceptions.NotFound:
 
 ### Deleting comparisons
 
+Instances of the `ComparisonsEndpoint` class provide the following methods for deleting comparisons:
+
 - `delete(identifier: str)`  
   Returns nothing on successfully deleting the specified comparison or raises a `NotFound` exception if no such comparison exists.
 
@@ -189,6 +193,8 @@ for comparison in oldest_comparisons:
 ```
 
 ### Creating comparisons
+
+Instances of the `ComparisonsEndpoint` class provide the following methods for retrieving comparisons:
 
 - `create(left: ComparisonSide, right: ComparisonSide, identifier: str = None, public: bool = False, expires: datetime | timedelta = None)`  
   Returns a `Comparison` representing the newly created comparison.
@@ -220,13 +226,22 @@ The following exceptions may be raised:
 
 #### Creating comparison sides
 
-- `side_from_file(file: object, file_type: str, display_name: str = None)`  
+The `draftable` module provides the following static methods for creating comparison sides:
+
+- `draftable.make_side(url_or_file_path: str, file_type: str = None, display_name: str = None)`  
+  Returns a `ComparisonSide` for a file or URL by attempting to guess from the `url_or_file_path` parameter.
+
+Alternatively, for explicitly creating a file or URL comparison side, the following static methods can be used:
+
+- `draftable.endpoints.comparisons.sides.side_from_file(file: object, file_type: str, display_name: str = None)`  
   Returns a `ComparisonSide` for a locally accessible file.
-- `side_from_url(url: str, file_type: str, display_name: str = None)`  
+- `draftable.endpoints.comparisons.sides.side_from_url(url: str, file_type: str, display_name: str = None)`  
   Returns a `ComparisonSide` for a remotely accessible file referenced by URL.
 
 These methods accept the following arguments:
 
+- `url_or_file_path` _(`make_side` only)_  
+  The file or URL path for a comparison side
 - `file` _(`side_from_file` only)_  
   A file object to be read and uploaded
   - The file must be opened for reading in _binary mode_
@@ -244,6 +259,13 @@ The following exceptions may be raised:
 
 - `InvalidArgument`
   Failure in parameter validation (e.g. `file_type` is invalid, `url` is malformed, or `file` is not opened in _binary mode_)
+
+The `make_side` method may additionally raise the following exceptions:
+
+- `InvalidPath`  
+  The provided path uses a file URI scheme (i.e. `file:`) but references a remote host or the file doesn't exist.
+- `ValueError`  
+  The provided path was not a URL or the file doesn't exist.
 
 #### Example usage
 
@@ -274,6 +296,8 @@ print("Created comparison: {}".format(comparison))
 ```
 
 ### Displaying comparisons
+
+Instances of the `ComparisonsEndpoint` class provide the following methods for displaying comparisons:
 
 - `public_viewer_url(identifier: str, wait: bool = False)`  
   Generates a public viewer URL for the specified comparison
@@ -310,11 +334,6 @@ identifier = '<identifier>'
 viewer_url = comparisons.signed_viewer_url(identifier, timedelta(hours=1), wait=True)
 print("Viewer URL (expires in 1 hour): {}".format(viewer_url))
 ```
-
-### Utility functions
-
-- `generate_identifier()`  
-  Generates a random unique comparison identifier
 
 ### Exporting comparisons
 If you need to download the result of a comparison as a PDF file, you need to use a the `exports` endpoint.
@@ -355,6 +374,13 @@ while not export.ready:
         print(export.url)
     time.sleep(1)
 ```
+
+### Utility functions
+
+The `draftable` module provides the following static methods for generating comparison identifiers:
+
+- `draftable.generate_identifier()`  
+  Generates a random unique comparison identifier
 
 Other information
 -----------------
