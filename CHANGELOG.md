@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.2.0
+------
+
+- Add support for comparison export endpoint
+- Add client tests against the Draftable API
+
 v1.1.3
 ------
 
