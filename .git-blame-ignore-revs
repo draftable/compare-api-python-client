@@ -1,0 +1,13 @@
+# Commits which should be ignored by git-blame
+
+# To use this feature you must have at least Git 2.23.
+#
+# On the command-line explicitly:
+# git blame --ignore-revs-file .git-blame-ignore-revs <path>
+#
+# By default in this repository:
+# git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Reformatting with Black
+40daaaadc431914ce0061137b5e5e013ed61e578
+db3b5512478e262250d1be47e16be65672c26eb5
