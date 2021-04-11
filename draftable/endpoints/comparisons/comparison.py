@@ -46,7 +46,9 @@ class ComparisonSide(object):
     def __repr__(self):
         # type: () -> str
         return "ComparisonSide(file_type={}, source_url={}, display_name={})".format(
-            repr(self.file_type), repr(self.source_url), repr(self.display_name),
+            repr(self.file_type),
+            repr(self.source_url),
+            repr(self.display_name),
         )
 
 

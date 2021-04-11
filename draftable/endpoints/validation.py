@@ -34,12 +34,7 @@ _allowed_file_types = {
     "ppt",
 }
 
-_allowed_kinds = (
-    'single_page',
-    'combined',
-    'left'
-    'right'
-)
+_allowed_kinds = ("single_page", "combined", "left" "right")
 
 
 def validate_identifier(identifier):
@@ -169,7 +164,5 @@ def validate_export_kind(kind):
         raise InvalidArgument("kind", "`kind` cannot be empty.")
     munged_kind = str(kind).lower()
     if munged_kind not in _allowed_kinds:
-        raise InvalidArgument(
-            "kind", '"{}" is not a valid file type'.format(kind)
-        )
+        raise InvalidArgument("kind", '"{}" is not a valid file type'.format(kind))
     return munged_kind

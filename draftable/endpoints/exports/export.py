@@ -11,7 +11,6 @@ except ImportError:
     pass
 
 
-
 class Export(object):
     def __init__(
         self,
@@ -87,6 +86,7 @@ class Export(object):
             repr(self.kind),
             repr(self.error_message),
         )
+
 
 def export_from_response(data):
     # type: (dict) -> Export

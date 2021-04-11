@@ -157,8 +157,7 @@ def create_client(args):
 
 
 def with_std_options(arg_parser):
-    """Embellish the provided `arg_parser` with standard options.
-    """
+    """Embellish the provided `arg_parser` with standard options."""
     arg_parser.add_argument(
         "-a",
         "--account",
@@ -197,8 +196,7 @@ def with_std_options(arg_parser):
 
 
 def default_comparison_display(comp, out=sys.stdout, position=None):
-    """Print a comparison to stdout
-    """
+    """Print a comparison to stdout"""
     out.write("Comparison")
     if position is not None:
         out.write(" %s" % position)
@@ -445,8 +443,7 @@ ALIASES = {
 
 
 def make_usage(template, command_map, alias_map):
-    """Generate the usage doc based on configured commands and aliases
-    """
+    """Generate the usage doc based on configured commands and aliases"""
 
     def format_command_info(command_name):
         func = command_map[command_name]

@@ -12,8 +12,9 @@ from draftable.utilities import aware_datetime_to_timestamp
 
 @pytest.fixture
 def client():
-    return Client(os.environ['DRAFTABLE_TEST_ACCOUNT_ID'],
-                  os.environ['DRAFTABLE_TEST_AUTH_TOKEN'])
+    return Client(
+        os.environ["DRAFTABLE_TEST_ACCOUNT_ID"], os.environ["DRAFTABLE_TEST_AUTH_TOKEN"]
+    )
 
 
 @pytest.fixture
@@ -88,16 +89,17 @@ def test_comparison_viewer_url():
         == expected + "&wait"
     )
 
+
 def test_comparison_list(comparisons):
     comparisons.all()
 
 
 def test_create_retrieve_export_delete(comparisons, exports):
     comparison = comparisons.create(
-        left='https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf',
-        right='https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
+        left="https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf",
+        right="https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf",
     )
-    assert not comparison.ready, 'We do not expect the comparison to be ready yet'
+    assert not comparison.ready, "We do not expect the comparison to be ready yet"
     assert not comparison.failed
 
     while True:
@@ -120,26 +122,24 @@ def test_create_retrieve_export_delete(comparisons, exports):
 
 def test_create_from_files(comparisons, exports):
     comparison = comparisons.create(
-        left='test-files/hello.pdf',
-        right='test-files/hello.pdf',
-        expires=datetime.datetime.now() + datetime.timedelta(days=1)
+        left="test-files/hello.pdf",
+        right="test-files/hello.pdf",
+        expires=datetime.datetime.now() + datetime.timedelta(days=1),
     )
     assert not comparison.failed
 
 
 def test_create_with_sides(comparisons, exports):
     comparison = comparisons.create(
-            left=make_side(
-                'test-files/hello.pdf',
-            file_type='pdf',
-            display_name='Hello.pdf'
+        left=make_side(
+            "test-files/hello.pdf", file_type="pdf", display_name="Hello.pdf"
         ),
         right=make_side(
-            'https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf',
-            file_type='pdf',
-            display_name='Right.pdf'
+            "https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf",
+            file_type="pdf",
+            display_name="Right.pdf",
         ),
         identifier=generate_identifier(),
-        expires=timedelta(hours=1)
+        expires=timedelta(hours=1),
     )
     assert not comparison.failed
