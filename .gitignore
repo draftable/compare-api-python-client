@@ -39,14 +39,15 @@ pip-wheel-metadata/
 __pycache__/
 venv/
 
-# Rope
-.ropeproject/
-
 # Testing
 .coverage
 .pytest_cache/
 .tox/
 htmlcov/
+
+# Tooling
+.mypy_cache/
+.ropeproject/
 
 # Vim
 .netrwhist

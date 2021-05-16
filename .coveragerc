@@ -1,8 +1,9 @@
 [run]
 # Packages or directories to measure
-source = draftable
+source =
+    draftable
 
-# Exclude test files
+# File name patterns to exclude
 omit =
    */commands/*.py
    */test_*.py
