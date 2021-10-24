@@ -31,6 +31,9 @@ jobs:
     - name: Python 3.9
       python: '3.9'
       env: TOXENV=py39,coverage,codecov
+    - name: Python 3.10
+      python: '3.10'
+      env: TOXENV=py310,coverage,codecov
 
 install:
   - pip install tox
