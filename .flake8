@@ -12,10 +12,15 @@ exclude =
 ignore =
     # Whitespace before ':'
     # Black compatibility
-    E203
+    E203,
     # Line break occurred before a binary operator
     # Black compatibility
     W503
+
+# Glob patterns of files to exclude from specific checks
+per-file-ignores =
+    # Module imported but unused
+    __init__.py:F401
 
 # Maximum McCabe complexity
 max-complexity = 25
