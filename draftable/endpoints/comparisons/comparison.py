@@ -3,7 +3,6 @@ from datetime import datetime
 from ...utilities.timestamp import parse_datetime
 
 try:
-    # noinspection PyUnresolvedReferences
     from typing import Optional
 except ImportError:
     pass
@@ -51,6 +50,8 @@ class ComparisonSide(object):
 
 
 class Comparison(object):
+    _DATE_FORMAT_STR = "%Y-%m-%dT%H:%M:%SZ"
+
     def __init__(
         self,
         identifier,  # type: str
@@ -127,21 +128,32 @@ class Comparison(object):
 
     def __str__(self):
         # type: () -> str
+
+        creation_time_str = self.creation_time.strftime(self._DATE_FORMAT_STR)
+
+        expiry_time_str = None
+        if self.expiry_time:
+            expiry_time_str = self.expiry_time.strftime(self._DATE_FORMAT_STR)
+
+        ready_time_str = None
+        if self.ready_time:
+            ready_time_str = self.ready_time.strftime(self._DATE_FORMAT_STR)
+
+        error_message_str = None
+        if self.error_message is not None:
+            error_message_str = f"<{len(self.error_message)} chars>"
+
         return "Comparison(identifier={}, left={}, right={}, public={}, creation_time={}, expiry_time={}, ready={}, ready_time={}, failed={}, error_message={})".format(
             repr(self.identifier),
             str(self.left),
             str(self.right),
             str(self.public),
-            self.creation_time.strftime("%Y-%m-%dT%H:%M:%SZ"),
-            self.expiry_time.strftime("%Y-%m-%dT%H:%M:%SZ")
-            if self.expiry_time
-            else None,
+            creation_time_str,
+            expiry_time_str,
             str(self.ready),
-            self.ready_time.strftime("%Y-%m-%dT%H:%M:%SZ") if self.ready_time else None,
+            ready_time_str,
             str(self.failed),
-            "<{} chars>".format(len(self.error_message))
-            if self.error_message is not None
-            else None,
+            error_message_str,
         )
 
     def __repr__(self):

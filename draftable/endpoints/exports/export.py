@@ -1,10 +1,6 @@
-from datetime import datetime
-
-from ...utilities.timestamp import parse_datetime
 from .. import validation
 
 try:
-    # noinspection PyUnresolvedReferences
     from typing import Optional
 except ImportError:
     pass

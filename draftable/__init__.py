@@ -1,4 +1,3 @@
-# noinspection PyUnresolvedReferences
 from .client import PRODUCTION_CLOUD_BASE_URL, Client
 from .endpoints.comparisons.identifier import generate_identifier
 from .endpoints.comparisons.sides import make_side

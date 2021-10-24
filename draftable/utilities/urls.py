@@ -1,6 +1,5 @@
 try:
-    # noinspection PyUnresolvedReferences
-    from typing import Any, Optional, Tuple, Union
+    from typing import Union
 except ImportError:
     pass
 
@@ -23,7 +22,7 @@ class Url(object):
     """
 
     def __init__(self, base_url, *parts):
-        # type: (Union[str, Url]) -> None
+        # type: (Union[str, Url], str) -> None
         self.__url = str(base_url) + self.to_append(
             *parts
         )  # the str(base_url) handles the case that `base_url` is already a Url

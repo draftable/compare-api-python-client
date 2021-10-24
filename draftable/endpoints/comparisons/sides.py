@@ -2,15 +2,14 @@ from os.path import basename, isfile, join, splitext
 
 from six import string_types
 
-# Note: `urllib3` is a required dependency of `requests`
+# urllib3 is a required dependency of requests
 from urllib3.util import parse_url
 
 from .. import validation
-from ..exceptions import InvalidPath
+from ..exceptions import InvalidArgument, InvalidPath
 
 try:
-    # noinspection PyUnresolvedReferences
-    from typing import Any, List, Optional, Union
+    from typing import Any, Optional, Union
 except ImportError:
     pass
 
@@ -33,7 +32,6 @@ class Side(object):
 
 
 class FileSide(Side):
-    # noinspection PyShadowingBuiltins
     def __init__(self, file, file_type, display_name=None):
         # type: (Any, str, Optional[str]) -> None
         self.__file = validation.validate_file(file)
@@ -68,10 +66,10 @@ class URLSide(Side):
 
 
 def data_from_side(side_name, side):
+    # type: (str, Union[str, FileSide, URLSide]) -> dict
     """Given a side (which may be a string or Side object, return the data needed
     for a comparison POST request as a dictionary.
     """
-    # type: (str, Union[str, FileSide, URLSide]) -> dict
 
     if isinstance(side, string_types):
         # User has provided a file path or URL.
@@ -116,6 +114,7 @@ def side_from_file_path(file_path, file_type=None, display_name=None):
 
 
 def make_side(url_or_file_path, file_type=None, display_name=None):
+    # type: (str, Optional[str], Optional[str]) -> Side
     """
     Parsing the URL or file path and looking for the file extension is "ok"
     but works only based on human conventions. The more industrial strength
@@ -126,7 +125,6 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
     :param file_type: a string like "pdf", "docx", etc, or "guess" (or None) to detect.
     :return: a Side object
     """
-    # type: (str, Optional[str])
     guess_type = file_type is None or file_type == "guess"
 
     if url_or_file_path.startswith("http"):
@@ -144,7 +142,7 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
         display_name = display_name or basename(url.path)
         return URLSide(url.url, file_type, display_name)
 
-    elif url_or_file_path.startswith("file:"):
+    if url_or_file_path.startswith("file:"):
         url = parse_url(url_or_file_path)
         if url.host:
             raise InvalidPath(
@@ -162,13 +160,12 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
 
         return side_from_file_path(url.path, file_type, display_name)
 
-    elif isfile(url_or_file_path):
+    if isfile(url_or_file_path):
         return side_from_file_path(url_or_file_path, file_type, display_name)
 
-    else:
-        raise ValueError(
-            "Path is not a URL and not a file that exists: {}".format(url_or_file_path)
-        )
+    raise ValueError(
+        "Path is not a URL and not a file that exists: {}".format(url_or_file_path)
+    )
 
 
 def guess_file_type_from_path(path):

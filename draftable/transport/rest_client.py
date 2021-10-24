@@ -3,7 +3,6 @@ import requests
 from ..utilities import Url
 
 try:
-    # noinspection PyUnresolvedReferences
     from typing import Any, Optional, Tuple, Union
 except ImportError:
     pass

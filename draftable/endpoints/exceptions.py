@@ -3,7 +3,6 @@ import functools
 import requests
 
 try:
-    # noinspection PyUnresolvedReferences
     from typing import Union
 except ImportError:
     pass

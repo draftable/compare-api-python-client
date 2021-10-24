@@ -14,8 +14,7 @@ from .comparison import Comparison, comparison_from_response
 from .sides import FileSide, URLSide, data_from_side
 
 try:
-    # noinspection PyUnresolvedReferences
-    from typing import Any, List, Optional, Union
+    from typing import List, Optional, Union
 except ImportError:
     pass
 
@@ -51,6 +50,7 @@ class ComparisonsEndpoint(object):
 
     @handle_request_exception
     def create(self, left, right, identifier=None, public=False, expires=None):
+        # type: (Union[str, FileSide, URLSide], Union[str, FileSide, URLSide], Optional[str], bool, Optional[Union[datetime, timedelta]]) -> Comparison
         """Creates a new comparison with the Draftable API.
 
         :param left: a string representing URL or file path, *or* a Side object that includes file type code and display name.
@@ -60,7 +60,6 @@ class ComparisonsEndpoint(object):
         :param expires: None for never expires, or a datetime/timedelta object
         :return: the newly created comparison
         """
-        # type: (Union[str, FileSide, URLSide], Union[str, FileSide, URLSide], Optional[str], bool, Optional[Union[datetime, timedelta]]) -> Comparison
         if identifier is not None:
             identifier = validate_identifier(identifier)
         if expires is not None:

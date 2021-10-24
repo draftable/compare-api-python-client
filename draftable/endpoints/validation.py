@@ -6,7 +6,6 @@ from draftable.endpoints.exceptions import InvalidArgument
 from draftable.utilities import timezone
 
 try:
-    # noinspection PyUnresolvedReferences
     from typing import Any, Union
 except ImportError:
     pass
@@ -14,6 +13,7 @@ except ImportError:
 _valid_identifier_characters = set(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._"
 )
+
 _MIN_ID_LENGTH = 1
 _MAX_ID_LENGTH = 1024
 
@@ -31,7 +31,7 @@ _allowed_file_types = {
     "ppt",
 }
 
-_allowed_kinds = ("single_page", "combined", "left" "right")
+_allowed_kinds = ("single_page", "combined", "left", "right")
 
 
 def validate_identifier(identifier):
@@ -112,7 +112,7 @@ def validate_url(url):
 
 
 def _validate_datetime_or_timedelta(parameter_name, value):
-    # type: (Union[datetime, timedelta]) -> datetime
+    # type: (str, Union[datetime, timedelta]) -> datetime
     if isinstance(value, timedelta):
         if value.total_seconds() <= 0:
             raise InvalidArgument(

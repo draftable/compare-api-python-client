@@ -41,7 +41,7 @@ class Client(object):
 
     @verify_ssl.setter
     def verify_ssl(self, v):
-        # type: (v) -> None
+        # type: (bool) -> None
         self.__client.verify_ssl = v
 
     def __repr__(self):

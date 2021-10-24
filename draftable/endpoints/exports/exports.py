@@ -6,8 +6,7 @@ from ..validation import validate_export_kind, validate_identifier
 from .export import Export, export_from_response
 
 try:
-    # noinspection PyUnresolvedReferences
-    from typing import Any, List, Optional, Union
+    from typing import Optional, Union
 except ImportError:
     pass
 
@@ -36,16 +35,16 @@ class ExportsEndpoint(object):
 
     @handle_request_exception
     def create(self, comparison, kind="single_page"):
+        # type: (Union[str, Comparison], Optional[str]) -> Export
         """Creates a new export with the Draftable API.
 
         :param comparison: comparison object to be exported, or the identifier of a comparison.
         :param comparison: as for "left".
         :return: the newly created export
         """
-        # type: (Union[str, Comparison], Optional[str]) -> Export
-        if type(comparison) is str:
+        if isinstance(comparison, str):
             comparison_identifier = validate_identifier(comparison)
-        elif type(comparison) is Comparison:
+        elif isinstance(comparison, Comparison):
             comparison_identifier = comparison.identifier
         else:
             raise TypeError(
