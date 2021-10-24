@@ -1,4 +1,5 @@
-from os.path import dirname, isfile, join
+from os.path import isfile, join
+from pathlib import Path
 
 import pytest
 
@@ -13,9 +14,7 @@ from .sides import (
     make_side,
 )
 
-root_dir = dirname(
-    dirname(dirname(dirname(__file__)))
-)  # better with pathlib in Python 3.4+
+root_dir = Path(__file__).parents[3]  # HACK
 
 
 def _get_test_file_path(p):

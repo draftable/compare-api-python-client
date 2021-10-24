@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from os.path import basename, isfile, join, splitext
 
 from six import string_types
@@ -7,12 +5,12 @@ from six import string_types
 # Note: `urllib3` is a required dependency of `requests`
 from urllib3.util import parse_url
 
-from ..exceptions import InvalidPath
 from .. import validation
+from ..exceptions import InvalidPath
 
 try:
     # noinspection PyUnresolvedReferences
-    from typing import List, Union, Optional, Any
+    from typing import Any, List, Optional, Union
 except ImportError:
     pass
 

@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from .endpoints import ComparisonsEndpoint, ExportsEndpoint
 from .transport import RESTClient
 from .utilities.urls import Url

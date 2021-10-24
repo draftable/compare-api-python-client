@@ -1,6 +1,10 @@
-from __future__ import absolute_import, division
-
 from datetime import datetime, timedelta
+
+from draftable.endpoints.validation import (
+    validate_expires,
+    validate_identifier,
+    validate_valid_until,
+)
 
 from ...transport import RESTClient
 from ...utilities import Url, aware_datetime_to_timestamp
@@ -8,15 +12,10 @@ from ..exceptions import handle_request_exception
 from . import signing
 from .comparison import Comparison, comparison_from_response
 from .sides import FileSide, URLSide, data_from_side
-from draftable.endpoints.validation import (
-    validate_expires,
-    validate_identifier,
-    validate_valid_until,
-)
 
 try:
     # noinspection PyUnresolvedReferences
-    from typing import List, Union, Optional, Any
+    from typing import Any, List, Optional, Union
 except ImportError:
     pass
 

@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 # noinspection PyUnresolvedReferences
 from .client import PRODUCTION_CLOUD_BASE_URL, Client
 from .endpoints.comparisons.identifier import generate_identifier

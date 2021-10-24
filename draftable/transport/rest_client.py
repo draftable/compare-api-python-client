@@ -1,12 +1,10 @@
-from __future__ import absolute_import
-
 import requests
 
 from ..utilities import Url
 
 try:
     # noinspection PyUnresolvedReferences
-    from typing import Any, Union, Tuple, Optional
+    from typing import Any, Optional, Tuple, Union
 except ImportError:
     pass
 

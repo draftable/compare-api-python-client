@@ -1,15 +1,13 @@
-from __future__ import absolute_import, division
-
-from .export import Export, export_from_response
-from ..exceptions import handle_request_exception
-from ..validation import validate_identifier, validate_export_kind
 from ...transport import RESTClient
 from ...utilities import Url
 from ..comparisons.comparison import Comparison
+from ..exceptions import handle_request_exception
+from ..validation import validate_export_kind, validate_identifier
+from .export import Export, export_from_response
 
 try:
     # noinspection PyUnresolvedReferences
-    from typing import List, Union, Optional, Any
+    from typing import Any, List, Optional, Union
 except ImportError:
     pass
 

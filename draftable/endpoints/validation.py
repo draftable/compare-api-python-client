@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from datetime import datetime, timedelta
 
 import requests
@@ -10,7 +8,7 @@ from draftable.utilities import timezone
 
 try:
     # noinspection PyUnresolvedReferences
-    from typing import Union, Any
+    from typing import Any, Union
 except ImportError:
     pass
 

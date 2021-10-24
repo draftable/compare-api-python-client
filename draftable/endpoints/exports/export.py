@@ -1,8 +1,7 @@
-from __future__ import absolute_import
-
 from datetime import datetime
-from .. import validation
+
 from ...utilities.timestamp import parse_datetime
+from .. import validation
 
 try:
     # noinspection PyUnresolvedReferences

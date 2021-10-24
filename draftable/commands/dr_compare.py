@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-
 import argparse
+import configparser
 import datetime
 import os
 import sys
@@ -10,12 +9,6 @@ import sys
 from draftable import Client as DraftableClient
 from draftable.endpoints.comparisons.sides import make_side
 from draftable.endpoints.exceptions import InvalidArgument, InvalidPath, NotFound
-
-try:
-    import configparser  # Python 3
-except ImportError:
-    import ConfigParser as configparser  # Python 2
-
 
 DESCRIPTION = "Create and manage Draftable.com comparisons on the command line"
 
@@ -105,20 +98,13 @@ def get_connection_args(name):
     config = configparser.ConfigParser()
     config.read(ini_path)
 
-    # Only Python 3 supports "if name in config"
-    if not config.has_section(name):
+    if not name in config:
         raise SetupError(
             "Requested environment '%s' but config file (%s) does not define that name."
             % (name, ini_path)
         )
 
-    try:
-        base_url = config.get(
-            name, "base_url"
-        )  # Python 3 allows `fallback=None`, but not python 2
-    except configparser.NoOptionError:
-        # no base_url, that's fine
-        base_url = None
+    base_url = config.get(name, "base_url", fallback=None)
 
     return (
         config.get(name, "account"),
