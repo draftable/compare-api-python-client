@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 import requests
-from six import string_types
 
 from draftable.endpoints.exceptions import InvalidArgument
 from draftable.utilities import timezone
@@ -39,7 +38,7 @@ def validate_identifier(identifier):
     # type: (str) -> str
     if not identifier:
         raise InvalidArgument("identifier", "`identifier` cannot be empty.")
-    if not isinstance(identifier, string_types):
+    if not isinstance(identifier, str):
         raise InvalidArgument(
             "identifier", "`identifier` must be a string (of type `str`)."
         )
@@ -95,7 +94,7 @@ def validate_url(url):
     # type: (str) -> str
     if not url:
         raise InvalidArgument("url", "`url` cannot be empty.")
-    if not isinstance(url, string_types):
+    if not isinstance(url, str):
         raise InvalidArgument("url", "`url` must be a string (of type `str`).")
     if len(url) > 2048:
         raise InvalidArgument("url", "`url` must be no longer than 2048 characters.")
