@@ -19,9 +19,6 @@ jobs:
     - name: Python 2.7
       python: '2.7'
       env: TOXENV=py27,coverage,codecov
-    - name: Python 3.5
-      python: '3.5'
-      env: TOXENV=py35,coverage,codecov
     - name: Python 3.6
       python: '3.6'
       env: TOXENV=py36,coverage,codecov
