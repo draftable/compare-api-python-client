@@ -360,7 +360,7 @@ Instances of the `ExportsEndpoint` class provide the following methods for expor
 - `kind`  
   The type of export to perfom (see below)
 
-The follow export kinds are supported for the `kind` parameter:
+The following export kinds are supported for the `kind` parameter:
 
 - `single_page`  
   Exports only the right-side of the comparison with highlights and deletion markers
