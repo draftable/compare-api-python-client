@@ -32,7 +32,7 @@ class Url(object):
         return self.__url
 
     def __repr__(self):
-        return "Url(%r)" % self.__url
+        return f"Url({self.__url!r})"
 
     def __truediv__(self, key):
         """Append a single path item to this URL."""

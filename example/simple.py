@@ -29,9 +29,7 @@ if not account_id or not auth_token:
     sys.exit(1)
 
 if base_url and not base_url.endswith("/v1"):
-    sys.stderr.write(
-        'Value for DR_BASE_URL is "%s" but must end with "/v1"\n' % base_url
-    )
+    sys.stderr.write(f'Value for DR_BASE_URL is "{base_url}" but must end with "/v1"\n')
     sys.exit(1)
 
 draftable_client = draftable.Client(account_id, auth_token, base_url)
@@ -47,9 +45,9 @@ comparison = comparisons.create(
     #   right=comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf', 'pdf'),
 )
 
-print("Created comparison:\n  %s" % comparison)
-print("  - Public URL: %s" % comparisons.public_viewer_url(comparison.identifier))
-print("  - Signed URL: %s" % comparisons.signed_viewer_url(comparison.identifier))
+print(f"Created comparison:\n  {comparison}")
+print(f"  - Public URL: {comparisons.public_viewer_url(comparison.identifier)}")
+print(f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}")
 
 
 # Alternatively, be explicit about "type" (RTF, PDF, etc) and display name:
@@ -64,6 +62,6 @@ comparison = comparisons.create(
     ),
 )
 
-print("\nCreated with make_side:\n  %s" % comparison)
-print("  - Public URL: %s" % comparisons.public_viewer_url(comparison.identifier))
-print("  - Signed URL: %s" % comparisons.signed_viewer_url(comparison.identifier))
+print(f"\nCreated with make_side:\n  {comparison}")
+print(f"  - Public URL: {comparisons.public_viewer_url(comparison.identifier)}")
+print(f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}")

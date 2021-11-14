@@ -92,7 +92,7 @@ def get_connection_args(name):
     ini_path = os.path.join(os.path.expanduser("~"), ".draftable")
     if not os.path.isfile(ini_path):
         raise SetupError(
-            "Requested environment '%s' but missing config file: %s" % (name, ini_path)
+            f"Requested environment '{name}' but missing config file: {ini_path}"
         )
 
     config = configparser.ConfigParser()
@@ -100,8 +100,7 @@ def get_connection_args(name):
 
     if not name in config:
         raise SetupError(
-            "Requested environment '%s' but config file (%s) does not define that name."
-            % (name, ini_path)
+            f"Requested environment '{name}' but config file ({ini_path}) does not define that name."
         )
 
     base_url = config.get(name, "base_url", fallback=None)
@@ -185,7 +184,7 @@ def default_comparison_display(comp, out=sys.stdout, position=None):
     """Print a comparison to stdout"""
     out.write("Comparison")
     if position is not None:
-        out.write(" %s" % position)
+        out.write(" f{position}")
     out.write(f" identifier: {comp.identifier}\n")
     out.write(f"  ready:       {comp.ready}\n")
     out.write(f"  failed:      {comp.failed}\n")
@@ -258,11 +257,11 @@ def create_comparison(system_args, prog, cmd_name):
     expires = datetime.timedelta(minutes=args.expiry_mins) if args.expiry_mins else None
 
     print("Create:")
-    print("  identifier: %s" % identifier)
-    print("  public: %s" % public)
-    print("  expires: %s" % expires)
-    print("  left: %s" % left)
-    print("  right: %s" % right)
+    print(f"  identifier: {identifier}")
+    print(f"  public: {public}")
+    print(f"  expires: {expires}")
+    print(f"  left: {left}")
+    print(f"  right: {right}")
     print("  ...")
     comp = client.comparisons.create(left, right, identifier, public, expires)
 
@@ -274,12 +273,11 @@ def create_comparison(system_args, prog, cmd_name):
 def print_basic_urls(client, comp):
     url_expiry = datetime.timedelta(minutes=30)
     print("\nURLs:")
-    print("  public URL:  %s" % client.comparisons.public_viewer_url(comp.identifier))
+    print(f"  public URL:  {client.comparisons.public_viewer_url(comp.identifier)}")
     print(
-        "  signed URL:  %s"
-        % client.comparisons.signed_viewer_url(comp.identifier, url_expiry)
+        f"  signed URL:  {client.comparisons.signed_viewer_url(comp.identifier, url_expiry)}"
     )
-    print("     expires:  %s" % url_expiry)
+    print(f"     expires:  {url_expiry}")
 
 
 def list_all_comparisons(system_args, prog, cmd_name):
@@ -297,17 +295,16 @@ def list_all_comparisons(system_args, prog, cmd_name):
     comparisons = client.comparisons.all()
     num_comparisons = len(comparisons)
 
-    print("Account %s has %d comparison(s):" % (client.account_id, num_comparisons))
+    print(f"Account {client.account_id} has {num_comparisons:d} comparison(s):")
     for i, comp in enumerate(comparisons, 1):
-        display(comp, position="%d of %d" % (i, num_comparisons))
+        display(comp, position=f"{i:d} of {num_comparisons:d}")
 
 
 def list_one_comparison(system_args, prog, cmd_name):
     """Retrieve and display specific comparison or comparisons."""
     arg_parser = with_std_options(
         argparse.ArgumentParser(
-            prog="%s %s"
-            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            prog=f"{prog} {cmd_name}",  # so "-h / --help" shows "dr-compare <cmd>"
             description=list_one_comparison.__doc__,
         )
     )
@@ -323,18 +320,17 @@ def list_one_comparison(system_args, prog, cmd_name):
     for i, identifier in enumerate(args.identifiers, 1):
         try:
             comp = client.comparisons.get(identifier)
-            display(comp, position="%d of %d" % (i, num_comparisons))
+            display(comp, position=f"{i:d} of {num_comparisons:d}")
             print_basic_urls(client, comp)
         except NotFound:
-            print("Comparison not found with identifier: %s" % identifier)
+            print(f"Comparison not found with identifier: {identifier}")
 
 
 def delete_comparison(system_args, prog, cmd_name):
     """Delete a specific comparison."""
     arg_parser = with_std_options(
         argparse.ArgumentParser(
-            prog="%s %s"
-            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            prog=f"{prog} {cmd_name}",  # so "-h / --help" shows "dr-compare <cmd>"
             description=list_one_comparison.__doc__,
         )
     )
@@ -349,15 +345,14 @@ def delete_comparison(system_args, prog, cmd_name):
     try:
         client.comparisons.delete(identifier)
     except NotFound:
-        print("Comparison not found with identifier: %s" % identifier)
+        print(f"Comparison not found with identifier: {identifier}")
 
 
 def show_public_url(system_args, prog, cmd_name):
     """Generate a public (unsigned) URL to view a specific comparison."""
     arg_parser = with_std_options(
         argparse.ArgumentParser(
-            prog="%s %s"
-            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            prog=f"{prog} {cmd_name}",  # so "-h / --help" shows "dr-compare <cmd>"
             description=list_one_comparison.__doc__,
         )
     )
@@ -376,8 +371,7 @@ def show_signed_url(system_args, prog, cmd_name):
     """Generate a signed URL to view a specific comparison."""
     arg_parser = with_std_options(
         argparse.ArgumentParser(
-            prog="%s %s"
-            % (prog, cmd_name),  # so that "-h/--help" shows "dr-compare <cmd>"
+            prog=f"{prog} {cmd_name}",  # so "-h / --help" shows "dr-compare <cmd>"
             description=list_one_comparison.__doc__,
         )
     )
@@ -434,9 +428,9 @@ def make_usage(template, command_map, alias_map):
 
         # Some commands (but not all) have aliases
         aliases = [k for k in alias_map.keys() if alias_map[k] == command_name]
-        aliases = (
-            "\n           Aliases: %s" % " ".join(sorted(aliases)) if aliases else ""
-        )
+        aliases = " ".join(sorted(aliases)) if aliases else ""
+        aliases = f"\n           Aliases: {aliases}"
+
         return f"  {command_name:8s} {func.__doc__}{aliases}\n"
 
     command_info_parts = map(
@@ -463,10 +457,7 @@ def dr_compare_main(system_args=None):
     command = COMMANDS.get(command_name)
 
     if not command:
-        err = "Invalid command '%s'. For list of commands: %s -h\n" % (
-            command_name,
-            arg_parser.prog,
-        )
+        err = f"Invalid command '{command_name}'. For list of commands: {arg_parser.prog} -h\n"
         arg_parser.error(err)
 
     command(system_args[2:], arg_parser.prog, command_name)
@@ -476,5 +467,5 @@ if __name__ == "__main__":
     try:
         dr_compare_main(sys.argv)
     except SetupError as ex:
-        sys.stderr.write("Error: %s\n" % ex)
+        sys.stderr.write(f"Error: {ex}\n")
         sys.exit(1)

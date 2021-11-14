@@ -65,29 +65,31 @@ def test_comparison_viewer_url():
 
     c = Client(account_id, auth_token, base_url)
 
-    assert c.comparisons.public_viewer_url(
-        identifier
-    ) == base_url + "/comparisons/viewer/%s/%s" % (account_id, identifier)
-    assert c.comparisons.public_viewer_url(
-        identifier, wait=True
-    ) == base_url + "/comparisons/viewer/%s/%s?wait" % (account_id, identifier)
+    assert (
+        c.comparisons.public_viewer_url(identifier)
+        == f"{base_url}/comparisons/viewer/{account_id}/{identifier}"
+    )
+    assert (
+        c.comparisons.public_viewer_url(identifier, wait=True)
+        == f"{base_url}/comparisons/viewer/{account_id}/{identifier}?wait"
+    )
 
     when = validate_valid_until(timedelta(minutes=5))
     expires = aware_datetime_to_timestamp(when)
+
     signature = signing.get_viewer_url_signature(
         account_id, auth_token, identifier, expires
     )
-    expected = base_url + "/comparisons/viewer/%s/%s?valid_until=%s&signature=%s" % (
-        account_id,
-        identifier,
-        expires,
-        signature,
+
+    expected = (
+        f"{base_url}/comparisons/viewer/{account_id}/{identifier}"
+        f"?valid_until={expires}&signature={signature}"
     )
 
     assert c.comparisons.signed_viewer_url(identifier, when) == expected
     assert (
         c.comparisons.signed_viewer_url(identifier, when, wait=True)
-        == expected + "&wait"
+        == f"{expected}&wait"
     )
 
 
