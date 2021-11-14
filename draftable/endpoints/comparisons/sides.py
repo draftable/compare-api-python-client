@@ -35,7 +35,7 @@ class FileSide(Side):
     def __init__(self, file, file_type, display_name=None):
         # type: (Any, str, Optional[str]) -> None
         self.__file = validation.validate_file(file)
-        super(FileSide, self).__init__(file_type=file_type, display_name=display_name)
+        super().__init__(file_type=file_type, display_name=display_name)
 
     @property
     def file(self):
@@ -50,7 +50,7 @@ class URLSide(Side):
     def __init__(self, url, file_type, display_name=None):
         # type: (str, str, Optional[str]) -> None
         self.__url = validation.validate_url(url)
-        super(URLSide, self).__init__(file_type=file_type, display_name=display_name)
+        super().__init__(file_type=file_type, display_name=display_name)
 
     @property
     def url(self):

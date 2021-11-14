@@ -19,7 +19,7 @@ class InvalidPath(Exception):
 class InvalidArgument(EndpointException):
     def __init__(self, argument_name, message):
         # type: (str, str) -> None
-        super(InvalidArgument, self).__init__(
+        super().__init__(
             f"An invalid value was received for `{argument_name}`: {message}"
         )
 
@@ -29,9 +29,7 @@ class BadRequest(EndpointException):
         # type: (int, Union[dict, list]) -> None
         self.status_code = status_code
         self.response = response
-        super(BadRequest, self).__init__(
-            f"Bad request: status={status_code}, response={response}"
-        )
+        super().__init__(f"Bad request: status={status_code}, response={response}")
 
 
 class NotFound(BadRequest):
