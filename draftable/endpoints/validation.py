@@ -1,9 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import requests
 
 from draftable.endpoints.exceptions import InvalidArgument
-from draftable.utilities import timezone
 
 try:
     from typing import Any, Union
