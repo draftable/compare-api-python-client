@@ -12,7 +12,7 @@ Draftable Compare API - Python Client Library
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/draftable/compare-api-python-client)
 
-A thin Python 2/3 client for the [Draftable API](https://draftable.com/rest-api) which wraps all available endpoints and handles authentication and signing.
+A thin Python client for the [Draftable API](https://draftable.com/rest-api) which wraps all available endpoints and handles authentication and signing.
 
 See the [full API documentation](https://api.draftable.com) for an introduction to the API, usage notes, and other reference material.
 
