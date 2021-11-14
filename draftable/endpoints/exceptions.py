@@ -20,9 +20,7 @@ class InvalidArgument(EndpointException):
     def __init__(self, argument_name, message):
         # type: (str, str) -> None
         super(InvalidArgument, self).__init__(
-            "An invalid value was received for `{argument}`: {message}".format(
-                argument=argument_name, message=message
-            )
+            f"An invalid value was received for `{argument_name}`: {message}"
         )
 
 
@@ -32,9 +30,7 @@ class BadRequest(EndpointException):
         self.status_code = status_code
         self.response = response
         super(BadRequest, self).__init__(
-            "Bad request: status={status}, response={response}".format(
-                status=status_code, response=response
-            )
+            f"Bad request: status={status_code}, response={response}"
         )
 
 

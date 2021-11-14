@@ -46,8 +46,12 @@ class Client(object):
 
     def __repr__(self):
         # type: () -> str
-        return "Client(account_id={}, auth_token={}, base_url={})".format(
-            repr(self.account_id), repr(self.auth_token), repr(self.base_url)
+        return (
+            "Client("
+            f"account_id={self.account_id!r}, "
+            f"auth_token={self.auth_token!r}, "
+            f"base_url={self.base_url!r}"
+            ")"
         )
 
 

@@ -32,20 +32,24 @@ class ComparisonSide(object):
 
     def __str__(self):
         # type: () -> str
-        return "{{file_type: {}{}{}}}".format(
-            repr(self.file_type),
-            ", source_url: {}".format(repr(self.source_url)) if self.source_url else "",
-            ", display_name: {}".format(repr(self.display_name))
-            if self.display_name
-            else "",
-        )
+        source_url = ""
+        if self.source_url:
+            source_url = f", source_url: {self.source_url!r}"
+
+        display_name = ""
+        if self.display_name:
+            display_name = f", display_name: {self.display_name!r}"
+
+        return f"{{file_type: {self.file_type!r}{source_url}{display_name}}}"
 
     def __repr__(self):
         # type: () -> str
-        return "ComparisonSide(file_type={}, source_url={}, display_name={})".format(
-            repr(self.file_type),
-            repr(self.source_url),
-            repr(self.display_name),
+        return (
+            "ComparisonSide("
+            f"file_type={self.file_type!r}, "
+            f"source_url={self.source_url!r}, "
+            f"display_name={self.display_name!r}"
+            ")"
         )
 
 
@@ -143,32 +147,36 @@ class Comparison(object):
         if self.error_message is not None:
             error_message_str = f"<{len(self.error_message)} chars>"
 
-        return "Comparison(identifier={}, left={}, right={}, public={}, creation_time={}, expiry_time={}, ready={}, ready_time={}, failed={}, error_message={})".format(
-            repr(self.identifier),
-            str(self.left),
-            str(self.right),
-            str(self.public),
-            creation_time_str,
-            expiry_time_str,
-            str(self.ready),
-            ready_time_str,
-            str(self.failed),
-            error_message_str,
+        return (
+            "Comparison("
+            f"identifier={self.identifier!r}, "
+            f"left={self.left!s}, "
+            f"right={self.right!s}, "
+            f"public={self.public!s}, "
+            f"creation_time={creation_time_str}, "
+            f"expiry_time={expiry_time_str}, "
+            f"ready={self.ready!s}, "
+            f"ready_time={ready_time_str}, "
+            f"failed={self.failed!s}, "
+            f"error_message={error_message_str}"
+            ")"
         )
 
     def __repr__(self):
         # type: () -> str
-        return "Comparison(identifier={}, left={}, right={}, public={}, creation_time={}, expiry_time={}, ready={}, ready_time={}, failed={}, error_message={})".format(
-            repr(self.identifier),
-            repr(self.left),
-            repr(self.right),
-            repr(self.public),
-            repr(self.creation_time),
-            repr(self.expiry_time),
-            repr(self.ready),
-            repr(self.ready_time),
-            repr(self.failed),
-            repr(self.error_message),
+        return (
+            "Comparison("
+            f"identifier={self.identifier!r}, "
+            f"left={self.left!r}, "
+            f"right={self.right!r}, "
+            f"public={self.public!r}, "
+            f"creation_time={self.creation_time!r}, "
+            f"expiry_time={self.expiry_time!r}, "
+            f"ready={self.ready!r}, "
+            f"ready_time={self.ready_time!r}, "
+            f"failed={self.failed!r}, "
+            f"error_message={self.error_message!r}"
+            ")"
         )
 
 

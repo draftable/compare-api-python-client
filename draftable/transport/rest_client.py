@@ -43,9 +43,9 @@ def _flatten_form_data(initial_data):
         if isinstance(value, dict):
             flattened_data, flattened_files = _flatten_form_data(value)
             for sub_key, sub_value in flattened_data.items():
-                data["{}.{}".format(key, sub_key)] = sub_value
+                data[f"{key}.{sub_key}"] = sub_value
             for sub_key, sub_file in flattened_files.items():
-                files["{}.{}".format(key, sub_key)] = sub_file
+                files[f"{key}.{sub_key}"] = sub_file
         else:
             if _is_file(value) or _is_file_tuple(value):
                 files[key] = value
@@ -73,7 +73,7 @@ class RESTClient(object):
         return self.__auth_token
 
     def __auth(self, r):
-        r.headers["Authorization"] = "Token {}".format(self.__auth_token)
+        r.headers["Authorization"] = f"Token {self.__auth_token}"
         return r
 
     def get(self, url, parameters=None):

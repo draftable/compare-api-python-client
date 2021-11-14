@@ -186,15 +186,15 @@ def default_comparison_display(comp, out=sys.stdout, position=None):
     out.write("Comparison")
     if position is not None:
         out.write(" %s" % position)
-    out.write(" identifier: {}\n".format(comp.identifier))
-    out.write("  ready:       {}\n".format(comp.ready))
-    out.write("  failed:      {}\n".format(comp.failed))
-    out.write("  error:       {}\n".format(comp.error_message))
-    out.write("  public:      {}\n".format(comp.public))
-    out.write("  created:     {}\n".format(comp.creation_time))
-    out.write("  expires:     {}\n".format(comp.expiry_time))
-    out.write("  left:        {}\n".format(comp.left))
-    out.write("  right:       {}\n".format(comp.right))
+    out.write(f" identifier: {comp.identifier}\n")
+    out.write(f"  ready:       {comp.ready}\n")
+    out.write(f"  failed:      {comp.failed}\n")
+    out.write(f"  error:       {comp.error_message}\n")
+    out.write(f"  public:      {comp.public}\n")
+    out.write(f"  created:     {comp.creation_time}\n")
+    out.write(f"  expires:     {comp.expiry_time}\n")
+    out.write(f"  left:        {comp.left}\n")
+    out.write(f"  right:       {comp.right}\n")
 
 
 def create_comparison(system_args, prog, cmd_name):
@@ -248,9 +248,7 @@ def create_comparison(system_args, prog, cmd_name):
         right = make_side(args.right, args.right_type)
     except InvalidArgument as ex:
         raise SetupError(
-            "{}. You may need to specify file type with --left-type or --right-type".format(
-                ex
-            )
+            f"{ex}. You may need to specify file type with --left-type or --right-type"
         )
     except InvalidPath as ex:
         raise SetupError(str(ex))
@@ -439,7 +437,7 @@ def make_usage(template, command_map, alias_map):
         aliases = (
             "\n           Aliases: %s" % " ".join(sorted(aliases)) if aliases else ""
         )
-        return "  {:8s} {}{}\n".format(command_name, func.__doc__, aliases)
+        return f"  {command_name:8s} {func.__doc__}{aliases}\n"
 
     command_info_parts = map(
         format_command_info, (name for name in sorted(command_map.keys()))

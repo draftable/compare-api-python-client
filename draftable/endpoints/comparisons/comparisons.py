@@ -95,15 +95,16 @@ class ComparisonsEndpoint(object):
     ):
         # type: (str, Union[datetime, timedelta], bool) -> str
         identifier = validate_identifier(identifier)
+
         valid_until_timestamp = aware_datetime_to_timestamp(
             validate_valid_until(valid_until)
         )
+
         signature = signing.get_viewer_url_signature(
             self.account_id, self.auth_token, identifier, valid_until_timestamp
         )
-        params = "?valid_until={valid_until}&signature={signature}{wait}".format(
-            valid_until=valid_until_timestamp,
-            signature=signature,
-            wait="&wait" if wait else "",
-        )
+
+        wait = "&wait" if wait else ""
+        params = f"?valid_until={valid_until_timestamp}&signature={signature}{wait}"
+
         return str(self.__url / "viewer" / self.account_id / identifier + params)

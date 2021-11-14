@@ -62,24 +62,28 @@ class Export(object):
 
     def __str__(self):
         # type: () -> str
-        return "Export(identifier={}, comparison_identifier={}, ready={}, failed={}, kind={}, error_message={})".format(
-            repr(self.identifier),
-            repr(self.comparison_identifier),
-            str(self.ready),
-            str(self.failed),
-            repr(self.kind),
-            repr(self.error_message),
+        return (
+            "Export("
+            f"identifier={self.identifier!r}, "
+            f"comparison_identifier={self.comparison_identifier!r}, "
+            f"ready={self.ready!s}, "
+            f"failed={self.failed!s}, "
+            f"kind={self.kind!r}, "
+            f"error_message={self.error_message!r}"
+            ")"
         )
 
     def __repr__(self):
         # type: () -> str
-        return "Export(identifier={}, comparison_identifier={}, ready={}, failed={}, kind={}, error_message={})".format(
-            repr(self.identifier),
-            repr(self.comparison_identifier),
-            repr(self.ready),
-            repr(self.failed),
-            repr(self.kind),
-            repr(self.error_message),
+        return (
+            "Export("
+            f"identifier={self.identifier!r}, "
+            f"comparison_identifier={self.comparison_identifier!r}, "
+            f"ready={self.ready!r}, "
+            f"failed={self.failed!r}, "
+            f"kind={self.kind!r}, "
+            f"error_message={self.error_message!r}"
+            ")"
         )
 
 

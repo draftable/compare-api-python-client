@@ -43,9 +43,7 @@ class FileSide(Side):
         return self.__file
 
     def __str__(self):
-        return "File side: {} ({}, '{}')".format(
-            self.__file, self.file_type, self.display_name
-        )
+        return f"File side: {self.__file} ({self.file_type}, '{self.display_name}')"
 
 
 class URLSide(Side):
@@ -60,9 +58,7 @@ class URLSide(Side):
         return self.__url
 
     def __str__(self):
-        return "URL side: {} ({}, '{}')".format(
-            self.__url, self.file_type, self.display_name
-        )
+        return f"URL side: {self.__url} ({self.file_type}, '{self.display_name}')"
 
 
 def data_from_side(side_name, side):
@@ -86,7 +82,7 @@ def data_from_side(side_name, side):
     else:
         assert isinstance(side, FileSide)
         data["file"] = (
-            "{}.{}".format(side_name, side.file_type),
+            f"{side_name}.{side.file_type}",
             side.file,
             join("application", "octet-stream"),
         )
@@ -146,16 +142,12 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
         url = parse_url(url_or_file_path)
         if url.host:
             raise InvalidPath(
-                "File url '{}' must be local only, and not contain host name ('{}')".format(
-                    url_or_file_path, url.host
-                )
+                f"File url '{url_or_file_path}' must be local only, and not contain host name ('{url.host}')"
             )
 
         if not isfile(url.path):
             raise InvalidPath(
-                "File url '{}' refers to file '{}' but no such file exists".format(
-                    url_or_file_path, url.path
-                )
+                f"File url '{url_or_file_path}' refers to file '{url.path}' but no such file exists"
             )
 
         return side_from_file_path(url.path, file_type, display_name)
@@ -164,7 +156,7 @@ def make_side(url_or_file_path, file_type=None, display_name=None):
         return side_from_file_path(url_or_file_path, file_type, display_name)
 
     raise ValueError(
-        "Path is not a URL and not a file that exists: {}".format(url_or_file_path)
+        f"Path is not a URL and not a file that exists: {url_or_file_path}"
     )
 
 

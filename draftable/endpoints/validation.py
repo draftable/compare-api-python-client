@@ -44,9 +44,7 @@ def validate_identifier(identifier):
     if not _MIN_ID_LENGTH <= len(identifier) <= _MAX_ID_LENGTH:
         raise InvalidArgument(
             "identifier",
-            "`identifier` must be between {min} and {max} characters long.".format(
-                min=_MIN_ID_LENGTH, max=_MAX_ID_LENGTH
-            ),
+            f"`identifier` must be between {_MIN_ID_LENGTH} and {_MAX_ID_LENGTH} characters long.",
         )
     if not all(c in _valid_identifier_characters for c in identifier):
         raise InvalidArgument(
@@ -62,9 +60,7 @@ def validate_file_type(file_type):
         raise InvalidArgument("file_type", "`file_type` cannot be empty.")
     munged_file_type = str(file_type).lower()
     if munged_file_type not in _allowed_file_types:
-        raise InvalidArgument(
-            "file_type", '"{}" is not a valid file type'.format(file_type)
-        )
+        raise InvalidArgument("file_type", f'"{file_type}" is not a valid file type')
     return munged_file_type
 
 
@@ -82,9 +78,7 @@ def validate_file(file):
     if "b" not in file.mode:
         raise InvalidArgument(
             "file",
-            "the given file doesn't appear to be open in binary mode. It's mode is '{}'.".format(
-                file.mode
-            ),
+            f"the given file doesn't appear to be open in binary mode. It's mode is '{file.mode}'.",
         )
     return file
 
@@ -116,18 +110,13 @@ def _validate_datetime_or_timedelta(parameter_name, value):
         if value.total_seconds() <= 0:
             raise InvalidArgument(
                 parameter_name,
-                "if a timedelta, `{parameter}` must be positive, but it was zero or negative.".format(
-                    parameter=parameter_name
-                ),
+                f"if a timedelta, `{parameter_name}` must be positive, but it was zero or negative.",
             )
         return datetime.now(tz=timezone.utc) + value
 
     if not isinstance(value, datetime):
         raise InvalidArgument(
-            parameter_name,
-            "`{parameter}` must be a datetime or a timedelta.".format(
-                parameter=parameter_name
-            ),
+            parameter_name, f"`{parameter_name}` must be a datetime or a timedelta."
         )
     # Make the datetime aware, with UTC as its timezone. If it was naive, we assume it was in UTC time.
     if value.utcoffset() is None:
@@ -137,8 +126,7 @@ def _validate_datetime_or_timedelta(parameter_name, value):
     # Now we can safely check if it's in the future.
     if value < datetime.now(tz=timezone.utc):
         raise InvalidArgument(
-            parameter_name,
-            "`{parameter}` must be in the future.".format(parameter=parameter_name),
+            parameter_name, f"`{parameter_name}` must be in the future."
         )
 
     return value
@@ -160,5 +148,5 @@ def validate_export_kind(kind):
         raise InvalidArgument("kind", "`kind` cannot be empty.")
     munged_kind = str(kind).lower()
     if munged_kind not in _allowed_kinds:
-        raise InvalidArgument("kind", '"{}" is not a valid file type'.format(kind))
+        raise InvalidArgument("kind", f'"{kind}" is not a valid file type')
     return munged_kind
