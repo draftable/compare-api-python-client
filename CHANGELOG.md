@@ -1,6 +1,17 @@
 Changelog
 =========
 
+v1.3.0
+------
+
+- **BREAKING CHANGE**: Drop support for Python 2.7 & 3.5 (minimum is now 3.6)
+- Add support for Python 3.10
+- Add type checking support & associated packages
+- Use Python 3 language features with removal of Python 2 support
+- Remove Python 2 compatibility code and `six` library
+- Minor documentation updates
+- Miscellaneous developer tooling updates
+
 v1.2.0
 ------
 
