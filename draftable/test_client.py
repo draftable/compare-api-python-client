@@ -132,6 +132,15 @@ def test_create_from_files(comparisons, exports):
     assert not comparison.failed
 
 
+def test_create_from_files_txt(comparisons, exports):
+    comparison = comparisons.create(
+        left="test-files/hello-left.txt",
+        right="test-files/hello-right.txt",
+        expires=datetime.datetime.now() + datetime.timedelta(days=1),
+    )
+    assert not comparison.failed
+
+
 def test_create_with_sides(comparisons, exports):
     comparison = comparisons.create(
         left=make_side(

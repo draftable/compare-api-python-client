@@ -255,6 +255,7 @@ These methods accept the following arguments:
   - PDF: `pdf`
   - Word: `docx`, `docm`, `doc`, `rtf`
   - PowerPoint: `pptx`, `pptm`, `ppt`
+  - Other: `txt`
 - `display_name` _(optional)_  
   The name of the file shown in the comparison viewer
 

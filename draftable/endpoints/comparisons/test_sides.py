@@ -31,6 +31,7 @@ def test_file_code_guess():
     assert guess_file_type_from_path("foo.rtf") == "rtf"
     assert guess_file_type_from_path("foo.pptx") == "pptx"
     assert guess_file_type_from_path("foo.ppt") == "ppt"
+    assert guess_file_type_from_path("foo.txt") == "txt"
 
     # uppercase
     assert guess_file_type_from_path("foo.PDF") == "pdf"
@@ -39,6 +40,7 @@ def test_file_code_guess():
     assert guess_file_type_from_path("foo.RTF") == "rtf"
     assert guess_file_type_from_path("foo.PPTX") == "pptx"
     assert guess_file_type_from_path("foo.PPT") == "ppt"
+    assert guess_file_type_from_path("foo.TXT") == "txt"
 
     # stuff in the path
     assert guess_file_type_from_path(join("foo", "bar.pdf")) == "pdf"
