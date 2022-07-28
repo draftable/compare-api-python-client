@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v1.4.0
+------
+
+- Add support for comparison of txt files 
+- Add support for export with cover page 
+- Add client tests against the Draftable API for txt file comparosons and exports with cover page
+
 v1.3.0
 ------
 
