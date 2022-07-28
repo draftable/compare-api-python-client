@@ -34,8 +34,8 @@ class ExportsEndpoint(object):
         return export_from_response(self.__client.get(self.__url / identifier))
 
     @handle_request_exception
-    def create(self, comparison, kind="single_page"):
-        # type: (Union[str, Comparison], Optional[str]) -> Export
+    def create(self, comparison, kind="single_page", include_cover_page=False):
+        # type: (Union[str, Comparison], Optional[str], Optional[bool]) -> Export
         """Creates a new export with the Draftable API.
 
         :param comparison: comparison object to be exported, or the identifier of a comparison.
@@ -55,5 +55,6 @@ class ExportsEndpoint(object):
         data = {
             "comparison": comparison_identifier,
             "kind": kind,
+            "include_cover_page": include_cover_page,
         }
         return export_from_response(self.__client.post(self.__url, data))

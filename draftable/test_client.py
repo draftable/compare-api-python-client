@@ -155,3 +155,30 @@ def test_create_with_sides(comparisons, exports):
         expires=timedelta(hours=1),
     )
     assert not comparison.failed
+
+
+def test_create_retrieve_export_coverpage(comparisons, exports):
+    comparison = comparisons.create(
+        left="test-files/hello-left.txt",
+        right="test-files/hello-right.txt",
+        expires=datetime.datetime.now() + datetime.timedelta(days=1),
+    )
+    assert not comparison.ready, "We do not expect the comparison to be ready yet"
+    assert not comparison.failed
+
+    while True:
+        comparison = comparisons.get(comparison.identifier)
+        if comparison.ready:
+            assert not comparison.failed
+            break
+
+    export = exports.create(comparison, kind="combined", include_cover_page=True)
+    while True:
+        export = exports.get(export.identifier)
+        if export.ready:
+            assert not export.failed
+            response = requests.get(export.url)
+            assert response.ok
+            break
+
+    comparisons.delete(comparison.identifier)

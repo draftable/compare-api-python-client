@@ -16,6 +16,7 @@ class Export(object):
         kind,  # type: str
         url,  # type: Optional[str]
         error_message,  # type: Optional[str]
+        include_cover_page,  # type: Optional[bool]
     ):
         self.__identifier = identifier
         self.__comparison = comparison
@@ -24,6 +25,7 @@ class Export(object):
         self.__kind = validation.validate_export_kind(kind)
         self.__url = url
         self.__error_message = error_message
+        self.__include_cover_page = include_cover_page
 
     @property
     def identifier(self):
@@ -60,6 +62,11 @@ class Export(object):
         # type: () -> Optional[str]
         return self.__error_message
 
+    @property
+    def include_cover_page(self):
+        # type: () -> Optional[bool]
+        return self.__include_cover_page
+
     def __str__(self):
         # type: () -> str
         return (
@@ -69,7 +76,8 @@ class Export(object):
             f"ready={self.ready!s}, "
             f"failed={self.failed!s}, "
             f"kind={self.kind!r}, "
-            f"error_message={self.error_message!r}"
+            f"error_message={self.error_message!r}, "
+            f"include_cover_page={self.include_cover_page!r}"
             ")"
         )
 
@@ -82,7 +90,8 @@ class Export(object):
             f"ready={self.ready!r}, "
             f"failed={self.failed!r}, "
             f"kind={self.kind!r}, "
-            f"error_message={self.error_message!r}"
+            f"error_message={self.error_message!r}, "
+            f"include_cover_page={self.include_cover_page!r}"
             ")"
         )
 
@@ -97,4 +106,5 @@ def export_from_response(data):
         kind=data.get("kind"),
         url=str(data["url"]),
         error_message=data.get("error_message"),
+        include_cover_page=data.get("include_cover_page"),
     )
