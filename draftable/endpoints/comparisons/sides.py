@@ -1,7 +1,5 @@
 from os.path import basename, isfile, join, splitext
 
-from six import string_types
-
 # urllib3 is a required dependency of requests
 from urllib3.util import parse_url
 
@@ -67,7 +65,7 @@ def data_from_side(side_name, side):
     for a comparison POST request as a dictionary.
     """
 
-    if isinstance(side, string_types):
+    if isinstance(side, str):
         # User has provided a file path or URL.
         side = make_side(side)
 
