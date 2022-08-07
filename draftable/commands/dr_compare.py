@@ -98,7 +98,7 @@ def get_connection_args(name):
     config = configparser.ConfigParser()
     config.read(ini_path)
 
-    if not name in config:
+    if name not in config:
         raise SetupError(
             f"Requested environment '{name}' but config file ({ini_path}) does not define that name."
         )

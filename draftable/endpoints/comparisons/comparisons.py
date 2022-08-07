@@ -104,7 +104,7 @@ class ComparisonsEndpoint(object):
             self.account_id, self.auth_token, identifier, valid_until_timestamp
         )
 
-        wait = "&wait" if wait else ""
-        params = f"?valid_until={valid_until_timestamp}&signature={signature}{wait}"
+        param_wait = "&wait" if wait else ""
+        params = f"?valid_until={valid_until_timestamp}&signature={signature}{param_wait}"
 
         return str(self.__url / "viewer" / self.account_id / identifier + params)

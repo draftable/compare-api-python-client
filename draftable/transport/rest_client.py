@@ -36,8 +36,8 @@ def _data_contains_file(data):
 # At least, Django Rest Framework is happy to receive data in this format.
 def _flatten_form_data(initial_data):
     # type: (dict) -> Tuple[dict, dict]
-    data = dict()
-    files = dict()
+    data = {}
+    files = {}
 
     for key, value in initial_data.items():
         if isinstance(value, dict):
