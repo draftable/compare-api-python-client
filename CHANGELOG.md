@@ -4,9 +4,10 @@ Changelog
 v1.4.0
 ------
 
-- Add support for comparison of txt files 
-- Add support for export with cover page 
-- Add client tests against the Draftable API for txt file comparosons and exports with cover page
+- **BREAKING CHANGE**: Drop support for Python 3.6 (minimum is now 3.7)
+- Add support for comparison of text (`txt`) files
+- Add support for export with cover page
+- Miscellaneous developer tooling updates
 
 v1.3.0
 ------
