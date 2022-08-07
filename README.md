@@ -34,7 +34,7 @@ Requirements
 ------------
 
 - Operating system: Any maintained Linux, macOS, or Windows release
-- Python runtime: Any [maintained version](https://devguide.python.org/#status-of-python-branches) (currently 3.6, 3.7, 3.8, 3.9, or 3.10)
+- Python runtime: Any [maintained version](https://devguide.python.org/#status-of-python-branches) (currently 3.7, 3.8, 3.9, or 3.10)
 
 Getting started
 ---------------

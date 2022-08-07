@@ -16,9 +16,6 @@ env:
 
 jobs:
   include:
-    - name: Python 3.6
-      python: '3.6'
-      env: TOXENV=py36,coverage,codecov
     - name: Python 3.7
       python: '3.7'
       env: TOXENV=py37,coverage,codecov
