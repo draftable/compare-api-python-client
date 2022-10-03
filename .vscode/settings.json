@@ -26,7 +26,6 @@
     "markdown.extension.toc.slugifyMode": "github",
 
     // Default venv path
-    "python.pythonPath": "${workspaceFolder}/venv",
     "python.defaultInterpreterPath": "${workspaceFolder}/venv",
 
     // Use Black for formatting
