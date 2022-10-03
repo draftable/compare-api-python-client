@@ -81,8 +81,8 @@ API reference
 -------------
 
 - The handling of `datetime` objects is as follows:
-  - Any _naive_ `datetime` objects provided in a method call are assumed to be in UTC time.
-  - Returned `datetime` objects are always "_aware_" (include timezone information) and use UTC.
+  - Any *naive* `datetime` objects provided in a method call are assumed to be in UTC time.
+  - Returned `datetime` objects are always "*aware*" (include timezone information) and use UTC.
 
 ### Initializing the client
 
@@ -128,26 +128,26 @@ Instances of the `ComparisonsEndpoint` class provide the following methods for r
   Information about each side of the comparison
   - `file_type: str`  
     The file extension
-  - `source_url: str` _(optional)_  
+  - `source_url: str` *(optional)*  
     The URL for the file if the original request was specified by URL, otherwise `None`
-  - `display_name: str` _(optional)_  
+  - `display_name: str` *(optional)*  
     The display name for the file if given in the original request, otherwise `None`
 - `public: bool`  
   Indicates if the comparison is public
 - `creation_time: datetime`  
   Time in UTC when the comparison was created
-- `expiry_time: datetime` _(optional)_  
+- `expiry_time: datetime` *(optional)*  
   The expiry time if the comparison is set to expire, otherwise `None`
 - `ready: bool`  
   Indicates if the comparison is ready to display
 
-If a `Comparison` is _ready_ (i.e. it has been processed) it has the following additional properties:
+If a `Comparison` is *ready* (i.e. it has been processed) it has the following additional properties:
 
 - `ready_time: datetime`  
   Time in UTC the comparison became ready
 - `failed: bool`  
   Indicates if comparison processing failed
-- `error_message: str` _(only present if `failed`)_  
+- `error_message: str` *(only present if `failed`)*  
   Reason processing of the comparison failed
 
 #### Example usage
@@ -206,15 +206,15 @@ Instances of the `ComparisonsEndpoint` class provide the following methods for r
 
 - `left` / `right`  
   Describes the left and right files (see following section)
-- `identifier` _(optional)_  
+- `identifier` *(optional)*  
   Identifier to use for the comparison:
   - If specified, the identifier must be unique (i.e. not already be in use)
   - If unspecified or `None`, the API will automatically generate a unique identifier
-- `public` _(optional)_  
+- `public` *(optional)*  
   Specifies the comparison visibility:
   - If `False` or unspecified authentication is required to view the comparison
   - If `True` the comparison can be accessed by anyone with knowledge of the URL
-- `expires` _(optional)_  
+- `expires` *(optional)*  
   Time at which the comparison will be deleted:
   - Must be specified as a `datetime` or a `timedelta` (UTC if naive)
   - If specified, the provided expiry time must be UTC and in the future
@@ -243,12 +243,12 @@ Alternatively, for explicitly creating a file or URL comparison side, the follow
 
 These methods accept the following arguments:
 
-- `url_or_file_path` _(`make_side` only)_  
+- `url_or_file_path` *(`make_side` only)*  
   The file or URL path for a comparison side
-- `file` _(`side_from_file` only)_  
+- `file` *(`side_from_file` only)*  
   A file object to be read and uploaded
-  - The file must be opened for reading in _binary mode_
-- `url` _(`side_from_url` only)_  
+  - The file must be opened for reading in *binary mode*
+- `url` *(`side_from_url` only)*  
   The URL from which the server will download the file
 - `file_type`  
   The type of file being submitted:
@@ -256,13 +256,13 @@ These methods accept the following arguments:
   - Word: `docx`, `docm`, `doc`, `rtf`
   - PowerPoint: `pptx`, `pptm`, `ppt`
   - Other: `txt`
-- `display_name` _(optional)_  
+- `display_name` *(optional)*  
   The name of the file shown in the comparison viewer
 
 The following exceptions may be raised:
 
 - `InvalidArgument`
-  Failure in parameter validation (e.g. `file_type` is invalid, `url` is malformed, or `file` is not opened in _binary mode_)
+  Failure in parameter validation (e.g. `file_type` is invalid, `url` is malformed, or `file` is not opened in *binary mode*)
 
 The `make_side` method may additionally raise the following exceptions:
 
@@ -311,8 +311,8 @@ Instances of the `ComparisonsEndpoint` class provide the following methods for d
 Both methods use the following common parameters:
 
 - `identifier`  
-  Identifier of the comparison for which to generate a _viewer URL_
-- `wait` _(optional)_  
+  Identifier of the comparison for which to generate a *viewer URL*
+- `wait` *(optional)*  
   Specifies the behaviour of the viewer if the provided comparison does not exist
   - If `False` or unspecified, the viewer will show an error if the `identifier` does not exist
   - If `True`, the viewer will wait for a comparison with the provided `identifier` to exist  
@@ -320,7 +320,7 @@ Both methods use the following common parameters:
 
 The `signed_viewer_url` method also supports the following parameters:
 
-- `valid_until` _(optional)_  
+- `valid_until` *(optional)*  
   Time at which the URL will expire (no longer load)
   - Must be specified as a `datetime` or a `timedelta`
   - If specified, the provided expiry time must be UTC and in the future
