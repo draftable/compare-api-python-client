@@ -122,32 +122,32 @@ Instances of the `ComparisonsEndpoint` class provide the following methods for r
 `Comparison` objects have the following properties:
 
 - `identifier: str`  
-  The unique identifier of the comparison
+  The unique identifier of the comparison.
 - `left: object` / `right: object`  
-  Information about each side of the comparison
+  Information about each side of the comparison.
   - `file_type: str`  
-    The file extension
+    The file extension.
   - `source_url: str` *(optional)*  
-    The URL for the file if the original request was specified by URL, otherwise `None`
+    The URL for the file if the original request was specified by URL, otherwise `None`.
   - `display_name: str` *(optional)*  
-    The display name for the file if given in the original request, otherwise `None`
+    The display name for the file if given in the original request, otherwise `None`.
 - `public: bool`  
-  Indicates if the comparison is public
+  Indicates if the comparison is public.
 - `creation_time: datetime`  
-  Time in UTC when the comparison was created
+  Time in UTC when the comparison was created.
 - `expiry_time: datetime` *(optional)*  
-  The expiry time if the comparison is set to expire, otherwise `None`
+  The expiry time if the comparison is set to expire, otherwise `None`.
 - `ready: bool`  
-  Indicates if the comparison is ready to display
+  Indicates if the comparison is ready to display.
 
 If a `Comparison` is *ready* (i.e. it has been processed) it has the following additional properties:
 
 - `ready_time: datetime`  
-  Time in UTC the comparison became ready
+  Time in UTC the comparison became ready.
 - `failed: bool`  
-  Indicates if comparison processing failed
+  Indicates if comparison processing failed.
 - `error_message: str` *(only present if `failed`)*  
-  Reason processing of the comparison failed
+  Reason processing of the comparison failed.
 
 #### Example usage
 
@@ -204,27 +204,27 @@ Instances of the `ComparisonsEndpoint` class provide the following methods for r
 `create` accepts the following arguments:
 
 - `left` / `right`  
-  Describes the left and right files (see following section)
+  Describes the left and right files (see following section).
 - `identifier` *(optional)*  
   Identifier to use for the comparison:
-  - If specified, the identifier must be unique (i.e. not already be in use)
-  - If unspecified or `None`, the API will automatically generate a unique identifier
+  - If specified, the identifier must be unique (i.e. not already be in use).
+  - If unspecified or `None`, the API will automatically generate a unique identifier.
 - `public` *(optional)*  
   Specifies the comparison visibility:
-  - If `False` or unspecified authentication is required to view the comparison
-  - If `True` the comparison can be accessed by anyone with knowledge of the URL
+  - If `False` or unspecified authentication is required to view the comparison.
+  - If `True` the comparison can be accessed by anyone with knowledge of the URL.
 - `expires` *(optional)*  
   Time at which the comparison will be deleted:
-  - Must be specified as a `datetime` or a `timedelta` (UTC if naive)
-  - If specified, the provided expiry time must be UTC and in the future
-  - If unspecified or `None`, the comparison will never expire (but may be explicitly deleted)
+  - Must be specified as a `datetime` or a `timedelta` (UTC if naive).
+  - If specified, the provided expiry time must be UTC and in the future.
+  - If unspecified or `None`, the comparison will never expire (but may be explicitly deleted).
 
 The following exceptions may be raised:
 
 - `BadRequest`  
-  The request could not be processed (e.g. `identifier` already in use)
+  The request could not be processed (e.g. `identifier` already in use).
 - `InvalidArgument`  
-  Failure in parameter validation (e.g. `expires` is in the past)
+  Failure in parameter validation (e.g. `expires` is in the past).
 
 #### Creating comparison sides
 
@@ -243,12 +243,12 @@ Alternatively, for explicitly creating a file or URL comparison side, the follow
 These methods accept the following arguments:
 
 - `url_or_file_path` *(`make_side` only)*  
-  The file or URL path for a comparison side
+  The file or URL path for a comparison side.
 - `file` *(`side_from_file` only)*  
-  A file object to be read and uploaded
-  - The file must be opened for reading in *binary mode*
+  A file object to be read and uploaded.
+  - The file must be opened for reading in *binary mode*.
 - `url` *(`side_from_url` only)*  
-  The URL from which the server will download the file
+  The URL from which the server will download the file.
 - `file_type`  
   The type of file being submitted:
   - PDF: `pdf`
@@ -256,12 +256,12 @@ These methods accept the following arguments:
   - PowerPoint: `pptx`, `pptm`, `ppt`
   - Other: `txt`
 - `display_name` *(optional)*  
-  The name of the file shown in the comparison viewer
+  The name of the file shown in the comparison viewer.
 
 The following exceptions may be raised:
 
-- `InvalidArgument`
-  Failure in parameter validation (e.g. `file_type` is invalid, `url` is malformed, or `file` is not opened in *binary mode*)
+- `InvalidArgument`  
+  Failure in parameter validation (e.g. `file_type` is invalid, `url` is malformed, or `file` is not opened in *binary mode*).
 
 The `make_side` method may additionally raise the following exceptions:
 
@@ -303,27 +303,27 @@ print("Created comparison: {}".format(comparison))
 Instances of the `ComparisonsEndpoint` class provide the following methods for displaying comparisons:
 
 - `public_viewer_url(identifier: str, wait: bool = False)`  
-  Generates a public viewer URL for the specified comparison
+  Generates a public viewer URL for the specified comparison.
 - `signed_viewer_url(identifier: str, valid_until: datetime | timedelta = None, wait: bool = False)`  
-  Generates a signed viewer URL for the specified comparison
+  Generates a signed viewer URL for the specified comparison.
 
 Both methods use the following common parameters:
 
 - `identifier`  
-  Identifier of the comparison for which to generate a *viewer URL*
+  Identifier of the comparison for which to generate a *viewer URL*.
 - `wait` *(optional)*  
-  Specifies the behaviour of the viewer if the provided comparison does not exist
-  - If `False` or unspecified, the viewer will show an error if the `identifier` does not exist
-  - If `True`, the viewer will wait for a comparison with the provided `identifier` to exist  
-    Note this will result in a perpetual loading animation if the `identifier` is never created
+  Specifies the behaviour of the viewer if the provided comparison does not exist.
+  - If `False` or unspecified, the viewer will show an error if the `identifier` does not exist.
+  - If `True`, the viewer will wait for a comparison with the provided `identifier` to exist.  
+    Note this will result in a perpetual loading animation if the `identifier` is never created.
 
 The `signed_viewer_url` method also supports the following parameters:
 
 - `valid_until` *(optional)*  
-  Time at which the URL will expire (no longer load)
-  - Must be specified as a `datetime` or a `timedelta`
-  - If specified, the provided expiry time must be UTC and in the future
-  - If unspecified or `None`, the URL will be generated with the default 30 minute expiry
+  Time at which the URL will expire (no longer load).
+  - Must be specified as a `datetime` or a `timedelta`.
+  - If specified, the provided expiry time must be UTC and in the future.
+  - If unspecified or `None`, the URL will be generated with the default 30 minute expiry.
 
 See the displaying comparisons section in the [API documentation](https://api.draftable.com) for additional details.
 
@@ -356,22 +356,22 @@ Instances of the `ExportsEndpoint` class provide the following methods for expor
 `create` accepts the following arguments:
 
 - `comparison`  
-  The comparison to export provided as a `Comparison` instance or a comparison identifier
+  The comparison to export provided as a `Comparison` instance or a comparison identifier.
 - `kind`  
-  The type of export to perfom (see below)
+  The type of export to perfom.
 - `include_cover_page`  
-  Whether a cover page should be included. Only applies to the `combined` export kind.
+  Whether a cover page should be included (`combined` export kind only).
 
 The following export kinds are supported for the `kind` parameter:
 
 - `single_page`  
-  Exports only the right-side of the comparison with highlights and deletion markers
+  Exports only the right-side of the comparison with highlights and deletion markers.
 - `combined`  
-  Exports both the left and right sides
+  Exports both the left and right sides.
 - `left`  
-  Export the left side only
+  Export the left side only.
 - `right`  
-  Exports the right side only
+  Exports the right side only.
 
 ##### Example usage
 
@@ -411,7 +411,7 @@ while not export.ready:
 The `draftable` module provides the following static methods for generating comparison identifiers:
 
 - `draftable.generate_identifier()`  
-  Generates a random unique comparison identifier
+  Generates a random unique comparison identifier.
 
 Other information
 -----------------
