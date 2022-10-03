@@ -10,8 +10,6 @@ Draftable Compare API - Python Client Library
 [![codecov](https://codecov.io/gh/draftable/compare-api-python-client/branch/stable/graph/badge.svg)](https://codecov.io/gh/draftable/compare-api-python-client)
 [![codestyle](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/draftable/compare-api-python-client)
-
 A thin Python client for the [Draftable API](https://draftable.com/rest-api) which wraps all available endpoints and handles authentication and signing.
 
 See the [full API documentation](https://api.draftable.com) for an introduction to the API, usage notes, and other reference material.
@@ -29,6 +27,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - [Utility functions](#utility-functions)
 - [Other information](#other-information)
   - [Self-signed certificates](#self-signed-certificates)
+- [License](#license)
 
 Requirements
 ------------
@@ -351,7 +350,7 @@ exports = client.exports
 
 Instances of the `ExportsEndpoint` class provide the following methods for exporting comparisons:
 
-- `create(comparison: Union[Comparison, str], kind: str = 'single_page')`  
+- `create(comparison: Union[Comparison, str], kind: str = 'single_page', include_cover_page: bool = False)`  
   Returns a `Export` representing the newly created export.
 
 `create` accepts the following arguments:
@@ -360,6 +359,8 @@ Instances of the `ExportsEndpoint` class provide the following methods for expor
   The comparison to export provided as a `Comparison` instance or a comparison identifier
 - `kind`  
   The type of export to perfom (see below)
+- `include_cover_page`  
+  Whether a cover page should be included. Only applies to the `combined` export kind.
 
 The following export kinds are supported for the `kind` parameter:
 
@@ -450,3 +451,8 @@ If your code spawns Python subprocesses they must separately modify their enviro
 #### All environments
 
 Disabling certificate validation in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible.
+
+License
+-------
+
+All content is licensed under the terms of [The MIT License](LICENSE).
