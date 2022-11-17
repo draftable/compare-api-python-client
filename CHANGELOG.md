@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.4.1
+------
+
+- Fix comparision expiry date not resepected
+- Minor documentation update
+  
 v1.4.0
 ------
 
