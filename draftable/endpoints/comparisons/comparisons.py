@@ -71,7 +71,7 @@ class ComparisonsEndpoint(object):
             "left": data_from_side("left", left),
             "right": data_from_side("right", right),
             "public": public,
-            "expires": expires.isoformat() if expires is not None else None,
+            "expiry_time": expires.isoformat() if expires is not None else None,
         }
 
         return comparison_from_response(self.__client.post(self.__url, data))
@@ -105,6 +105,8 @@ class ComparisonsEndpoint(object):
         )
 
         param_wait = "&wait" if wait else ""
-        params = f"?valid_until={valid_until_timestamp}&signature={signature}{param_wait}"
+        params = (
+            f"?valid_until={valid_until_timestamp}&signature={signature}{param_wait}"
+        )
 
         return str(self.__url / "viewer" / self.account_id / identifier + params)

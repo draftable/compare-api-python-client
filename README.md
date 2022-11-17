@@ -219,6 +219,9 @@ Instances of the `ComparisonsEndpoint` class provide the following methods for r
   - If specified, the provided expiry time must be UTC and in the future.
   - If unspecified or `None`, the comparison will never expire (but may be explicitly deleted).
 
+**Note: The comparision must be retrieved via the `comparisons.get(<identifier>)` call to check the 'ready' status for new comparisons. This is an important
+step before exporting or accessing consecutive comparisons in any code loops.**
+
 The following exceptions may be raised:
 
 - `BadRequest`  

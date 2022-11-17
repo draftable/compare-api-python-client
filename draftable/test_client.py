@@ -7,7 +7,7 @@ import requests
 
 from draftable import PRODUCTION_CLOUD_BASE_URL, Client, generate_identifier, make_side
 from draftable.endpoints.comparisons import signing
-from draftable.endpoints.validation import validate_valid_until
+from draftable.endpoints.validation import validate_expires, validate_valid_until
 from draftable.utilities import aware_datetime_to_timestamp
 
 
@@ -124,12 +124,15 @@ def test_create_retrieve_export_delete(comparisons, exports):
 
 
 def test_create_from_files(comparisons, exports):
+    when = datetime.datetime.now() + datetime.timedelta(days=1)
+
     comparison = comparisons.create(
         left="test-files/hello.pdf",
         right="test-files/hello.pdf",
-        expires=datetime.datetime.now() + datetime.timedelta(days=1),
+        expires=when,
     )
     assert not comparison.failed
+    assert comparison.expiry_time == validate_expires(when)
 
 
 def test_create_from_files_txt(comparisons, exports):
