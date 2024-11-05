@@ -10,6 +10,7 @@ from ...transport import RESTClient
 from ...utilities import Url, aware_datetime_to_timestamp
 from ..exceptions import handle_request_exception
 from . import signing
+from .changes import ChangeDetails, change_details_from_response
 from .comparison import Comparison, comparison_from_response
 from .sides import FileSide, URLSide, data_from_side
 
@@ -39,14 +40,19 @@ class ComparisonsEndpoint(object):
     def all(self):
         # type: () -> List[Comparison]
         return list(
-            map(comparison_from_response, self.__client.get(self.__url)["results"])
+            map(
+                comparison_from_response,
+                self.__client.get(self.__url)["results"],
+            )
         )
 
     @handle_request_exception
     def get(self, identifier):
         # type: (str) -> Comparison
         identifier = validate_identifier(identifier)
-        return comparison_from_response(self.__client.get(self.__url / identifier))
+        return comparison_from_response(
+            self.__client.get(self.__url / identifier)
+        )
 
     @handle_request_exception
     def create(self, left, right, identifier=None, public=False, expires=None):
@@ -71,7 +77,9 @@ class ComparisonsEndpoint(object):
             "left": data_from_side("left", left),
             "right": data_from_side("right", right),
             "public": public,
-            "expiry_time": expires.isoformat() if expires is not None else None,
+            "expiry_time": (
+                expires.isoformat() if expires is not None else None
+            ),
         }
 
         return comparison_from_response(self.__client.post(self.__url, data))
@@ -81,6 +89,24 @@ class ComparisonsEndpoint(object):
         # type: (str) -> None
         identifier = validate_identifier(identifier)
         self.__client.delete(self.__url / identifier)
+
+    @handle_request_exception
+    def change_details(self, identifier):
+        # type: (str) -> Optional[ChangeDetails]
+        """Gets the change details for agiven comparison.
+
+        :param identifier: The identifier to use for this comparison
+        :return: the change details
+        """
+        identifier = validate_identifier(identifier)
+
+        comparison = self.get(identifier)
+        if not comparison.ready:
+            return None
+
+        return change_details_from_response(
+            self.__client.get(self.__url / identifier / "change-details")
+        )
 
     def public_viewer_url(self, identifier, wait=False):
         # type: (str, bool) -> str
@@ -105,8 +131,4 @@ class ComparisonsEndpoint(object):
         )
 
         param_wait = "&wait" if wait else ""
-        params = (
-            f"?valid_until={valid_until_timestamp}&signature={signature}{param_wait}"
-        )
-
-        return str(self.__url / "viewer" / self.account_id / identifier + params)
+        params = f"?valid_until={valid_until_timestamp}&signature={signature}{param_wait}"
