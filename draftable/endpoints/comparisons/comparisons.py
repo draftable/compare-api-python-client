@@ -93,7 +93,7 @@ class ComparisonsEndpoint(object):
     @handle_request_exception
     def change_details(self, identifier):
         # type: (str) -> Optional[ChangeDetails]
-        """Gets the change details for agiven comparison.
+        """Gets the change details for a given comparison.
 
         :param identifier: The identifier to use for this comparison
         :return: the change details

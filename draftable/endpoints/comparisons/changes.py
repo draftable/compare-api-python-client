@@ -1,9 +1,5 @@
 import json
-
-try:
-    from typing import Any, Dict, List, Optional, Tuple  # noqa F401
-except ImportError:
-    pass
+from typing import Any, Dict, List, Optional, Tuple
 
 
 # Rectangle class
@@ -34,17 +30,25 @@ class Rectangle(object):
         # type: () -> Optional[float]
         return self.__bottom
 
+    def to_dict(self):
+        return {
+            "left": self.__left,
+            "top": self.__top,
+            "right": self.__right,
+            "bottom": self.__bottom,
+        }
+
     def __repr__(self):
         return (
             "Rectangle("
-            f"{self.__left}, "
-            f"{self.__top}, "
-            f"{self.__right}, "
-            f"{self.__bottom})"
+            f"left={self.__left}, "
+            f"top={self.__top}, "
+            f"right={self.__right}, "
+            f"bottom={self.__bottom})"
         )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
 
 
 # Region class
@@ -67,11 +71,21 @@ class Region(object):
         # type: () -> List[Optional[Rectangle]]
         return self.__rectangles
 
+    def to_dict(self):
+        return {
+            "pageIndex": self.__pageIndex,
+            "rectangles": [rect.to_dict() for rect in self.__rectangles],
+        }
+
     def __repr__(self):
-        return "Region(" f"{self.__pageIndex}, " f"{self.__rectangles})"
+        return (
+            "Region("
+            f"pageIndex={self.__pageIndex}, "
+            f"rectangles={self.__rectangles})"
+        )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
 
 
 # Style class
@@ -102,17 +116,25 @@ class Style(object):
         # type: () -> Optional[int]
         return self.__size
 
+    def to_dict(self):
+        return {
+            "color": self.__color,
+            "font": self.__font,
+            "emphasis": self.__emphasis,
+            "size": self.__size,
+        }
+
     def __repr__(self):
         return (
             "Style("
-            f"{self.__color}, "
-            f"{self.__font}, "
-            f"{self.__emphasis}, "
-            f"{self.__size})"
+            f"color={self.__color}, "
+            f"font={self.__font}, "
+            f"emphasis={self.__emphasis}, "
+            f"size={self.__size})"
         )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
 
 
 # StylesInfo class
@@ -151,17 +173,55 @@ class StylesInfo(object):
         # type: () -> Optional[str]
         return self.__rightStyleMap
 
+    def to_dict(self):
+        return {
+            "leftStyles": [style.to_dict() for style in self.__leftStyles],
+            "rightStyles": [style.to_dict() for style in self.__rightStyles],
+            "leftStyleMap": self.__leftStyleMap,
+            "rightStyleMap": self.__rightStyleMap,
+        }
+
     def __repr__(self):
         return (
             "StylesInfo("
-            f"{self.__leftStyles}, "
-            f"{self.__rightStyles}, "
-            f"{self.__leftStyleMap}, "
-            f"{self.__rightStyleMap})"
+            f"leftStyles={self.__leftStyles}, "
+            f"rightStyles={self.__rightStyles}, "
+            f"leftStyleMap={self.__leftStyleMap}, "
+            f"rightStyleMap={self.__rightStyleMap})"
         )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
+
+
+# Deletion mark class
+class DeletionMark(object):
+    def __init__(self, data: Dict[str, Any]):
+        self.__pageIndex: Optional[int] = data.get("pageIndex", None)
+        self.__point: Optional[Tuple[int, int]] = data.get("point", None)
+
+    @property
+    def pageIndex(self):
+        # type: () -> Optional[int]
+        return self.__pageIndex
+
+    @property
+    def point(self):
+        # type: () -> Optional[Tuple[int, int]]
+        return self.__point
+
+    def to_dict(self):
+        return {"pageIndex": self.__pageIndex, "point": self.__point}
+
+    def __repr__(self):
+        return (
+            "DeletionMark("
+            f"pageIndex={self.__pageIndex}, "
+            f"point={self.__point})"
+        )
+
+    def __str__(self):
+        return json.dumps(self.to_dict())
 
 
 # Change class
@@ -179,13 +239,9 @@ class Change(object):
         self.__stylesInfo: Optional[StylesInfo] = (
             StylesInfo(data["stylesInfo"]) if "stylesInfo" in data else None
         )
-        deletion = data.get("deletionMark")
         self.__deletionMark = (
-            (
-                deletion.get("pageIndex", None),
-                tuple(deletion.get("point", None)),
-            )
-            if deletion
+            DeletionMark(data.get("deletionMark"))
+            if "deletionMark" in data
             else None
         )
 
@@ -224,6 +280,23 @@ class Change(object):
         # type: () -> Optional[Tuple[int, Tuple[int, int]]]
         return self.__deletionMark
 
+    def to_dict(self):
+        return {
+            "kind": self.__kind,
+            "leftText": self.__leftText,
+            "rightText": self.__rightText,
+            "leftRegion": (
+                self.__leftRegion.to_dict() if self.__leftRegion else None
+            ),
+            "rightRegion": (
+                self.__rightRegion.to_dict() if self.__rightRegion else None
+            ),
+            "stylesInfo": (
+                self.__stylesInfo.to_dict() if self.__stylesInfo else None
+            ),
+            "deletionMark": self.__deletionMark,
+        }
+
     def __repr__(self):
         return (
             "Change("
@@ -236,8 +309,8 @@ class Change(object):
             f"{self.__deletionMark})"
         )
 
-    def __str__(self):
-        return json.dumps(self.__dict__)
+    # def __str__(self):
+    #     return json.dumps(self.__dict__)
 
 
 # DocumentSummary class
@@ -262,16 +335,23 @@ class DocumentSummary(object):
         # type: () -> Optional[int]
         return self.__wordCount
 
+    def to_dict(self):
+        return {
+            "pageCount": self.__pageCount,
+            "characterCount": self.__characterCount,
+            "wordCount": self.__wordCount,
+        }
+
     def __repr__(self):
         return (
             "DocumentSummary("
-            f"{self.__pageCount}, "
-            f"{self.__characterCount}, "
-            f"{self.__wordCount})"
+            f"pageCount={self.__pageCount}, "
+            f"characterCount={self.__characterCount}, "
+            f"wordCount={self.__wordCount})"
         )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
 
 
 # ChangeSummary class
@@ -340,22 +420,35 @@ class ChangeSummary(object):
         # type: () -> Optional[int]
         return self.__replacedRightWords
 
+    def to_dict(self):
+        return {
+            "matches": self.__matches,
+            "deletions": self.__deletions,
+            "insertions": self.__insertions,
+            "replacements": self.__replacements,
+            "matchingWords": self.__matchingWords,
+            "deletedLeftWords": self.__deletedLeftWords,
+            "replacedLeftWords": self.__replacedLeftWords,
+            "insertedRightWords": self.__insertedRightWords,
+            "replacedRightWords": self.__replacedRightWords,
+        }
+
     def __repr__(self):
         return (
             "ChangeSummary("
-            f"{self.__matches}, "
-            f"{self.__deletions}, "
-            f"{self.__insertions}, "
-            f"{self.__replacements}, "
-            f"{self.__matchingWords}, "
-            f"{self.__deletedLeftWords}, "
-            f"{self.__replacedLeftWords}, "
-            f"{self.__insertedRightWords}, "
-            f"{self.__replacedRightWords})"
+            f"matches={self.__matches}, "
+            f"deletions={self.__deletions}, "
+            f"insertions={self.__insertions}, "
+            f"replacements={self.__replacements}, "
+            f"matchingWords={self.__matchingWords}, "
+            f"deletedLeftWords={self.__deletedLeftWords}, "
+            f"replacedLeftWords={self.__replacedLeftWords}, "
+            f"insertedRightWords={self.__insertedRightWords}, "
+            f"replacedRightWords={self.__replacedRightWords})"
         )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
 
 
 # Summary class
@@ -408,18 +501,21 @@ class Summary(object):
         # type: () -> Optional[DocumentSummary]
         return self.__rightDocumentSummary
 
+    def to_dict(self):
+        return {"anyChanges": self.__anyChanges}
+
     def __repr__(self):
         return (
             "Summary("
-            f"{self.__anyChanges}, "
-            f"{self.__anyMatches}, "
-            f"{self.__changeSummary}, "
-            f"{self.__leftDocumentSummary}, "
-            f"{self.__rightDocumentSummary})"
+            f"anyChanges={self.__anyChanges}, "
+            f"anyMatches={self.__anyMatches}, "
+            f"changeSummary={self.__changeSummary}, "
+            f"leftDocumentSummary={self.__leftDocumentSummary}, "
+            f"rightDocumentSummary={self.__rightDocumentSummary})"
         )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
 
 
 # Root class representing the entire data structure
@@ -445,11 +541,21 @@ class ChangeDetails(object):
         # type: () -> Optional[Summary]
         return self.__summary
 
+    def to_dict(self):
+        return {
+            "changes": [change.to_dict() for change in self.__changes],
+            "summary": (self.__summary.to_dict() if self.__summary else None),
+        }
+
     def __repr__(self):
-        return f"ChangeDetails({self.__changes}, {self.__summary})"
+        return (
+            "ChangeDetails("
+            f"changes={self.__changes}, "
+            f"summary={self.__summary})"
+        )
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.to_dict())
 
 
 def change_details_from_response(data):

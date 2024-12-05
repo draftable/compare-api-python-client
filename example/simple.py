@@ -11,6 +11,7 @@ If you're running from the git repo, then execute as below (setting PYTHONPATH):
 Replace "<your-account>" and "<your-token>" with values from your Draftable
 account at https://api.draftable.com/account/credentials
 """
+import json
 import os
 import sys
 import time
@@ -82,5 +83,6 @@ print(
 time.sleep(10)
 changes = comparisons.change_details(comparison.identifier)
 
-if changes is not None and changes.summary.anyChanges:
-    print(f"Changes: {changes.summary.changeSummary}")
+# if changes is not None and changes.summary.anyChanges:
+#     with open("changes.json", "w") as f:
+#         json.dump(changes, f, indent=2)
