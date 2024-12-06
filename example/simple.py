@@ -11,12 +11,12 @@ If you're running from the git repo, then execute as below (setting PYTHONPATH):
 Replace "<your-account>" and "<your-token>" with values from your Draftable
 account at https://api.draftable.com/account/credentials
 """
-import json
 import os
 import sys
 import time
 
 import draftable
+from draftable.endpoints.comparisons.changes import Change
 
 # From https://api.draftable.com/account/credentials under "Account ID"
 account_id = os.environ.get("DR_ACCOUNT")
@@ -81,8 +81,9 @@ print(
 )
 
 time.sleep(10)
-changes = comparisons.change_details(comparison.identifier)
+change_details = comparisons.change_details(comparison.identifier)
 
-# if changes is not None and changes.summary.anyChanges:
-#     with open("changes.json", "w") as f:
-#         json.dump(changes, f, indent=2)
+change: Change
+for change in change_details.changes:
+    if change.kind == "replace":
+        print(f"leftText: {change.leftText}, rightText: {change.rightText}")
