@@ -1,0 +1,84 @@
+{
+    "changes": [
+        {
+            "kind": "match",
+            "leftText": null,
+            "rightText": null,
+            "leftRegion": {
+                "pageIndex": 0,
+                "rectangles": [
+                    {
+                        "left": 69.62,
+                        "top": 70.06,
+                        "right": 207.66,
+                        "bottom": 86.25
+                    }
+                ]
+            },
+            "rightRegion": {
+                "pageIndex": 0,
+                "rectangles": [
+                    {
+                        "left": 69.62,
+                        "top": 70.06,
+                        "right": 206.66,
+                        "bottom": 86.25
+                    }
+                ]
+            },
+            "stylesInfo": {
+                "leftStyles": [
+                    {
+                        "color": "#000000",
+                        "font": "Arial",
+                        "emphasis": "",
+                        "size": 12.0
+                    }
+                ],
+                "rightStyles": [
+                    {
+                        "color": "#000000",
+                        "font": "Arial",
+                        "emphasis": "",
+                        "size": 12.0
+                    }
+                ],
+                "leftStyleMap": ["0-18"],
+                "rightStyleMap": ["0-18"]
+            },
+            "deletionMark": null
+        },
+        {
+            "kind": "insert",
+            "leftText": null,
+            "rightText": " WITH THIS FILE",
+            "leftRegion": null,
+            "rightRegion": {
+                "pageIndex": 0,
+                "rectangles": [
+                    {
+                        "left": 206.57,
+                        "top": 70.06,
+                        "right": 300.98,
+                        "bottom": 86.25
+                    }
+                ]
+            },
+            "stylesInfo": {
+                "leftStyles": [],
+                "rightStyles": [
+                    {
+                        "color": "#000000",
+                        "font": "Arial",
+                        "emphasis": "",
+                        "size": 12.0
+                    }
+                ],
+                "leftStyleMap": null,
+                "rightStyleMap": ["0-14"]
+            },
+            "deletionMark": null
+        }
+    ],
+    "summary": { "anyChanges": true }
+}

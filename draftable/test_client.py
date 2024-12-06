@@ -1,20 +1,32 @@
 import datetime
+import json
 import os
 from datetime import timedelta
 
 import pytest
 import requests
 
-from draftable import PRODUCTION_CLOUD_BASE_URL, Client, generate_identifier, make_side
+from draftable import (
+    PRODUCTION_CLOUD_BASE_URL,
+    Client,
+    generate_identifier,
+    make_side,
+)
 from draftable.endpoints.comparisons import signing
-from draftable.endpoints.validation import validate_expires, validate_valid_until
+from draftable.endpoints.comparisons.changes import ChangeDetails
+from draftable.endpoints.validation import (
+    validate_expires,
+    validate_valid_until,
+)
 from draftable.utilities import aware_datetime_to_timestamp
 
 
 @pytest.fixture
 def client():
     return Client(
-        os.environ["DRAFTABLE_TEST_ACCOUNT_ID"], os.environ["DRAFTABLE_TEST_AUTH_TOKEN"]
+        os.environ["DRAFTABLE_TEST_ACCOUNT_ID"],
+        os.environ["DRAFTABLE_TEST_AUTH_TOKEN"],
+        os.getenv("DRAFTABLE_TEST_BASE_URL", PRODUCTION_CLOUD_BASE_URL),
     )
 
 
@@ -102,7 +114,9 @@ def test_create_retrieve_export_delete(comparisons, exports):
         left="https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf",
         right="https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf",
     )
-    assert not comparison.ready, "We do not expect the comparison to be ready yet"
+    assert (
+        not comparison.ready
+    ), "We do not expect the comparison to be ready yet"
     assert not comparison.failed
 
     while True:
@@ -137,8 +151,8 @@ def test_create_from_files(comparisons, exports):
 
 def test_create_from_files_txt(comparisons, exports):
     comparison = comparisons.create(
-        left="test-files/hello-left.txt",
-        right="test-files/hello-right.txt",
+        left="test-files/hello-left.rtf",
+        right="test-files/hello-right.rtf",
         expires=datetime.datetime.now() + datetime.timedelta(days=1),
     )
     assert not comparison.failed
@@ -162,11 +176,13 @@ def test_create_with_sides(comparisons, exports):
 
 def test_create_retrieve_export_coverpage(comparisons, exports):
     comparison = comparisons.create(
-        left="test-files/hello-left.txt",
-        right="test-files/hello-right.txt",
+        left="test-files/hello-left.rtf",
+        right="test-files/hello-right.rtf",
         expires=datetime.datetime.now() + datetime.timedelta(days=1),
     )
-    assert not comparison.ready, "We do not expect the comparison to be ready yet"
+    assert (
+        not comparison.ready
+    ), "We do not expect the comparison to be ready yet"
     assert not comparison.failed
 
     while True:
@@ -175,7 +191,9 @@ def test_create_retrieve_export_coverpage(comparisons, exports):
             assert not comparison.failed
             break
 
-    export = exports.create(comparison, kind="combined", include_cover_page=True)
+    export = exports.create(
+        comparison, kind="combined", include_cover_page=True
+    )
     while True:
         export = exports.get(export.identifier)
         if export.ready:
@@ -183,5 +201,36 @@ def test_create_retrieve_export_coverpage(comparisons, exports):
             response = requests.get(export.url)
             assert response.ok
             break
+
+    comparisons.delete(comparison.identifier)
+
+
+def test_create_retrieve_change_details(comparisons):
+    comparison = comparisons.create(
+        left="test-files/hello-left.rtf",
+        right="test-files/hello-right.rtf",
+        expires=datetime.datetime.now() + datetime.timedelta(days=1),
+    )
+    assert (
+        not comparison.ready
+    ), "We do not expect the comparison to be ready yet"
+    assert not comparison.failed
+
+    while True:
+        comparison = comparisons.get(comparison.identifier)
+        if comparison.ready:
+            assert not comparison.failed
+            break
+
+    change_details = comparisons.change_details(comparison.identifier)
+
+    with open("test-files/change-details.json", "r") as f:
+        expected_change_details = json.load(f)
+
+    assert change_details.to_dict() == expected_change_details
+
+    cd = ChangeDetails(expected_change_details)
+
+    assert cd == change_details
 
     comparisons.delete(comparison.identifier)
