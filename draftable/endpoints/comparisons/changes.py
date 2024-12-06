@@ -50,6 +50,11 @@ class Rectangle(object):
     def __str__(self):
         return json.dumps(self.to_dict())
 
+    def __eq__(self, other):
+        if isinstance(other, Rectangle):
+            return self.to_dict() == other.to_dict()
+        return False
+
 
 # Region class
 class Region(object):
@@ -57,7 +62,7 @@ class Region(object):
         self.__pageIndex: Optional[int] = data.get("pageIndex", None)
         self.__rectangles: List[Optional[Rectangle]] = (
             [Rectangle(rect) for rect in data["rectangles"]]
-            if "rectangles" in data
+            if "rectangles" in data and data["rectangles"] is not None
             else []
         )
 
@@ -86,6 +91,11 @@ class Region(object):
 
     def __str__(self):
         return json.dumps(self.to_dict())
+
+    def __eq__(self, other):
+        if isinstance(other, Region):
+            return self.to_dict() == other.to_dict()
+        return False
 
 
 # Style class
@@ -136,18 +146,23 @@ class Style(object):
     def __str__(self):
         return json.dumps(self.to_dict())
 
+    def __eq__(self, other):
+        if isinstance(other, Style):
+            return self.to_dict() == other.to_dict()
+        return False
+
 
 # StylesInfo class
 class StylesInfo(object):
     def __init__(self, data: Dict[str, Any]):
         self.__leftStyles: List[Optional[Style]] = (
             [Style(style) for style in data["leftStyles"]]
-            if "leftStyles" in data
+            if "leftStyles" in data and data["leftStyles"] is not None
             else []
         )
         self.__rightStyles: List[Optional[Style]] = (
             [Style(style) for style in data["rightStyles"]]
-            if "rightStyles" in data
+            if "rightStyles" in data and data["rightStyles"] is not None
             else []
         )
         self.__leftStyleMap: Optional[str] = data.get("leftStyleMap", None)
@@ -193,6 +208,11 @@ class StylesInfo(object):
     def __str__(self):
         return json.dumps(self.to_dict())
 
+    def __eq__(self, other):
+        if isinstance(other, StylesInfo):
+            return self.to_dict() == other.to_dict()
+        return False
+
 
 # Deletion mark class
 class DeletionMark(object):
@@ -223,6 +243,11 @@ class DeletionMark(object):
     def __str__(self):
         return json.dumps(self.to_dict())
 
+    def __eq__(self, other):
+        if isinstance(other, DeletionMark):
+            return self.to_dict() == other.to_dict()
+        return False
+
 
 # Change class
 class Change(object):
@@ -231,17 +256,23 @@ class Change(object):
         self.__leftText: Optional[str] = data.get("leftText", None)
         self.__rightText: Optional[str] = data.get("rightText", None)
         self.__leftRegion: Optional[Region] = (
-            Region(data["leftRegion"]) if "leftRegion" in data else None
+            Region(data["leftRegion"])
+            if "leftRegion" in data and data["leftRegion"] is not None
+            else None
         )
         self.__rightRegion: Optional[Region] = (
-            Region(data["rightRegion"]) if "rightRegion" in data else None
+            Region(data["rightRegion"])
+            if "rightRegion" in data and data["rightRegion"] is not None
+            else None
         )
         self.__stylesInfo: Optional[StylesInfo] = (
-            StylesInfo(data["stylesInfo"]) if "stylesInfo" in data else None
+            StylesInfo(data["stylesInfo"])
+            if "stylesInfo" in data and data["stylesInfo"] is not None
+            else None
         )
         self.__deletionMark = (
             DeletionMark(data.get("deletionMark"))
-            if "deletionMark" in data
+            if "deletionMark" in data and data["deletionMark"] is not None
             else None
         )
 
@@ -300,17 +331,22 @@ class Change(object):
     def __repr__(self):
         return (
             "Change("
-            f"{self.__kind}, "
-            f"{self.__leftText}, "
-            f"{self.__rightText}, "
-            f"{self.__leftRegion}, "
-            f"{self.__rightRegion}, "
-            f"{self.__stylesInfo}, "
-            f"{self.__deletionMark})"
+            f"kind={self.__kind}, "
+            f"leftText={self.__leftText}, "
+            f"rightText={self.__rightText}, "
+            f"leftRegion={self.__leftRegion}, "
+            f"rightRegion={self.__rightRegion}, "
+            f"stylesInfo={self.__stylesInfo}, "
+            f"deletionMark={self.__deletionMark})"
         )
 
-    # def __str__(self):
-    #     return json.dumps(self.__dict__)
+    def __str__(self):
+        return json.dumps(self.to_dict())
+
+    def __eq__(self, other):
+        if isinstance(other, Change):
+            return self.to_dict() == other.to_dict()
+        return False
 
 
 # DocumentSummary class
@@ -352,6 +388,11 @@ class DocumentSummary(object):
 
     def __str__(self):
         return json.dumps(self.to_dict())
+
+    def __eq__(self, other):
+        if isinstance(other, DocumentSummary):
+            return self.to_dict() == other.to_dict()
+        return False
 
 
 # ChangeSummary class
@@ -450,6 +491,11 @@ class ChangeSummary(object):
     def __str__(self):
         return json.dumps(self.to_dict())
 
+    def __eq__(self, other):
+        if isinstance(other, ChangeSummary):
+            return self.to_dict() == other.to_dict()
+        return False
+
 
 # Summary class
 class Summary(object):
@@ -458,22 +504,20 @@ class Summary(object):
         self.__anyMatches: Optional[bool] = data.get("anyMatches", None)
         self.__changeSummary: Optional[ChangeSummary] = (
             ChangeSummary(data["changeSummary"])
-            if "changeSummary" in data
+            if "changeSummary" in data and data["changeSummary"] is not None
             else None
         )
         self.__leftDocumentSummary: Optional[DocumentSummary] = (
-            DocumentSummary(
-                data["leftDocumentSummary"]
-                if "leftDocumentSummary" in data
-                else None
-            )
+            DocumentSummary(data["leftDocumentSummary"])
+            if "leftDocumentSummary" in data
+            and data["leftDocumentSummary"] is not None
+            else None
         )
         self.__rightDocumentSummary: Optional[DocumentSummary] = (
-            DocumentSummary(
-                data["rightDocumentSummary"]
-                if "rightDocumentSummary" in data
-                else None
-            )
+            DocumentSummary(data["rightDocumentSummary"])
+            if "rightDocumentSummary" in data
+            and data["rightDocumentSummary"] is not None
+            else None
         )
 
     @property
@@ -517,6 +561,11 @@ class Summary(object):
     def __str__(self):
         return json.dumps(self.to_dict())
 
+    def __eq__(self, other):
+        if isinstance(other, Summary):
+            return self.to_dict() == other.to_dict()
+        return False
+
 
 # Root class representing the entire data structure
 class ChangeDetails(object):
@@ -524,11 +573,13 @@ class ChangeDetails(object):
     def __init__(self, data: Dict[str, Any]):
         self.__changes: List[Optional[Change]] = (
             [Change(change) for change in data["changes"]]
-            if "changes" in data
+            if "changes" in data and data["changes"] is not None
             else []
         )
         self.__summary: Optional[Summary] = (
-            Summary(data["summary"]) if "summary" in data else None
+            Summary(data["summary"])
+            if "summary" in data and data["summary"] is not None
+            else None
         )
 
     @property
@@ -556,6 +607,11 @@ class ChangeDetails(object):
 
     def __str__(self):
         return json.dumps(self.to_dict())
+
+    def __eq__(self, other):
+        if isinstance(other, ChangeDetails):
+            return self.to_dict() == other.to_dict()
+        return False
 
 
 def change_details_from_response(data):
