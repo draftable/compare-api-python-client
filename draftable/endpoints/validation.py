@@ -28,7 +28,8 @@ _allowed_file_types = {
     "pptx",
     "pptm",
     "ppt",
-    "txt"
+    # Other
+    "txt",
 }
 
 _allowed_kinds = ("single_page", "combined", "left", "right")
