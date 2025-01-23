@@ -43,8 +43,8 @@ comparisons = draftable_client.comparisons
 
 # Create a new comparison with existing sample files
 comparison = comparisons.create(
-    left="https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf",
-    right="https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf",
+    left="test-files/hello-left.txt",
+    right="test-files/hello-right.txt",
     # Alternatively, be explicit about "type" (RTF, PDF, etc) and display name:
     #
     #   left=comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf', 'rtf'),
@@ -58,6 +58,21 @@ print(
 print(
     f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}"
 )
+
+
+
+for _ in range(10):
+    if comparisons.get(comparison.identifier).ready:
+        break
+    time.sleep(1)
+
+print(f"\nListing changes:\n  {comparison}")
+change_details = comparisons.change_details(comparison.identifier)
+    
+change: Change
+for change in change_details.changes:
+    if change.kind != "match":
+        print(f"change.kind: {change.kind}, leftText: {change.leftText}, rightText: {change.rightText}")
 
 
 # Alternatively, be explicit about "type" (RTF, PDF, etc) and display name:
@@ -79,11 +94,14 @@ print(
 print(
     f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}"
 )
+for _ in range(10):
+    if comparisons.get(comparison.identifier).ready:
+        break
+    time.sleep(1)
 
-time.sleep(10)
+print(f"\nListing changes:\n  {comparison}")
 change_details = comparisons.change_details(comparison.identifier)
-
 change: Change
 for change in change_details.changes:
-    if change.kind == "replace":
-        print(f"leftText: {change.leftText}, rightText: {change.rightText}")
+    if change.kind != "match":
+        print(f"change.kind: {change.kind}, leftText: {change.leftText}, rightText: {change.rightText}")
