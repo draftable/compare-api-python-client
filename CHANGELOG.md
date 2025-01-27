@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.4.2
+------
+
+- Add support for change details endpoint
+
 v1.4.1
 ------
 
