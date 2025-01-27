@@ -62,7 +62,9 @@ def validate_file_type(file_type):
         raise InvalidArgument("file_type", "`file_type` cannot be empty.")
     munged_file_type = str(file_type).lower()
     if munged_file_type not in _allowed_file_types:
-        raise InvalidArgument("file_type", f'"{file_type}" is not a valid file type')
+        raise InvalidArgument(
+            "file_type", f'"{file_type}" is not a valid file type'
+        )
     return munged_file_type
 
 
@@ -92,15 +94,21 @@ def validate_url(url):
     if not isinstance(url, str):
         raise InvalidArgument("url", "`url` must be a string (of type `str`).")
     if len(url) > 2048:
-        raise InvalidArgument("url", "`url` must be no longer than 2048 characters.")
+        raise InvalidArgument(
+            "url", "`url` must be no longer than 2048 characters."
+        )
     try:
         scheme, netloc, _, _, _, _ = requests.utils.urlparse(url)
     except Exception as ex:
-        wrapper = InvalidArgument("url", "the value could not be parsed as a URL.")
+        wrapper = InvalidArgument(
+            "url", "the value could not be parsed as a URL."
+        )
         wrapper.__cause__ = ex
         raise wrapper
     if scheme not in ("http", "https"):
-        raise InvalidArgument("url", '`url` must have "http" or "https" as its scheme.')
+        raise InvalidArgument(
+            "url", '`url` must have "http" or "https" as its scheme.'
+        )
     if not netloc:
         raise InvalidArgument("url", "the given URL is malformed.")
     return url
@@ -118,7 +126,8 @@ def _validate_datetime_or_timedelta(parameter_name, value):
 
     if not isinstance(value, datetime):
         raise InvalidArgument(
-            parameter_name, f"`{parameter_name}` must be a datetime or a timedelta."
+            parameter_name,
+            f"`{parameter_name}` must be a datetime or a timedelta.",
         )
     # Make the datetime aware, with UTC as its timezone. If it was naive, we assume it was in UTC time.
     if value.utcoffset() is None:
