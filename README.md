@@ -453,7 +453,7 @@ If your code spawns Python subprocesses they must separately modify their enviro
 
 #### All environments
 
-Disabling certificate validation in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible.
+Disabling certificate validation in production environments is strongly discouraged as it significantly lowers security. We only recommend setting this environment variable in development environments if configuring a CA signed certificate for API Self-hosted is not possible. 
 
 License
 -------
