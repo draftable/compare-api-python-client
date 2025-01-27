@@ -13,8 +13,10 @@ account at https://api.draftable.com/account/credentials
 """
 import os
 import sys
+import time
 
 import draftable
+from draftable.endpoints.comparisons.changes import Change
 
 # From https://api.draftable.com/account/credentials under "Account ID"
 account_id = os.environ.get("DR_ACCOUNT")
@@ -22,14 +24,18 @@ auth_token = os.environ.get("DR_TOKEN")
 base_url = os.environ.get("DR_BASE_URL")  # Enterprise only
 
 if not account_id or not auth_token:
-    sys.stderr.write("Provide both DR_ACCOUNT and DR_TOKEN environment variables\n")
+    sys.stderr.write(
+        "Provide both DR_ACCOUNT and DR_TOKEN environment variables\n"
+    )
     sys.stderr.write(
         'See https://api.draftable.com/account/credentials under "Account ID"\n'
     )
     sys.exit(1)
 
 if base_url and not base_url.endswith("/v1"):
-    sys.stderr.write(f'Value for DR_BASE_URL is "{base_url}" but must end with "/v1"\n')
+    sys.stderr.write(
+        f'Value for DR_BASE_URL is "{base_url}" but must end with "/v1"\n'
+    )
     sys.exit(1)
 
 draftable_client = draftable.Client(account_id, auth_token, base_url)
@@ -37,8 +43,8 @@ comparisons = draftable_client.comparisons
 
 # Create a new comparison with existing sample files
 comparison = comparisons.create(
-    left="https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf",
-    right="https://api.draftable.com/static/test-documents/code-of-conduct/right.pdf",
+    left="test-files/hello-left.txt",
+    right="test-files/hello-right.txt",
     # Alternatively, be explicit about "type" (RTF, PDF, etc) and display name:
     #
     #   left=comparisons.side_from_url('https://api.draftable.com/static/test-documents/code-of-conduct/left.rtf', 'rtf'),
@@ -46,8 +52,27 @@ comparison = comparisons.create(
 )
 
 print(f"Created comparison:\n  {comparison}")
-print(f"  - Public URL: {comparisons.public_viewer_url(comparison.identifier)}")
-print(f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}")
+print(
+    f"  - Public URL: {comparisons.public_viewer_url(comparison.identifier)}"
+)
+print(
+    f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}"
+)
+
+
+
+for _ in range(10):
+    if comparisons.get(comparison.identifier).ready:
+        break
+    time.sleep(1)
+
+print(f"\nListing changes:\n  {comparison}")
+change_details = comparisons.change_details(comparison.identifier)
+    
+change: Change
+for change in change_details.changes:
+    if change.kind != "match":
+        print(f"change.kind: {change.kind}, leftText: {change.leftText}, rightText: {change.rightText}")
 
 
 # Alternatively, be explicit about "type" (RTF, PDF, etc) and display name:
@@ -63,5 +88,20 @@ comparison = comparisons.create(
 )
 
 print(f"\nCreated with make_side:\n  {comparison}")
-print(f"  - Public URL: {comparisons.public_viewer_url(comparison.identifier)}")
-print(f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}")
+print(
+    f"  - Public URL: {comparisons.public_viewer_url(comparison.identifier)}"
+)
+print(
+    f"  - Signed URL: {comparisons.signed_viewer_url(comparison.identifier)}"
+)
+for _ in range(10):
+    if comparisons.get(comparison.identifier).ready:
+        break
+    time.sleep(1)
+
+print(f"\nListing changes:\n  {comparison}")
+change_details = comparisons.change_details(comparison.identifier)
+change: Change
+for change in change_details.changes:
+    if change.kind != "match":
+        print(f"change.kind: {change.kind}, leftText: {change.leftText}, rightText: {change.rightText}")
