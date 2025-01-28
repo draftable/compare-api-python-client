@@ -28,6 +28,12 @@ jobs:
     - name: Python 3.11
       python: '3.11'
       env: TOXENV=py311,coverage,codecov
+    - name: Python 3.12
+      python: '3.12'
+      env: TOXENV=py312,coverage,codecov
+    - name: Python 3.13
+      python: '3.13'
+      env: TOXENV=py313,coverage,codecov
 
 install:
   - pip install tox
