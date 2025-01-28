@@ -24,7 +24,7 @@ See the [full API documentation](https://api.draftable.com) for an introduction 
   - [Creating comparisons](#creating-comparisons)
   - [Displaying comparisons](#displaying-comparisons)
   - [Exporting comparisons](#exporting-comparisons)
-  - [Change details for comparisons](#change-details-of-comparisons)
+  - [Change details of Comparisons](#change-details-of-comparisons)
   - [Utility functions](#utility-functions)
 - [Other information](#other-information)
   - [Self-signed certificates](#self-signed-certificates)
