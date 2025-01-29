@@ -28,21 +28,13 @@
     // Default venv path
     "python.defaultInterpreterPath": "${workspaceFolder}/venv",
 
-    // Use Black for formatting
-    "python.formatting.provider": "black",
-
-    // Enable Python linters
-    "python.linting.flake8Enabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.linting.pylintEnabled": true,
-
     "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.codeActionsOnSave": {
-            // Organise imports with isort
-            "source.organizeImports": true
+            "source.organizeImports": "always"
         },
 
         "editor.formatOnSave": true,
-        "editor.rulers": [88]
+        "editor.rulers": [88],
     }
 }
