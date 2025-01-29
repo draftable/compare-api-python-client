@@ -2,9 +2,6 @@
     // File paths to language mappings
     "files.associations": {
         // Python linting configs
-        ".coveragerc": "ini",
-        ".flake8": "ini",
-        ".isort.cfg": "ini",
         ".pylintrc": "ini",
         // Python packaging configs
         "MANIFEST.in": "properties",

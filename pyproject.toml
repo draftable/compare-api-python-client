@@ -1,7 +1,78 @@
 [build-system]
-requires = ["setuptools>=40.8.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ['setuptools>=40.8.0', 'wheel']
+build-backend = 'setuptools.build_meta'
+
 
 [tool.black]
 line-length = 88
 target-version = ['py38', 'py39', 'py310', 'py311', 'py312', 'py313']
+
+
+[tool.coverage.run]
+# Packages or directories to measure
+source = ['draftable']
+
+# File name patterns to exclude
+omit = [
+   '*/commands/*.py',
+   '*/test_*.py'
+]
+
+# Measure branch coverage
+branch = true
+
+
+[tool.coverage.report]
+# Show line numbers of statements missing coverage
+show_missing = true
+
+
+[tool.flake8]
+# Glob patterns of paths to exclude from checks
+exclude = [
+    # Git repository
+    '.git',
+    # rope metadata
+    '.ropeproject',
+    # Compiled Python code
+    '__pycache__'
+]
+
+# Checks to ignore
+ignore = [
+    # Whitespace before ':'
+    # Black compatibility
+    'E203',
+    # Line break occurred before a binary operator
+    # Black compatibility
+    'W503'
+]
+
+# Glob patterns of files to exclude from specific checks
+per-file-ignores = [
+    # Module imported but unused
+    '__init__.py:F401'
+]
+
+# Maximum McCabe complexity
+max-complexity = 25
+
+# Maximum line length
+max-line-length = 88
+
+
+[tool.isort]
+# Imports to always add to the first party category
+known_first_party = 'draftable'
+
+# Maximum line length for imports
+line_length = 88
+
+# Use Vertical Hanging Indent style for multi-line imports
+multi_line_output = 3
+
+# Use parentheses for line continuation on length limit
+use_parentheses = true
+
+# Add a trailing comma for multi-line imports using parentheses
+include_trailing_comma = true
