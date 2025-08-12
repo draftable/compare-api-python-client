@@ -325,7 +325,9 @@ class Change(object):
             "stylesInfo": (
                 self.__stylesInfo.to_dict() if self.__stylesInfo else None
             ),
-            "deletionMark": self.__deletionMark,
+            "deletionMark": (
+                self.__deletionMark.to_dict() if self.__deletionMark else None
+            ),
         }
 
     def __repr__(self):
