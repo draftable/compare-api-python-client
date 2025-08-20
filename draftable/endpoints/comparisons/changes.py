@@ -343,7 +343,7 @@ class Change(object):
         )
 
     def __str__(self):
-        return json.dumps(self.to_dict())
+        return json.dumps(self.to_dict(), ensure_ascii=False)
 
     def __eq__(self, other):
         if isinstance(other, Change):
@@ -608,7 +608,7 @@ class ChangeDetails(object):
         )
 
     def __str__(self):
-        return json.dumps(self.to_dict())
+        return json.dumps(self.to_dict(), ensure_ascii=False)
 
     def __eq__(self, other):
         if isinstance(other, ChangeDetails):

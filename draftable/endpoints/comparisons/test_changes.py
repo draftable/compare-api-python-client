@@ -167,3 +167,26 @@ class TestDeletionMarkSerialization:
         assert result_dict["leftRegion"]["pageIndex"] == 0
         assert len(result_dict["leftRegion"]["rectangles"]) == 1
         assert result_dict["stylesInfo"]["leftStyleMap"] == "style1"
+
+    def test_nonascii_serialization(self):
+        """Test that non-ASCII characters are properly serialized in str(Change)"""
+
+        # Create test data with a DeletionMark
+        change_data = {
+            "kind": "replacement",
+            "leftText": "café",
+            "rightText": "áéíóú",
+            "leftRegion": None,
+            "rightRegion": None,
+            "stylesInfo": None,
+        }
+
+        # Create Change object
+        changes = ChangeDetails({"changes": [change_data]})
+
+        # Verify the result can be JSON serialized
+        json_str = str(changes)
+        
+        assert "café" in json_str
+        assert "áéíóú" in json_str
+                            
