@@ -1,5 +1,10 @@
 Changelog
 =========
+v1.4.3
+------
+
+- Fix serialization of DeletionMark objects in Change.to_dict()
+- Fix default Change serialization to keep non-ASCII characters intact
 
 v1.4.2
 ------
